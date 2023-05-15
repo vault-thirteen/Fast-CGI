@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PHP: $_SERVER - Manual </title>
+
+ <link rel="icon" type="image/svg+xml" sizes="any" href="https://www.php.net/favicon.svg?v=2">
+ <link rel="icon" type="image/png" sizes="196x196" href="https://www.php.net/favicon-196x196.png?v=2">
+ <link rel="icon" type="image/png" sizes="32x32" href="https://www.php.net/favicon-32x32.png?v=2">
+ <link rel="icon" type="image/png" sizes="16x16" href="https://www.php.net/favicon-16x16.png?v=2">
+ <link rel="shortcut icon" href="https://www.php.net/favicon.ico?v=2">
+
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="https://www.php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="https://www.php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="https://www.php.net/manual/en/reserved.variables.server.php">
+ <link rel="shorturl" href="https://www.php.net/manual/en/reserved.variables.server.php">
+ <link rel="alternate" href="https://www.php.net/manual/en/reserved.variables.server.php" hreflang="x-default">
+
+ <link rel="contents" href="https://www.php.net/manual/en/index.php">
+ <link rel="index" href="https://www.php.net/manual/en/reserved.variables.php">
+ <link rel="prev" href="https://www.php.net/manual/en/reserved.variables.globals.php">
+ <link rel="next" href="https://www.php.net/manual/en/reserved.variables.get.php">
+
+ <link rel="alternate" href="https://www.php.net/manual/en/reserved.variables.server.php" hreflang="en">
+ <link rel="alternate" href="https://www.php.net/manual/pt_BR/reserved.variables.server.php" hreflang="pt_BR">
+ <link rel="alternate" href="https://www.php.net/manual/zh/reserved.variables.server.php" hreflang="zh">
+ <link rel="alternate" href="https://www.php.net/manual/fr/reserved.variables.server.php" hreflang="fr">
+ <link rel="alternate" href="https://www.php.net/manual/de/reserved.variables.server.php" hreflang="de">
+ <link rel="alternate" href="https://www.php.net/manual/ja/reserved.variables.server.php" hreflang="ja">
+ <link rel="alternate" href="https://www.php.net/manual/ru/reserved.variables.server.php" hreflang="ru">
+ <link rel="alternate" href="https://www.php.net/manual/es/reserved.variables.server.php" hreflang="es">
+ <link rel="alternate" href="https://www.php.net/manual/tr/reserved.variables.server.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1639034403&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1539765004&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1676992203&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/cached.php?t=1676992203&amp;f=/styles/theme-medium.css" media="screen">
+
+ <base href="https://www.php.net/manual/en/reserved.variables.server.php">
+
+
+</head>
+<body class="docs ">
+
+<nav id="head-nav" class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <a href="/" class="brand"><img src="/images/logos/php-logo.svg" width="48" height="24" alt="php"></a>
+    <div id="mainmenu-toggle-overlay"></div>
+    <input type="checkbox" id="mainmenu-toggle">
+    <ul class="nav">
+      <li class=""><a href="/downloads">Downloads</a></li>
+      <li class="active"><a href="/docs.php">Documentation</a></li>
+      <li class=""><a href="/get-involved" >Get Involved</a></li>
+      <li class=""><a href="/support">Help</a></li>
+      <li class="">
+        <a href="/releases/8.2/index.php">
+          <img src="/images/php8/logo_php8_2.svg" alt="php8.2" height="22" width="60">
+        </a>
+      </li>
+    </ul>
+    <form class="navbar-search" id="topsearch" action="/search.php">
+      <input type="hidden" name="show" value="quickref">
+      <input type="search" name="pattern" class="search-query" placeholder="Search" accesskey="s">
+    </form>
+  </div>
+  <div id="flash-message"></div>
+</nav>
+<nav id="trick"><div><dl>
+<dt><a href='/manual/en/getting-started.php'>Getting Started</a></dt>
+	<dd><a href='/manual/en/introduction.php'>Introduction</a></dd>
+	<dd><a href='/manual/en/tutorial.php'>A simple tutorial</a></dd>
+<dt><a href='/manual/en/langref.php'>Language Reference</a></dt>
+	<dd><a href='/manual/en/language.basic-syntax.php'>Basic syntax</a></dd>
+	<dd><a href='/manual/en/language.types.php'>Types</a></dd>
+	<dd><a href='/manual/en/language.variables.php'>Variables</a></dd>
+	<dd><a href='/manual/en/language.constants.php'>Constants</a></dd>
+	<dd><a href='/manual/en/language.expressions.php'>Expressions</a></dd>
+	<dd><a href='/manual/en/language.operators.php'>Operators</a></dd>
+	<dd><a href='/manual/en/language.control-structures.php'>Control Structures</a></dd>
+	<dd><a href='/manual/en/language.functions.php'>Functions</a></dd>
+	<dd><a href='/manual/en/language.oop5.php'>Classes and Objects</a></dd>
+	<dd><a href='/manual/en/language.namespaces.php'>Namespaces</a></dd>
+	<dd><a href='/manual/en/language.enumerations.php'>Enumerations</a></dd>
+	<dd><a href='/manual/en/language.errors.php'>Errors</a></dd>
+	<dd><a href='/manual/en/language.exceptions.php'>Exceptions</a></dd>
+	<dd><a href='/manual/en/language.fibers.php'>Fibers</a></dd>
+	<dd><a href='/manual/en/language.generators.php'>Generators</a></dd>
+	<dd><a href='/manual/en/language.attributes.php'>Attributes</a></dd>
+	<dd><a href='/manual/en/language.references.php'>References Explained</a></dd>
+	<dd><a href='/manual/en/reserved.variables.php'>Predefined Variables</a></dd>
+	<dd><a href='/manual/en/reserved.exceptions.php'>Predefined Exceptions</a></dd>
+	<dd><a href='/manual/en/reserved.interfaces.php'>Predefined Interfaces and Classes</a></dd>
+	<dd><a href='/manual/en/reserved.attributes.php'>Predefined Attributes</a></dd>
+	<dd><a href='/manual/en/context.php'>Context options and parameters</a></dd>
+	<dd><a href='/manual/en/wrappers.php'>Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href='/manual/en/security.php'>Security</a></dt>
+	<dd><a href='/manual/en/security.intro.php'>Introduction</a></dd>
+	<dd><a href='/manual/en/security.general.php'>General considerations</a></dd>
+	<dd><a href='/manual/en/security.cgi-bin.php'>Installed as CGI binary</a></dd>
+	<dd><a href='/manual/en/security.apache.php'>Installed as an Apache module</a></dd>
+	<dd><a href='/manual/en/security.sessions.php'>Session Security</a></dd>
+	<dd><a href='/manual/en/security.filesystem.php'>Filesystem Security</a></dd>
+	<dd><a href='/manual/en/security.database.php'>Database Security</a></dd>
+	<dd><a href='/manual/en/security.errors.php'>Error Reporting</a></dd>
+	<dd><a href='/manual/en/security.variables.php'>User Submitted Data</a></dd>
+	<dd><a href='/manual/en/security.hiding.php'>Hiding PHP</a></dd>
+	<dd><a href='/manual/en/security.current.php'>Keeping Current</a></dd>
+<dt><a href='/manual/en/features.php'>Features</a></dt>
+	<dd><a href='/manual/en/features.http-auth.php'>HTTP authentication with PHP</a></dd>
+	<dd><a href='/manual/en/features.cookies.php'>Cookies</a></dd>
+	<dd><a href='/manual/en/features.sessions.php'>Sessions</a></dd>
+	<dd><a href='/manual/en/features.xforms.php'>Dealing with XForms</a></dd>
+	<dd><a href='/manual/en/features.file-upload.php'>Handling file uploads</a></dd>
+	<dd><a href='/manual/en/features.remote-files.php'>Using remote files</a></dd>
+	<dd><a href='/manual/en/features.connection-handling.php'>Connection handling</a></dd>
+	<dd><a href='/manual/en/features.persistent-connections.php'>Persistent Database Connections</a></dd>
+	<dd><a href='/manual/en/features.commandline.php'>Command line usage</a></dd>
+	<dd><a href='/manual/en/features.gc.php'>Garbage Collection</a></dd>
+	<dd><a href='/manual/en/features.dtrace.php'>DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href='/manual/en/funcref.php'>Function Reference</a></dt>
+	<dd><a href='/manual/en/refs.basic.php.php'>Affecting PHP's Behaviour</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.audio.php'>Audio Formats Manipulation</a></dd>
+	<dd><a href='/manual/en/refs.remote.auth.php'>Authentication Services</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.cmdline.php'>Command Line Specific Extensions</a></dd>
+	<dd><a href='/manual/en/refs.compression.php'>Compression and Archive Extensions</a></dd>
+	<dd><a href='/manual/en/refs.crypto.php'>Cryptography Extensions</a></dd>
+	<dd><a href='/manual/en/refs.database.php'>Database Extensions</a></dd>
+	<dd><a href='/manual/en/refs.calendar.php'>Date and Time Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.fileprocess.file.php'>File System Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.international.php'>Human Language and Character Encoding Support</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.image.php'>Image Processing and Generation</a></dd>
+	<dd><a href='/manual/en/refs.remote.mail.php'>Mail Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.math.php'>Mathematical Extensions</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.nontext.php'>Non-Text MIME Output</a></dd>
+	<dd><a href='/manual/en/refs.fileprocess.process.php'>Process Control Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.other.php'>Other Basic Extensions</a></dd>
+	<dd><a href='/manual/en/refs.remote.other.php'>Other Services</a></dd>
+	<dd><a href='/manual/en/refs.search.php'>Search Engine Extensions</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.server.php'>Server Specific Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.session.php'>Session Extensions</a></dd>
+	<dd><a href='/manual/en/refs.basic.text.php'>Text Processing</a></dd>
+	<dd><a href='/manual/en/refs.basic.vartype.php'>Variable and Type Related Extensions</a></dd>
+	<dd><a href='/manual/en/refs.webservice.php'>Web Services</a></dd>
+	<dd><a href='/manual/en/refs.utilspec.windows.php'>Windows Only Extensions</a></dd>
+	<dd><a href='/manual/en/refs.xml.php'>XML Manipulation</a></dd>
+	<dd><a href='/manual/en/refs.ui.php'>GUI Extensions</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="clearfix">
+    <div id="breadcrumbs-inner">
+          <div class="next">
+        <a href="reserved.variables.get.php">
+          $_GET &raquo;
+        </a>
+      </div>
+              <div class="prev">
+        <a href="reserved.variables.globals.php">
+          &laquo; $GLOBALS        </a>
+      </div>
+          <ul>
+            <li><a href='index.php'>PHP Manual</a></li>      <li><a href='langref.php'>Language Reference</a></li>      <li><a href='reserved.variables.php'>Predefined Variables</a></li>      </ul>
+    </div>
+  </div>
+
+
+
+
+<div id="layout" class="clearfix">
+  <section id="layout-content">
+  <div class="page-tools">
+    <div class="change-language">
+      <form action="/manual/change.php" method="get" id="changelang" name="changelang">
+        <fieldset>
+          <label for="changelang-langs">Change language:</label>
+          <select onchange="document.changelang.submit()" name="page" id="changelang-langs">
+            <option value='en/reserved.variables.server.php' selected="selected">English</option>
+            <option value='pt_BR/reserved.variables.server.php'>Brazilian Portuguese</option>
+            <option value='zh/reserved.variables.server.php'>Chinese (Simplified)</option>
+            <option value='fr/reserved.variables.server.php'>French</option>
+            <option value='de/reserved.variables.server.php'>German</option>
+            <option value='ja/reserved.variables.server.php'>Japanese</option>
+            <option value='ru/reserved.variables.server.php'>Russian</option>
+            <option value='es/reserved.variables.server.php'>Spanish</option>
+            <option value='tr/reserved.variables.server.php'>Turkish</option>
+            <option value='help-translate.php'>Other</option>
+          </select>
+        </fieldset>
+      </form>
+    </div>
+    <div class="edit-bug">
+      <a href="https://github.com/php/doc-en/blob/master/language/predefined/variables/server.xml">Submit a Pull Request</a>
+      <a href="https://github.com/php/doc-en/issues/new?body=From%20manual%20page:%20https:%2F%2Fphp.net%2Freserved.variables.server%0A%0A---">Report a Bug</a>
+    </div>
+  </div><div id="reserved.variables.server" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">$_SERVER</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.1.0, PHP 5, PHP 7, PHP 8)</p><p class="refpurpose"><span class="refname">$_SERVER</span> &mdash; <span class="dc-title">Server and execution environment information</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-reserved.variables.server-description">
+  <h3 class="title">Description</h3>
+  <p class="para">
+   <var class="varname">$_SERVER</var> is an <span class="type">array</span> containing information
+   such as headers, paths, and script locations.
+   The entries in this array are created by the web server, therefore there
+   is no guarantee that every web server will provide any of these;
+   servers may omit some, or provide others not listed here.
+   However, most of these variables are accounted for in the
+   <a href="http://www.faqs.org/rfcs/rfc3875" class="link external">&raquo;&nbsp;CGI/1.1 specification</a>,
+   and are likely to be defined.
+  </p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <span class="simpara">
+    When running PHP on the <a href="features.commandline.php" class="link">command line</a>
+    most of these entries will not be available or have any meaning.
+   </span>
+  </p></blockquote>
+  <p class="para">
+   In addition to the elements listed below, PHP will create additional
+   elements with values from request headers. These entries will be named
+   <code class="literal">HTTP_</code> followed by the header name,
+   capitalized and with underscores instead of hyphens.
+   For example, the <code class="literal">Accept-Language</code> header would be
+   available as <code class="code">$_SERVER[&#039;HTTP_ACCEPT_LANGUAGE&#039;]</code>.
+  </p>
+ </div>
+
+
+ <div class="refsect1 indices" id="refsect1-reserved.variables.server-indices">
+  <h3 class="title">Indices</h3>
+
+  <p class="para">
+   <dl>
+    
+     <dt>
+&#039;<var class="varname">PHP_SELF</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The filename of the currently executing script, relative to
+       the document root. For instance,
+       <var class="varname">$_SERVER['PHP_SELF']</var> in a script at the
+       address <var class="filename">http://example.com/foo/bar.php</var>
+       would be <var class="filename">/foo/bar.php</var>.
+       The <a href="language.constants.predefined.php" class="link">__FILE__</a>
+       constant contains the full path and filename of the current (i.e.
+       included) file.
+      </span>
+      <span class="simpara">
+       If PHP is running as a command-line processor this variable contains
+       the script name.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<a href="reserved.variables.argv.php" class="link">argv</a>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Array of arguments passed to the script. When the script is
+       run on the command line, this gives C-style access to the
+       command line parameters. When called via the GET method, this
+       will contain the query string.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<a href="reserved.variables.argc.php" class="link">argc</a>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Contains the number of command line parameters passed to the
+       script (if run on the command line).
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">GATEWAY_INTERFACE</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       What revision of the CGI specification the server is using;
+       e.g. <code class="literal">&#039;CGI/1.1&#039;</code>.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_ADDR</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The IP address of the server under which the current script is
+       executing.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_NAME</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The name of the server host under which the current script is
+       executing. If the script is running on a virtual host, this
+       will be the value defined for that virtual host.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <span class="simpara">
+        Under Apache 2, <code class="literal">UseCanonicalName = On</code> and
+        <code class="literal">ServerName</code> must be set. Otherwise, this value
+        reflects the hostname supplied by the client, which can be spoofed.
+        It is not safe to rely on this value in security-dependent contexts.
+       </span>
+      </p></blockquote>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_SOFTWARE</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Server identification string, given in the headers when
+       responding to requests.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_PROTOCOL</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Name and revision of the information protocol via which the
+       page was requested; e.g. <code class="literal">&#039;HTTP/1.0&#039;</code>;
+      </span>
+     </dd>
+
+    
+    
+    
+     <dt>
+&#039;<var class="varname">REQUEST_METHOD</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Which request method was used to access the page; e.g. <code class="literal">&#039;GET&#039;</code>,
+       <code class="literal">&#039;HEAD&#039;</code>, <code class="literal">&#039;POST&#039;</code>, <code class="literal">&#039;PUT&#039;</code>.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <p class="para">
+        PHP script is terminated after sending headers (it means after
+        producing any output without output buffering) if the request method
+        was <code class="literal">HEAD</code>.
+       </p>
+      </p></blockquote>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REQUEST_TIME</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The timestamp of the start of the request.
+      </span>
+     </dd>
+
+    
+    
+    
+     <dt>
+&#039;<var class="varname">REQUEST_TIME_FLOAT</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The timestamp of the start of the request, with microsecond precision.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">QUERY_STRING</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The query string, if any, via which the page was accessed.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">DOCUMENT_ROOT</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The document root directory under which the current script is
+       executing, as defined in the server&#039;s configuration file.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">HTTPS</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Set to a non-empty value if the script was queried through the HTTPS
+       protocol.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REMOTE_ADDR</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The IP address from which the user is viewing the current
+       page.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REMOTE_HOST</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The Host name from which the user is viewing the current
+       page.  The reverse dns lookup is based on the 
+       <var class="varname">REMOTE_ADDR</var> of the user.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <span class="simpara">
+        The web server must be configured to create this variable.
+        For example in Apache <code class="literal">HostnameLookups On</code> must be
+        set inside <var class="filename">httpd.conf</var> for it to exist.  See also
+        <span class="function"><a href="function.gethostbyaddr.php" class="function">gethostbyaddr()</a></span>.
+       </span>
+      </p></blockquote>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REMOTE_PORT</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The port being used on the user&#039;s machine to communicate with
+       the web server.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REMOTE_USER</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+        The authenticated user.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REDIRECT_REMOTE_USER</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+        The authenticated user if the request is internally redirected.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SCRIPT_FILENAME</var>&#039;</dt>
+
+     <dd>
+
+      <p class="para">
+       The absolute pathname of the currently executing script.
+       <blockquote class="note"><p><strong class="note">Note</strong>: 
+        <p class="para">
+         If a script is executed with the CLI, as a relative path,
+         such as <var class="filename">file.php</var> or 
+         <var class="filename">../file.php</var>, 
+         <var class="varname">$_SERVER['SCRIPT_FILENAME']</var> will 
+         contain the relative path specified by the user.
+        </p>
+       </p></blockquote>
+      </p>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_ADMIN</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The value given to the SERVER_ADMIN (for Apache) directive in
+       the web server configuration file. If the script is running
+       on a virtual host, this will be the value defined for that
+       virtual host.
+      </span>
+     </dd>
+
+    
+    
+    
+     <dt>
+&#039;<var class="varname">SERVER_PORT</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The port on the server machine being used by the web server
+       for communication. For default setups, this will be <code class="literal">&#039;80&#039;</code>;
+       using SSL, for instance, will change this to whatever your
+       defined secure HTTP port is.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <span class="simpara">
+        Under Apache 2, <code class="literal">UseCanonicalName = On</code>, as well
+        as <code class="literal">UseCanonicalPhysicalPort = On</code> must be set in
+        order to get the physical (real) port, otherwise, this value can be
+        spoofed, and it may or may not return the physical port value.
+        It is not safe to rely on this value in security-dependent contexts.
+       </span>
+      </p></blockquote>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SERVER_SIGNATURE</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       String containing the server version and virtual host name
+       which are added to server-generated pages, if enabled.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">PATH_TRANSLATED</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Filesystem- (not document root-) based path to the current
+       script, after the server has done any virtual-to-real
+       mapping.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <span class="simpara">
+        Apache 2 users may use <code class="literal">AcceptPathInfo = On</code> inside
+        <var class="filename">httpd.conf</var> to define <var class="envar">PATH_INFO</var>.
+       </span>
+      </p></blockquote>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">SCRIPT_NAME</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Contains the current script&#039;s path. This is useful for pages
+       which need to point to themselves.
+       The <a href="language.constants.predefined.php" class="link">__FILE__</a>
+       constant contains the full path and filename of the current (i.e.
+       included) file.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">REQUEST_URI</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       The URI which was given in order to access this page; for
+       instance, &#039;<code class="literal">/index.html</code>&#039;.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">PHP_AUTH_DIGEST</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       When doing Digest HTTP authentication this variable is set 
+       to the &#039;Authorization&#039; header sent by the client (which you 
+       should then use to make the appropriate validation).
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">PHP_AUTH_USER</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       When doing HTTP authentication this variable is set to the 
+       username provided by the user.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">PHP_AUTH_PW</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       When doing HTTP authentication this variable is set to the 
+       password provided by the user.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">AUTH_TYPE</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       When doing HTTP authentication this variable is set to the 
+       authentication type.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">PATH_INFO</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Contains any client-provided pathname information trailing the
+       actual script filename but preceding the query string, if available.
+       For instance, if the current script was accessed via the URI
+       <var class="filename">http://www.example.com/php/path_info.php/some/stuff?foo=bar</var>,
+       then <var class="varname">$_SERVER['PATH_INFO']</var> would
+       contain <code class="literal">/some/stuff</code>.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+&#039;<var class="varname">ORIG_PATH_INFO</var>&#039;</dt>
+
+     <dd>
+
+      <span class="simpara">
+       Original version of &#039;<var class="varname">PATH_INFO</var>&#039; before processed by
+       PHP.
+      </span>
+     </dd>
+
+    
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-reserved.variables.server-examples">
+  <h3 class="title">Examples</h3>
+  <p class="para">
+   <div class="example" id="variable.server.basic">
+    <p><strong>Example #1 <var class="varname">$_SERVER</var> example</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo </span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'SERVER_NAME'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+www.example.com
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 notes" id="refsect1-reserved.variables.server-notes">
+  <h3 class="title">Notes</h3>
+  <blockquote class="note"><p><strong class="note">Note</strong>: <p class="para">This is a &#039;superglobal&#039;, or
+automatic global, variable. This simply means that it is available in
+all scopes throughout a script. There is no need to do
+<strong class="command">global $variable;</strong> to access it within functions or methods.
+</p></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-reserved.variables.server-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="book.filter.php" class="link">The filter extension</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><section id="usernotes">
+ <div class="head">
+  <span class="action"><a href="/manual/add-note.php?sect=reserved.variables.server&amp;redirect=https://www.php.net/manual/en/reserved.variables.server.php">＋<small>add a note</small></a></span>
+  <h3 class="title">User Contributed Notes <span class="count">39 notes</span></h3>
+ </div><div id="allnotes">
+  <div class="note" id="89567">  <div class="votes">
+    <div id="Vu89567">
+    <a href="/manual/vote-note.php?id=89567&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd89567">
+    <a href="/manual/vote-note.php?id=89567&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V89567" title="67% like this...">
+    142
+    </div>
+  </div>
+  <a href="#89567" class="name">
+  <strong class="user"><em>Vladimir Kornea</em></strong></a><a class="genanchor" href="#89567"> &para;</a><div class="date" title="2009-03-13 05:06"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom89567">
+<div class="phpcode"><code><span class="html">
+1. All elements of the $_SERVER array whose keys begin with 'HTTP_' come from HTTP request headers and are not to be trusted.<br /><br />2. All HTTP headers sent to the script are made available through the $_SERVER array, with names prefixed by 'HTTP_'.<br /><br />3. $_SERVER['PHP_SELF'] is dangerous if misused. If login.php/nearly_arbitrary_string is requested, $_SERVER['PHP_SELF'] will contain not just login.php, but the entire login.php/nearly_arbitrary_string. If you've printed $_SERVER['PHP_SELF'] as the value of the action attribute of your form tag without performing HTML encoding, an attacker can perform XSS attacks by offering users a link to your site such as this:<br /><br />&lt;a href='<a href="http://www.example.com/login.php/" rel="nofollow" target="_blank">http://www.example.com/login.php/</a>"&gt;&lt;script type="text/javascript"&gt;...&lt;/script&gt;&lt;span a="'&gt;Example.com&lt;/a&gt;<br /><br />The javascript block would define an event handler function and bind it to the form's submit event. This event handler would load via an &lt;img&gt; tag an external file, with the submitted username and password as parameters.<br /><br />Use $_SERVER['SCRIPT_NAME'] instead of $_SERVER['PHP_SELF']. HTML encode every string sent to the browser that should not be interpreted as HTML, unless you are absolutely certain that it cannot contain anything that the browser can interpret as HTML.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="124825">  <div class="votes">
+    <div id="Vu124825">
+    <a href="/manual/vote-note.php?id=124825&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd124825">
+    <a href="/manual/vote-note.php?id=124825&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V124825" title="71% like this...">
+    56
+    </div>
+  </div>
+  <a href="#124825" class="name">
+  <strong class="user"><em>vcoletti at tiscali dot it</em></strong></a><a class="genanchor" href="#124825"> &para;</a><div class="date" title="2020-03-14 01:20"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom124825">
+<div class="phpcode"><code><span class="html">
+To list all the $_SERVER parameters, simply do:<br /><br />foreach ($_SERVER as $parm =&gt; $value)&nbsp; echo "$parm = '$value'\n";<br /><br />No need to list all possible keys of the array.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="121008">  <div class="votes">
+    <div id="Vu121008">
+    <a href="/manual/vote-note.php?id=121008&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd121008">
+    <a href="/manual/vote-note.php?id=121008&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V121008" title="61% like this...">
+    27
+    </div>
+  </div>
+  <a href="#121008" class="name">
+  <strong class="user"><em>pierstoval at example dot com</em></strong></a><a class="genanchor" href="#121008"> &para;</a><div class="date" title="2017-04-22 10:13"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom121008">
+<div class="phpcode"><code><span class="html">
+As PHP $_SERVER var is populated with a lot of vars, I think it's important to say that it's also populated with environment vars.<br /><br />For example, with a PHP script, we can have this:<br /><br />&nbsp; &nbsp; MY_ENV_VAR=Hello php -r 'echo $_SERVER["MY_ENV_VAR"];'<br />&nbsp; &nbsp; <br />Will show "Hello".<br /><br />But, internally, PHP makes sure that "internal" keys in $_SERVER are not overriden, so you wouldn't be able to do something like this:<br /><br />&nbsp; &nbsp; REQUEST_TIME=Hello php -r 'var_dump($_SERVER["REQUEST_TIME"]);'<br />&nbsp; &nbsp; <br />Will show something like 1492897785<br /><br />However, a lot of vars are still vulnerable from environment injection.<br /><br />I created a gist here ( <a href="https://gist.github.com/Pierstoval/f287d3e61252e791a943dd73874ab5ee" rel="nofollow" target="_blank">https://gist.github.com/Pierstoval/f287d3e61252e791a943dd73874ab5ee</a> ) with my PHP configuration on windows with PHP7.0.15 on WSL with bash, the results are that the only "safe" vars are the following:<br /><br />PHP_SELF<br />SCRIPT_NAME<br />SCRIPT_FILENAME<br />PATH_TRANSLATED<br />DOCUMENT_ROOT<br />REQUEST_TIME_FLOAT<br />REQUEST_TIME<br />argv<br />argc<br /><br />All the rest can be overriden with environment vars, which is not very cool actually because it can break PHP applications sometimes...<br /><br />(and I only tested on CLI, I had no patience to test with Apache mod_php or Nginx + PHP-FPM, but I can imagine that not a lot of $_SERVER properties are "that" secure...)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94070">  <div class="votes">
+    <div id="Vu94070">
+    <a href="/manual/vote-note.php?id=94070&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd94070">
+    <a href="/manual/vote-note.php?id=94070&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V94070" title="58% like this...">
+    37
+    </div>
+  </div>
+  <a href="#94070" class="name">
+  <strong class="user"><em>Lord Mac</em></strong></a><a class="genanchor" href="#94070"> &para;</a><div class="date" title="2009-10-14 07:56"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom94070">
+<div class="phpcode"><code><span class="html">
+An even *more* improved version...<br /><br /><span class="default">&lt;?php<br />phpinfo</span><span class="keyword">(</span><span class="default">32</span><span class="keyword">);<br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="105602">  <div class="votes">
+    <div id="Vu105602">
+    <a href="/manual/vote-note.php?id=105602&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd105602">
+    <a href="/manual/vote-note.php?id=105602&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V105602" title="59% like this...">
+    32
+    </div>
+  </div>
+  <a href="#105602" class="name">
+  <strong class="user"><em>MarkAgius at markagius dot co dot uk</em></strong></a><a class="genanchor" href="#105602"> &para;</a><div class="date" title="2011-08-31 02:18"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom105602">
+<div class="phpcode"><code><span class="html">
+You have missed 'REDIRECT_STATUS'<br /><br />Very useful if you point all your error pages to the same file.<br /><br />File; .htaccess<br /># .htaccess file.<br /><br />ErrorDocument 404 /error-msg.php<br />ErrorDocument 500 /error-msg.php<br />ErrorDocument 400 /error-msg.php<br />ErrorDocument 401 /error-msg.php<br />ErrorDocument 403 /error-msg.php<br /># End of file.<br /><br />File; error-msg.php<br /><span class="default">&lt;?php<br />&nbsp; $HttpStatus </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"REDIRECT_STATUS"</span><span class="keyword">] ;<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">200</span><span class="keyword">) {print </span><span class="string">"Document has been processed and sent to you."</span><span class="keyword">;}<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">400</span><span class="keyword">) {print </span><span class="string">"Bad HTTP request "</span><span class="keyword">;}<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">401</span><span class="keyword">) {print </span><span class="string">"Unauthorized - Iinvalid password"</span><span class="keyword">;}<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">403</span><span class="keyword">) {print </span><span class="string">"Forbidden"</span><span class="keyword">;}<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">500</span><span class="keyword">) {print </span><span class="string">"Internal Server Error"</span><span class="keyword">;}<br />&nbsp; if(</span><span class="default">$HttpStatus</span><span class="keyword">==</span><span class="default">418</span><span class="keyword">) {print </span><span class="string">"I'm a teapot! - This is a real value, defined in 1998"</span><span class="keyword">;}<br /><br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87195">  <div class="votes">
+    <div id="Vu87195">
+    <a href="/manual/vote-note.php?id=87195&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd87195">
+    <a href="/manual/vote-note.php?id=87195&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V87195" title="60% like this...">
+    22
+    </div>
+  </div>
+  <a href="#87195" class="name">
+  <strong class="user"><em>jonbarnett at gmail dot com</em></strong></a><a class="genanchor" href="#87195"> &para;</a><div class="date" title="2008-11-23 09:13"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom87195">
+<div class="phpcode"><code><span class="html">
+It's worth noting that $_SERVER variables get created for any HTTP request headers, including those you might invent:<br /><br />If the browser sends an HTTP request header of:<br />X-Debug-Custom: some string<br /><br />Then:<br /><br /><span class="default">&lt;?php<br />$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_DEBUG_CUSTOM'</span><span class="keyword">]; </span><span class="comment">// "some string"<br /></span><span class="default">?&gt;<br /></span><br />There are better ways to identify the HTTP request headers sent by the browser, but this is convenient if you know what to expect from, for example, an AJAX script with custom headers.<br /><br />Works in PHP5 on Apache with mod_php.&nbsp; Don't know if this is true from other environments.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="120978">  <div class="votes">
+    <div id="Vu120978">
+    <a href="/manual/vote-note.php?id=120978&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd120978">
+    <a href="/manual/vote-note.php?id=120978&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V120978" title="60% like this...">
+    12
+    </div>
+  </div>
+  <a href="#120978" class="name">
+  <strong class="user"><em>chris at ocproducts dot com</em></strong></a><a class="genanchor" href="#120978"> &para;</a><div class="date" title="2017-04-12 11:44"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom120978">
+<div class="phpcode"><code><span class="html">
+Guide to absolute paths...<br /><br />Data: __FILE__<br />Data type: String<br />Purpose: The absolute pathname of the running PHP file, including the filename.<br />Caveat: This is not the file called by the PHP processor, it's what is running. So if you are inside an include, it's the include.<br />Caveat: Symbolic links are pre-resolved, so don't trust comparison of paths to be accurate.<br />Caveat: Don't assume all operating systems use '/' for the directory separator.<br />Works on web mode: Yes<br />Works on CLI mode: Yes<br /><br />Data: __DIR__<br />Data type: String<br />Purpose: The absolute pathname to the running PHP file, excluding the filename<br />Caveat: This is not the file called by the PHP processor, it's what is running. So if you are inside an include, it's the include.<br />Caveat: Symbolic links are pre-resolved, so don't trust comparison of paths to be accurate.<br />Caveat: Don't assume all operating systems use '/' for the directory separator.<br />Works on web mode: Yes<br />Works on CLI mode: Yes<br /><br />Data: $_SERVER['SCRIPT_FILENAME']<br />Data type: String<br />Purpose: The absolute pathname of the origin PHP file, including the filename<br />Caveat: Not set on all PHP environments, may need setting by copying from __FILE__ before other files are included.<br />Caveat: Symbolic links are not pre-resolved, use PHP's 'realpath' function if you need it resolved.<br />Caveat: Don't assume all operating systems use '/' for the directory separator.<br />Caveat: "Filename" makes you think it is just a filename, but it really is the full absolute pathname. Read the identifier as "Script's filesystem (path)name".<br />Works on web mode: Yes<br />Works on CLI mode: Yes<br /><br />Data: $_SERVER['PATH_TRANSLATED']<br />Data type: String<br />Purpose: The absolute pathname of the origin PHP file, including the filename<br />Caveat: It's probably not set, best to just not use it. Just use realpath($_SERVER['SCRIPT_FILENAME']) (and be aware that itself may need to have been emulated).<br />Caveat: Symbolic links are pre-resolved, so don't trust comparison of paths to be accurate.<br />Caveat: Don't assume all operating systems use '/' for the directory separator.<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Data: $_SERVER['DOCUMENT_ROOT']<br />Data type: String<br />Purpose: Get the absolute path to the web server's document root. No trailing slash.<br />Caveat: Don't trust this to be set, or set correctly, unless you control the server environment.<br />Caveat: May or may not have symbolic links pre-resolved, use PHP's 'realpath' function if you need it resolved.<br />Caveat: Don't assume all operating systems use '/' for the directory separator.<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Note that if something is not set it may be missing from $_SERVER, or it may be blank, so use PHP's 'empty' function for your test.<br /><br />Note that if you call "php --info" on the command line then naturally some of these settings are going to be blank, as no PHP file is involved.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="124052">  <div class="votes">
+    <div id="Vu124052">
+    <a href="/manual/vote-note.php?id=124052&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd124052">
+    <a href="/manual/vote-note.php?id=124052&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V124052" title="57% like this...">
+    8
+    </div>
+  </div>
+  <a href="#124052" class="name">
+  <strong class="user"><em>Mark Simon</em></strong></a><a class="genanchor" href="#124052"> &para;</a><div class="date" title="2019-07-21 05:42"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom124052">
+<div class="phpcode"><code><span class="html">
+So near, and yet so far …<br /><br />$_SERVER has nearly everything you need to know about the current web page environment. Something which would have been handy is easy access to the protocol and the actual web root.<br /><br />For the protocol, you may or may not have $_SERVER['HTTPS'] and it may or may not be empty. For the web root, $_SERVER['DOCUMENT_ROOT'] depends on the server configuration, and doesn’t work for virtual hosts.<br /><br />For practical purposes, I normally include something like the following in my scripts:<br /><br /><span class="default">&lt;?php<br />&nbsp; &nbsp; </span><span class="comment">//&nbsp; &nbsp; Web Root<br />&nbsp; &nbsp; //&nbsp; &nbsp; Usage: include("$root/includes/something.inc.php");<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$root </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'WEB_ROOT'</span><span class="keyword">] = </span><span class="default">str_replace</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_NAME'</span><span class="keyword">],</span><span class="string">''</span><span class="keyword">,</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_FILENAME'</span><span class="keyword">]);<br /><br />&nbsp; &nbsp; </span><span class="comment">//&nbsp; &nbsp; Host &amp; Protocol<br />&nbsp; &nbsp; //&nbsp; &nbsp; Usage: $url = "$protocol://$host/images/something.jpg";<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$host </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_HOST'</span><span class="keyword">];<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$protocol</span><span class="keyword">=</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PROTOCOL'</span><span class="keyword">] = isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">]) &amp;&amp; !empty(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">]) ? </span><span class="string">'https' </span><span class="keyword">: </span><span class="string">'http'</span><span class="keyword">;<br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="110763">  <div class="votes">
+    <div id="Vu110763">
+    <a href="/manual/vote-note.php?id=110763&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd110763">
+    <a href="/manual/vote-note.php?id=110763&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V110763" title="56% like this...">
+    13
+    </div>
+  </div>
+  <a href="#110763" class="name">
+  <strong class="user"><em>krinklemail at gmail dot com</em></strong></a><a class="genanchor" href="#110763"> &para;</a><div class="date" title="2012-12-05 11:39"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom110763">
+<div class="phpcode"><code><span class="html">
+If requests to your PHP script send a header "Content-Type" or/ "Content-Length" it will, contrary to regular HTTP headers, not appear in $_SERVER as $_SERVER['HTTP_CONTENT_TYPE']. PHP removes these (per CGI/1.1 specification[1]) from the HTTP_ match group.<br /><br />They are still accessible, but only if the request was a POST request. When it is, it'll be available as:<br />$_SERVER['CONTENT_LENGTH']<br />$_SERVER['CONTENT_TYPE']<br /><br />[1] <a href="https://www.ietf.org/rfc/rfc3875" rel="nofollow" target="_blank">https://www.ietf.org/rfc/rfc3875</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="92121">  <div class="votes">
+    <div id="Vu92121">
+    <a href="/manual/vote-note.php?id=92121&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd92121">
+    <a href="/manual/vote-note.php?id=92121&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V92121" title="56% like this...">
+    15
+    </div>
+  </div>
+  <a href="#92121" class="name">
+  <strong class="user"><em>Richard York</em></strong></a><a class="genanchor" href="#92121"> &para;</a><div class="date" title="2009-07-09 11:19"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom92121">
+<div class="phpcode"><code><span class="html">
+Not documented here is the fact that $_SERVER is populated with some pretty useful information when accessing PHP via the shell.<br /><br /> ["_SERVER"]=&gt;<br />&nbsp; array(24) {<br />&nbsp; &nbsp; ["MANPATH"]=&gt;<br />&nbsp; &nbsp; string(48) "/usr/share/man:/usr/local/share/man:/usr/X11/man"<br />&nbsp; &nbsp; ["TERM"]=&gt;<br />&nbsp; &nbsp; string(11) "xterm-color"<br />&nbsp; &nbsp; ["SHELL"]=&gt;<br />&nbsp; &nbsp; string(9) "/bin/bash"<br />&nbsp; &nbsp; ["SSH_CLIENT"]=&gt;<br />&nbsp; &nbsp; string(20) "127.0.0.1 41242 22"<br />&nbsp; &nbsp; ["OLDPWD"]=&gt;<br />&nbsp; &nbsp; string(60) "/Library/WebServer/Domains/www.example.com/private"<br />&nbsp; &nbsp; ["SSH_TTY"]=&gt;<br />&nbsp; &nbsp; string(12) "/dev/ttys000"<br />&nbsp; &nbsp; ["USER"]=&gt;<br />&nbsp; &nbsp; string(5) "username"<br />&nbsp; &nbsp; ["MAIL"]=&gt;<br />&nbsp; &nbsp; string(15) "/var/mail/username"<br />&nbsp; &nbsp; ["PATH"]=&gt;<br />&nbsp; &nbsp; string(57) "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin"<br />&nbsp; &nbsp; ["PWD"]=&gt;<br />&nbsp; &nbsp; string(56) "/Library/WebServer/Domains/www.example.com/www"<br />&nbsp; &nbsp; ["SHLVL"]=&gt;<br />&nbsp; &nbsp; string(1) "1"<br />&nbsp; &nbsp; ["HOME"]=&gt;<br />&nbsp; &nbsp; string(12) "/Users/username"<br />&nbsp; &nbsp; ["LOGNAME"]=&gt;<br />&nbsp; &nbsp; string(5) "username"<br />&nbsp; &nbsp; ["SSH_CONNECTION"]=&gt;<br />&nbsp; &nbsp; string(31) "127.0.0.1 41242 10.0.0.1 22"<br />&nbsp; &nbsp; ["_"]=&gt;<br />&nbsp; &nbsp; string(12) "/usr/bin/php"<br />&nbsp; &nbsp; ["__CF_USER_TEXT_ENCODING"]=&gt;<br />&nbsp; &nbsp; string(9) "0x1F5:0:0"<br />&nbsp; &nbsp; ["PHP_SELF"]=&gt;<br />&nbsp; &nbsp; string(10) "Shell.php"<br />&nbsp; &nbsp; ["SCRIPT_NAME"]=&gt;<br />&nbsp; &nbsp; string(10) "Shell.php"<br />&nbsp; &nbsp; ["SCRIPT_FILENAME"]=&gt;<br />&nbsp; &nbsp; string(10) "Shell.php"<br />&nbsp; &nbsp; ["PATH_TRANSLATED"]=&gt;<br />&nbsp; &nbsp; string(10) "Shell.php"<br />&nbsp; &nbsp; ["DOCUMENT_ROOT"]=&gt;<br />&nbsp; &nbsp; string(0) ""<br />&nbsp; &nbsp; ["REQUEST_TIME"]=&gt;<br />&nbsp; &nbsp; int(1247162183)<br />&nbsp; &nbsp; ["argv"]=&gt;<br />&nbsp; &nbsp; array(1) {<br />&nbsp; &nbsp; &nbsp; [0]=&gt;<br />&nbsp; &nbsp; &nbsp; string(10) "Shell.php"<br />&nbsp; &nbsp; }<br />&nbsp; &nbsp; ["argc"]=&gt;<br />&nbsp; &nbsp; int(1)<br />&nbsp; }</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100881">  <div class="votes">
+    <div id="Vu100881">
+    <a href="/manual/vote-note.php?id=100881&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd100881">
+    <a href="/manual/vote-note.php?id=100881&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V100881" title="57% like this...">
+    10
+    </div>
+  </div>
+  <a href="#100881" class="name">
+  <strong class="user"><em>Stefano (info at sarchittu dot org)</em></strong></a><a class="genanchor" href="#100881"> &para;</a><div class="date" title="2010-11-12 06:07"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom100881">
+<div class="phpcode"><code><span class="html">
+A way to get the absolute path of your page, independent from the site position (so works both on local machine and on server without setting anything) and from the server OS (works both on Unix systems and Windows systems).<br /><br />The only parameter it requires is the folder in which you place this script<br />So, for istance, I'll place this into my SCRIPT folder, and I'll write SCRIPT word length in $conflen<br /><br /><span class="default">&lt;?php<br />$conflen</span><span class="keyword">=</span><span class="default">strlen</span><span class="keyword">(</span><span class="string">'SCRIPT'</span><span class="keyword">);<br /></span><span class="default">$B</span><span class="keyword">=</span><span class="default">substr</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">strrpos</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">,</span><span class="string">'/'</span><span class="keyword">));<br /></span><span class="default">$A</span><span class="keyword">=</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">], </span><span class="default">strrpos</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">], </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PHP_SELF'</span><span class="keyword">]));<br /></span><span class="default">$C</span><span class="keyword">=</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$B</span><span class="keyword">,</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$A</span><span class="keyword">));<br /></span><span class="default">$posconf</span><span class="keyword">=</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$C</span><span class="keyword">)-</span><span class="default">$conflen</span><span class="keyword">-</span><span class="default">1</span><span class="keyword">;<br /></span><span class="default">$D</span><span class="keyword">=</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$C</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">,</span><span class="default">$posconf</span><span class="keyword">);<br /></span><span class="default">$host</span><span class="keyword">=</span><span class="string">'<a href="http://" rel="nofollow" target="_blank">http://</a>'</span><span class="keyword">.</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SERVER_NAME'</span><span class="keyword">].</span><span class="string">'/'</span><span class="keyword">.</span><span class="default">$D</span><span class="keyword">;<br /></span><span class="default">?&gt;<br /></span><br />$host will finally contain the absolute path.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85759">  <div class="votes">
+    <div id="Vu85759">
+    <a href="/manual/vote-note.php?id=85759&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd85759">
+    <a href="/manual/vote-note.php?id=85759&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V85759" title="57% like this...">
+    11
+    </div>
+  </div>
+  <a href="#85759" class="name">
+  <strong class="user"><em>Tonin</em></strong></a><a class="genanchor" href="#85759"> &para;</a><div class="date" title="2008-09-16 10:43"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom85759">
+<div class="phpcode"><code><span class="html">
+When using the $_SERVER['SERVER_NAME'] variable in an apache virtual host setup with a ServerAlias directive, be sure to check the UseCanonicalName apache directive.&nbsp; If it is On, this variable will always have the apache ServerName value.&nbsp; If it is Off, it will have the value given by the headers sent by the browser.<br /><br />Depending on what you want to do the content of this variable, put in On or Off.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93599">  <div class="votes">
+    <div id="Vu93599">
+    <a href="/manual/vote-note.php?id=93599&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd93599">
+    <a href="/manual/vote-note.php?id=93599&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V93599" title="54% like this...">
+    15
+    </div>
+  </div>
+  <a href="#93599" class="name">
+  <strong class="user"><em>steve at sc-fa dot com</em></strong></a><a class="genanchor" href="#93599"> &para;</a><div class="date" title="2009-09-17 12:20"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom93599">
+<div class="phpcode"><code><span class="html">
+If you are serving from behind a proxy server, you will almost certainly save time by looking at what these $_SERVER variables do on your machine behind the proxy.&nbsp;&nbsp; <br /><br />$_SERVER['HTTP_X_FORWARDED_FOR'] in place of $_SERVER['REMOTE_ADDR']<br /><br />$_SERVER['HTTP_X_FORWARDED_HOST'] and <br />$_SERVER['HTTP_X_FORWARDED_SERVER'] in place of (at least in our case,) $_SERVER['SERVER_NAME']</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="121469">  <div class="votes">
+    <div id="Vu121469">
+    <a href="/manual/vote-note.php?id=121469&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd121469">
+    <a href="/manual/vote-note.php?id=121469&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V121469" title="55% like this...">
+    6
+    </div>
+  </div>
+  <a href="#121469" class="name">
+  <strong class="user"><em>ywarnier at beeznest dot org</em></strong></a><a class="genanchor" href="#121469"> &para;</a><div class="date" title="2017-08-02 08:35"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom121469">
+<div class="phpcode"><code><span class="html">
+Note that $_SERVER['REQUEST_URI'] might include the scheme and domain in certain cases.<br /><br />This happens, for example, when calling the page through a call to stream_context_create() with a HTTP header of 'request_fulluri' set to 1.<br /><br />For example:<br /><br />$http = ['request_fulluri' =&gt; 1, /* other params here */];<br />$context = stream_context_create(array( 'http' =&gt; $http ));<br />$fp = fopen($some_url, 'rb', false, $context);<br /><br />When outputting $_SERVER['REQUEST_URI'] on the server at $some_url, you will get<br /><a href="https://some_url/some_script.php" rel="nofollow" target="_blank">https://some_url/some_script.php</a><br /><br />Remove the request_fulluri =&gt; 1 option, and $_SERVER['REQUEST_URI'] gets back to its "normal":<br />/some_script.php<br /><br />Apparently, request_fulluri is useful when using some proxy servers.<br /><br />In this case, there is no proper way to "detect" if this option was set or not, and you should probably use a combination of other $_SERVER[] elements (like REQUEST_SCHEME, SERVER_NAME and SERVER_PORT) to determine if this was the case.<br /><br />One quick (and improvable) way to detect it would be to compare the start of the REQUEST_URI with REQUEST_SCHEME:<br /><br />$scheme = $_SERVER['REQUEST_SCHEME'] . '://';<br />if (strcmp(substr($_SERVER['REQUEST_URI'], 0, strlen($scheme)), $scheme) === 0) {<br />&nbsp; &nbsp; // request_fulluri was set<br />}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="120979">  <div class="votes">
+    <div id="Vu120979">
+    <a href="/manual/vote-note.php?id=120979&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd120979">
+    <a href="/manual/vote-note.php?id=120979&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V120979" title="54% like this...">
+    7
+    </div>
+  </div>
+  <a href="#120979" class="name">
+  <strong class="user"><em>chris at ocproducts dot com</em></strong></a><a class="genanchor" href="#120979"> &para;</a><div class="date" title="2017-04-12 11:44"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom120979">
+<div class="phpcode"><code><span class="html">
+Guide to URL paths...<br /><br />Data: $_SERVER['PHP_SELF']<br />Data type: String<br />Purpose: The URL path name of the current PHP file, including path-info (see $_SERVER['PATH_INFO']) and excluding URL query string. Includes leading slash.<br />Caveat: This is after URL rewrites (i.e. it's as seen by PHP, not necessarily the original call URL).<br />Works on web mode: Yes<br />Works on CLI mode: Tenuous (emulated to contain just the exact call path of the CLI script, with whatever exotic relative pathname you may call with, not made absolute and not normalised or pre-resolved)<br /><br />Data: $_SERVER['SCRIPT_NAME']<br />Data type: String<br />Purpose: The URL path name of the current PHP file, excluding path-info and excluding URL query string. Includes leading slash.<br />Caveat: This is after URL rewrites (i.e. it's as seen by PHP, not necessarily the original call URL).<br />Caveat: Not set on all PHP environments, may need setting via preg_replace('#\.php/.*#', '.php', $_SERVER['PHP_SELF']).<br />Works on web mode: Yes<br />Works on CLI mode: Tenuous (emulated to contain just the exact call path of the CLI script, with whatever exotic relative pathname you may call with, not made absolute and not normalised or pre-resolved)<br /><br />Data: $_SERVER['REDIRECT_URL']<br />Data type: String<br />Purpose: The URL path name of the current PHP file, path-info is N/A and excluding URL query string. Includes leading slash.<br />Caveat: This is before URL rewrites (i.e. it's as per the original call URL).<br />Caveat: Not set on all PHP environments, and definitely only ones with URL rewrites.<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Data: $_SERVER['REQUEST_URI']<br />Data type: String<br />Purpose: The URL path name of the current PHP file, including path-info and including URL query string. Includes leading slash.<br />Caveat: This is before URL rewrites (i.e. it's as per the original call URL). *<br />*: I've seen at least one situation where this is not true (there was another $_SERVER variable to use instead supplied by the URL rewriter), but the author of the URL rewriter later fixed it so probably fair to dismiss this particular note.<br />Caveat: Not set on all PHP environments, may need setting via $_SERVER['REDIRECT_URL'] . '?' . http_build_query($_GET) [if $_SERVER['REDIRECT_URL'] is set, and imperfect as we don't know what GET parameters were originally passed vs which were injected in the URL rewrite] --otherwise-- $_SERVER['PHP_SELF'] . '?' . http_build_query($_GET).<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Data: $_SERVER['PATH_INFO']<br />Data type: String<br />Purpose: Find the path-info, which is data after the .php filename in the URL call. It's a strange concept.<br />Caveat: Some environments may not support it, it is best avoided unless you have complete server control<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Note that if something is not set it may be missing from $_SERVER, or it may be blank, so use PHP's 'empty' function for your test.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="120980">  <div class="votes">
+    <div id="Vu120980">
+    <a href="/manual/vote-note.php?id=120980&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd120980">
+    <a href="/manual/vote-note.php?id=120980&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V120980" title="55% like this...">
+    4
+    </div>
+  </div>
+  <a href="#120980" class="name">
+  <strong class="user"><em>chris at ocproducts dot com</em></strong></a><a class="genanchor" href="#120980"> &para;</a><div class="date" title="2017-04-12 11:44"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom120980">
+<div class="phpcode"><code><span class="html">
+Guide to script parameters...<br /><br />Data: $_GET<br />Data type: Array (map)<br />Purpose: Contains all GET parameters (i.e. a parsed URL query string).<br />Caveat: GET parameter names have to be compliant with PHP variable naming, e.g. dots are not allowed and get substituted.<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Data: $_SERVER['QUERY_STRING']<br />Data type: String<br />Purpose: Gets an unparsed URL query string.<br />Caveat: Not set on all PHP environments, may need setting via http_build_query($_GET).<br />Works on web mode: Yes<br />Works on CLI mode: No<br /><br />Data: $_SERVER['argv']<br />Data type: Array (list)<br />Purpose: Get CLI call parameters.<br />Works on web mode: Tenuous (just contains a single parameter, the query string)<br />Works on CLI mode: Yes</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="126926">  <div class="votes">
+    <div id="Vu126926">
+    <a href="/manual/vote-note.php?id=126926&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd126926">
+    <a href="/manual/vote-note.php?id=126926&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V126926" title="54% like this...">
+    1
+    </div>
+  </div>
+  <a href="#126926" class="name">
+  <strong class="user"><em>Daniels118</em></strong></a><a class="genanchor" href="#126926"> &para;</a><div class="date" title="2022-03-15 09:17"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom126926">
+<div class="phpcode"><code><span class="html">
+If you need to know the protocol (http or https) used by the client, then the $_SERVER['HTTPS'] variable may not actually report the truth if your server is behind a proxy or a load balancer (In fact the client could connect to the load balancer using https, and then the load balancer forward the request to the server using http).<br />If the proxy/load balancer is correctly configured it could send the original request protocol in a header, and you will find it in the $_SERVER[HTTP_X_FORWARDED_PROTO] variable.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="126272">  <div class="votes">
+    <div id="Vu126272">
+    <a href="/manual/vote-note.php?id=126272&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd126272">
+    <a href="/manual/vote-note.php?id=126272&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V126272" title="54% like this...">
+    2
+    </div>
+  </div>
+  <a href="#126272" class="name">
+  <strong class="user"><em>sammyhacker at gmail dot com</em></strong></a><a class="genanchor" href="#126272"> &para;</a><div class="date" title="2021-07-24 05:14"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom126272">
+<div class="phpcode"><code><span class="html">
+To put it simply, $_SERVER contains all the environment variables. <br /><br />CGI works by an HTTP application server filling in all the required environment variables and invoking the PHP process. And these environment variables are stored under $_SERVER.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="124077">  <div class="votes">
+    <div id="Vu124077">
+    <a href="/manual/vote-note.php?id=124077&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd124077">
+    <a href="/manual/vote-note.php?id=124077&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V124077" title="53% like this...">
+    3
+    </div>
+  </div>
+  <a href="#124077" class="name">
+  <strong class="user"><em>lemonostif at gmail dot com</em></strong></a><a class="genanchor" href="#124077"> &para;</a><div class="date" title="2019-07-27 08:28"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom124077">
+<div class="phpcode"><code><span class="html">
+PHP_SELF is a disgrace of a programmer's work. One of the most widespread PHP vulnerabilities since version 4 and the manual says nothing about the dangers. At least clarify that ITS VALUE CAN BE PROVIDED BY THE USER with capitals preferably if you want to make the internet a safer place...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109961">  <div class="votes">
+    <div id="Vu109961">
+    <a href="/manual/vote-note.php?id=109961&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd109961">
+    <a href="/manual/vote-note.php?id=109961&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V109961" title="54% like this...">
+    7
+    </div>
+  </div>
+  <a href="#109961" class="name">
+  <strong class="user"><em>Tom</em></strong></a><a class="genanchor" href="#109961"> &para;</a><div class="date" title="2012-09-06 08:28"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom109961">
+<div class="phpcode"><code><span class="html">
+Be warned that most contents of the Server-Array (even $_SERVER['SERVER_NAME']) are provided by the client and can be manipulated. They can also be used for injections and thus MUST be checked and treated like any other user input.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="88418">  <div class="votes">
+    <div id="Vu88418">
+    <a href="/manual/vote-note.php?id=88418&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd88418">
+    <a href="/manual/vote-note.php?id=88418&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V88418" title="54% like this...">
+    6
+    </div>
+  </div>
+  <a href="#88418" class="name">
+  <strong class="user"><em>info at mtprod dot com</em></strong></a><a class="genanchor" href="#88418"> &para;</a><div class="date" title="2009-01-23 02:13"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom88418">
+<div class="phpcode"><code><span class="html">
+On Windows IIS 7 you must use $_SERVER['LOCAL_ADDR'] rather than $_SERVER['SERVER_ADDR'] to get the server's IP address.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="92829">  <div class="votes">
+    <div id="Vu92829">
+    <a href="/manual/vote-note.php?id=92829&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd92829">
+    <a href="/manual/vote-note.php?id=92829&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V92829" title="54% like this...">
+    5
+    </div>
+  </div>
+  <a href="#92829" class="name">
+  <strong class="user"><em>jarrod at squarecrow dot com</em></strong></a><a class="genanchor" href="#92829"> &para;</a><div class="date" title="2009-08-10 08:31"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom92829">
+<div class="phpcode"><code><span class="html">
+$_SERVER['DOCUMENT_ROOT'] is incredibly useful especially when working in your development environment. If you're working on large projects you'll likely be including a large number of files into your pages. For example:<br /><br /><span class="default">&lt;?php<br /></span><span class="comment">//Defines constants to use for "include" URLS - helps keep our paths clean<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CLASSES"</span><span class="keyword">,&nbsp; </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/classes/"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CONTROLS"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/controls/"</span><span class="keyword">);<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STRING_BUILDER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"stringbuilder.php"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"SESSION_MANAGER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"sessionmanager.php"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STANDARD_CONTROLS"</span><span class="keyword">,&nbsp; &nbsp; </span><span class="default">REGISTRY_CONTROLS</span><span class="keyword">.</span><span class="string">"standardcontrols.php"</span><span class="keyword">);<br /></span><span class="default">?&gt;<br /></span><br />In development environments, you're rarely working with your root folder, especially if you're running PHP locally on your box and using DOCUMENT_ROOT is a great way to maintain URL conformity. This will save you hours of work preparing your application for deployment from your box to a production server (not to mention save you the headache of include path failures).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="121147">  <div class="votes">
+    <div id="Vu121147">
+    <a href="/manual/vote-note.php?id=121147&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd121147">
+    <a href="/manual/vote-note.php?id=121147&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V121147" title="52% like this...">
+    1
+    </div>
+  </div>
+  <a href="#121147" class="name">
+  <strong class="user"><em>centurianii at yahoo dot co dot uk</em></strong></a><a class="genanchor" href="#121147"> &para;</a><div class="date" title="2017-05-28 10:18"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom121147">
+<div class="phpcode"><code><span class="html">
+If you apply redirection in ALL your requests using commands at the Apache virtual host file like:<br />RewriteEngine On<br />RewriteCond "%{REQUEST_URI}" "!=/index.php"<br />RewriteRule "^/(.*)$" "index.php?$1" [NC,NE,L,QSA]<br />you should expect some deviations in your $_SERVER global.<br /><br />Say, you send a url of: [hostname here]/a/b?x=1&amp;y=2<br />which makes Apache to modify to: /index.php?/a/b?x=1&amp;y=2<br /><br />Now your $_SERVER global contains among others:<br />'REQUEST_URI' =&gt; '/a/b?x=1&amp;y=2', it retains the initial url after the host<br /> 'QUERY_STRING' =&gt; 'a/b&amp;x=1&amp;y=2', notice how php replaces '?' with '&amp;'<br /> 'SCRIPT_NAME' =&gt; '/index.php', as it was intended to be.<br /><br />To test your $_SERVER global:<br />function serverArray(){<br />&nbsp;&nbsp; $arr = array();<br />&nbsp;&nbsp; foreach($_SERVER as $key=&gt;$value)<br />&nbsp; &nbsp; &nbsp; $arr[] = '&amp;nbsp;&amp;nbsp;&amp;nbsp;\'' . $key . '\' =&gt; \'' . (isset($value)? $value : '-') . '\'';<br />&nbsp;&nbsp; return @\sort($arr)? '$_SERVER = array(&lt;br /&gt;' . implode($arr, ',&lt;br /&gt;') . '&lt;br /&gt;);' : false;<br />}<br />echo serverArray();</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94237">  <div class="votes">
+    <div id="Vu94237">
+    <a href="/manual/vote-note.php?id=94237&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd94237">
+    <a href="/manual/vote-note.php?id=94237&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V94237" title="52% like this...">
+    5
+    </div>
+  </div>
+  <a href="#94237" class="name">
+  <strong class="user"><em>mirko dot steiner at slashdevslashnull dot de</em></strong></a><a class="genanchor" href="#94237"> &para;</a><div class="date" title="2009-10-24 02:43"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom94237">
+<div class="phpcode"><code><span class="html">
+<span class="default">&lt;?php<br /><br /></span><span class="comment">// RFC 2616 compatible Accept Language Parser<br />// <a href="http://www.ietf.org/rfc/rfc2616.txt," rel="nofollow" target="_blank">http://www.ietf.org/rfc/rfc2616.txt,</a> 14.4 Accept-Language, Page 104<br />// Hypertext Transfer Protocol -- HTTP/1.1<br /><br /></span><span class="keyword">foreach (</span><span class="default">explode</span><span class="keyword">(</span><span class="string">','</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_ACCEPT_LANGUAGE'</span><span class="keyword">]) as </span><span class="default">$lang</span><span class="keyword">) {<br />&nbsp; &nbsp; </span><span class="default">$pattern </span><span class="keyword">= </span><span class="string">'/^(?P&lt;primarytag&gt;[a-zA-Z]{2,8})'</span><span class="keyword">.<br />&nbsp; &nbsp; </span><span class="string">'(?:-(?P&lt;subtag&gt;[a-zA-Z]{2,8}))?(?:(?:;q=)'</span><span class="keyword">.<br />&nbsp; &nbsp; </span><span class="string">'(?P&lt;quantifier&gt;\d\.\d))?$/'</span><span class="keyword">;<br /><br />&nbsp; &nbsp; </span><span class="default">$splits </span><span class="keyword">= array();<br /><br />&nbsp; &nbsp; </span><span class="default">printf</span><span class="keyword">(</span><span class="string">"Lang:,,%s''\n"</span><span class="keyword">, </span><span class="default">$lang</span><span class="keyword">);<br />&nbsp; &nbsp; if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="default">$pattern</span><span class="keyword">, </span><span class="default">$lang</span><span class="keyword">, </span><span class="default">$splits</span><span class="keyword">)) {<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$splits</span><span class="keyword">);<br />&nbsp; &nbsp; } else {<br />&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"\nno match\n"</span><span class="keyword">;<br />&nbsp; &nbsp; }<br />}<br /><br /></span><span class="default">?&gt;<br /></span><br />example output:<br /><br />Google Chrome 3.0.195.27 Windows xp<br /><br />Lang:,,de-DE''<br />Array<br />(<br />&nbsp; &nbsp; [0] =&gt; de-DE<br />&nbsp; &nbsp; [primarytag] =&gt; de<br />&nbsp; &nbsp; [1] =&gt; de<br />&nbsp; &nbsp; [subtag] =&gt; DE<br />&nbsp; &nbsp; [2] =&gt; DE<br />)<br />Lang:,,de;q=0.8''<br />Array<br />(<br />&nbsp; &nbsp; [0] =&gt; de;q=0.8<br />&nbsp; &nbsp; [primarytag] =&gt; de<br />&nbsp; &nbsp; [1] =&gt; de<br />&nbsp; &nbsp; [subtag] =&gt; <br />&nbsp; &nbsp; [2] =&gt; <br />&nbsp; &nbsp; [quantifier] =&gt; 0.8<br />&nbsp; &nbsp; [3] =&gt; 0.8<br />)<br />Lang:,,en-US;q=0.6''<br />Array<br />(<br />&nbsp; &nbsp; [0] =&gt; en-US;q=0.6<br />&nbsp; &nbsp; [primarytag] =&gt; en<br />&nbsp; &nbsp; [1] =&gt; en<br />&nbsp; &nbsp; [subtag] =&gt; US<br />&nbsp; &nbsp; [2] =&gt; US<br />&nbsp; &nbsp; [quantifier] =&gt; 0.6<br />&nbsp; &nbsp; [3] =&gt; 0.6<br />)<br />Lang:,,en;q=0.4''<br />Array<br />(<br />&nbsp; &nbsp; [0] =&gt; en;q=0.4<br />&nbsp; &nbsp; [primarytag] =&gt; en<br />&nbsp; &nbsp; [1] =&gt; en<br />&nbsp; &nbsp; [subtag] =&gt; <br />&nbsp; &nbsp; [2] =&gt; <br />&nbsp; &nbsp; [quantifier] =&gt; 0.4<br />&nbsp; &nbsp; [3] =&gt; 0.4<br />)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="97106">  <div class="votes">
+    <div id="Vu97106">
+    <a href="/manual/vote-note.php?id=97106&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd97106">
+    <a href="/manual/vote-note.php?id=97106&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V97106" title="52% like this...">
+    3
+    </div>
+  </div>
+  <a href="#97106" class="name">
+  <strong class="user"><em>php at isnoop dot net</em></strong></a><a class="genanchor" href="#97106"> &para;</a><div class="date" title="2010-04-01 09:38"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom97106">
+<div class="phpcode"><code><span class="html">
+Use the apache SetEnv directive to set arbitrary $_SERVER variables in your vhost or apache config.<br /><br />SetEnv varname "variable value"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="91964">  <div class="votes">
+    <div id="Vu91964">
+    <a href="/manual/vote-note.php?id=91964&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd91964">
+    <a href="/manual/vote-note.php?id=91964&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V91964" title="52% like this...">
+    4
+    </div>
+  </div>
+  <a href="#91964" class="name">
+  <strong class="user"><em>chris</em></strong></a><a class="genanchor" href="#91964"> &para;</a><div class="date" title="2009-07-02 04:01"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom91964">
+<div class="phpcode"><code><span class="html">
+A table of everything in the $_SERVER array can be found near the bottom of the output of phpinfo();</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106142">  <div class="votes">
+    <div id="Vu106142">
+    <a href="/manual/vote-note.php?id=106142&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd106142">
+    <a href="/manual/vote-note.php?id=106142&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V106142" title="52% like this...">
+    2
+    </div>
+  </div>
+  <a href="#106142" class="name">
+  <strong class="user"><em>picov at e-link dot it</em></strong></a><a class="genanchor" href="#106142"> &para;</a><div class="date" title="2011-10-13 10:59"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom106142">
+<div class="phpcode"><code><span class="html">
+A simple function to detect if the current page address was rewritten by mod_rewrite:<br /><br /><span class="default">&lt;?php<br /></span><span class="keyword">public function </span><span class="default">urlWasRewritten</span><span class="keyword">() {<br />&nbsp; </span><span class="default">$realScriptName</span><span class="keyword">=</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_NAME'</span><span class="keyword">];<br />&nbsp; </span><span class="default">$virtualScriptName</span><span class="keyword">=</span><span class="default">reset</span><span class="keyword">(</span><span class="default">explode</span><span class="keyword">(</span><span class="string">"?"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">]));<br />&nbsp; return !(</span><span class="default">$realScriptName</span><span class="keyword">==</span><span class="default">$virtualScriptName</span><span class="keyword">);<br />}<br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="128431">  <div class="votes">
+    <div id="Vu128431">
+    <a href="/manual/vote-note.php?id=128431&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd128431">
+    <a href="/manual/vote-note.php?id=128431&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V128431" title="no votes...">
+    0
+    </div>
+  </div>
+  <a href="#128431" class="name">
+  <strong class="user"><em>Florin C</em></strong></a><a class="genanchor" href="#128431"> &para;</a><div class="date" title="2023-04-26 06:52"><strong>19 days ago</strong></div>
+  <div class="text" id="Hcom128431">
+<div class="phpcode"><code><span class="html">
+<span class="default">&lt;?php<br /></span><span class="comment">//Working example tested with success in Debian Linux with Apache 2.4<br /><br /></span><span class="default">$protocol</span><span class="keyword">=</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PROTOCOL'</span><span class="keyword">] = isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">]) &amp;&amp; !empty(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">]) ? </span><span class="string">'https' </span><span class="keyword">: </span><span class="string">'http'</span><span class="keyword">;&nbsp; </span><span class="comment">//thanks to Mark Simon @ <a href="https://www.php.net/manual/en/reserved.variables.server.php" rel="nofollow" target="_blank">https://www.php.net/manual/en/reserved.variables.server.php</a><br /></span><span class="default">$doc_root </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">];&nbsp; </span><span class="comment">// e.g. /var/www/webabc/web/<br /></span><span class="default">$module_path </span><span class="keyword">= </span><span class="default">dirname</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">);&nbsp; </span><span class="comment">// e.g. /var/www/webabc/web/modules/verstion152/<br /></span><span class="default">$host </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_HOST'</span><span class="keyword">];&nbsp; </span><span class="comment">// e.g. 192.168.1.4<br /><br /></span><span class="default">$online_path </span><span class="keyword">= </span><span class="default">$protocol </span><span class="keyword">.</span><span class="string">'://'</span><span class="keyword">. </span><span class="default">$host </span><span class="keyword">. </span><span class="string">'/' </span><span class="keyword">. </span><span class="default">str_replace</span><span class="keyword">(</span><span class="default">$doc_root</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">, </span><span class="default">$module_path</span><span class="keyword">);<br /><br />echo </span><span class="string">"The online path is: " </span><span class="keyword">. </span><span class="default">$online_path</span><span class="keyword">;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="112425">  <div class="votes">
+    <div id="Vu112425">
+    <a href="/manual/vote-note.php?id=112425&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd112425">
+    <a href="/manual/vote-note.php?id=112425&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V112425" title="51% like this...">
+    2
+    </div>
+  </div>
+  <a href="#112425" class="name">
+  <strong class="user"><em>pomat at live dot it</em></strong></a><a class="genanchor" href="#112425"> &para;</a><div class="date" title="2013-06-15 02:12"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom112425">
+<div class="phpcode"><code><span class="html">
+$_SERVER['DOCUMENT_ROOT'] may contain backslashes on windows systems, and of course it may or may not have a trailing slash (backslash).<br />I saw the following as an example of the proper way we're supposed to deal with this issue:<br /><br /><span class="default">&lt;?php<br /></span><span class="keyword">include(</span><span class="default">dirname</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">]) . </span><span class="default">DIRECTORY_SEPARATOR </span><span class="keyword">. </span><span class="string">'file.php'</span><span class="keyword">);<br /></span><span class="default">?&gt;<br /></span><br />Ok, the latter may be used to access a file inside the parent directory of the document root, but actually does not properly address the issue.<br />In the end, don't warry about. It should be safe to use forward slashes and append a trailing slash in all cases.<br />Let's say we have this:<br /><br /><span class="default">&lt;?php<br />$path </span><span class="keyword">= </span><span class="string">'subdir/file.php'</span><span class="keyword">;<br /></span><span class="default">$result </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">] . </span><span class="string">'/' </span><span class="keyword">. </span><span class="default">$path</span><span class="keyword">;<br /></span><span class="default">?&gt;<br /></span><br />On linux $result might be something like<br />1) "/var/www/subdir/file.php"<br />2) "/var/www//subdir/file.php"<br />String 2 is parsed the same as string 1 (have a try with command 'cd').<br /><br />On windows $result might be something like<br />1) "C:/apache/htdocs/subdir/file.php"<br />2) "C:/apache/htdocs//subdir/file.php"<br />3) "C:\apache\htdocs/subdir/file.php"<br />4) "C:\apache\htdocs\/subdir/file.php"<br />All those strings are parsed as "C:\apache\htdocs\subdir\file.php" (have a try with 'cd').</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="90656">  <div class="votes">
+    <div id="Vu90656">
+    <a href="/manual/vote-note.php?id=90656&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd90656">
+    <a href="/manual/vote-note.php?id=90656&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V90656" title="52% like this...">
+    3
+    </div>
+  </div>
+  <a href="#90656" class="name">
+  <strong class="user"><em>pudding06 at gmail dot com</em></strong></a><a class="genanchor" href="#90656"> &para;</a><div class="date" title="2009-05-02 02:44"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom90656">
+<div class="phpcode"><code><span class="html">
+Here's a simple, quick but effective way to block unwanted external visitors to your local server:<br /><br /><span class="default">&lt;?php<br /></span><span class="comment">// only local requests<br /></span><span class="keyword">if (</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REMOTE_ADDR'</span><span class="keyword">] !== </span><span class="string">'127.0.0.1'</span><span class="keyword">) die(</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /"</span><span class="keyword">));<br /></span><span class="default">?&gt;<br /></span><br />This will direct all external traffic to your home page. Of course you could send a 404 or other custom error. Best practice is not to stay on the page with a custom error message as you acknowledge that the page does exist. That's why I redirect unwanted calls to (for example) phpmyadmin.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="98408">  <div class="votes">
+    <div id="Vu98408">
+    <a href="/manual/vote-note.php?id=98408&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd98408">
+    <a href="/manual/vote-note.php?id=98408&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V98408" title="51% like this...">
+    2
+    </div>
+  </div>
+  <a href="#98408" class="name">
+  <strong class="user"><em>wbeaumo1 at gmail dot com</em></strong></a><a class="genanchor" href="#98408"> &para;</a><div class="date" title="2010-06-13 08:43"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom98408">
+<div class="phpcode"><code><span class="html">
+Don't forget $_SERVER['HTTP_COOKIE']. It contains the raw value of the 'Cookie' header sent by the user agent.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114370">  <div class="votes">
+    <div id="Vu114370">
+    <a href="/manual/vote-note.php?id=114370&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd114370">
+    <a href="/manual/vote-note.php?id=114370&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V114370" title="50% like this...">
+    1
+    </div>
+  </div>
+  <a href="#114370" class="name">
+  <strong class="user"><em>jit_chavan at yahoo dot com</em></strong></a><a class="genanchor" href="#114370"> &para;</a><div class="date" title="2014-02-13 07:26"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom114370">
+<div class="phpcode"><code><span class="html">
+searched $_SERVER["REDIRECT_URL"] for a while and noted that it is not mentioned in php documentation page itself. look like this is only generated by apache server(not others) and using&nbsp;&nbsp; $_SERVER["REQUEST_URI"] will be useful in some cases as mine.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="123293">  <div class="votes">
+    <div id="Vu123293">
+    <a href="/manual/vote-note.php?id=123293&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd123293">
+    <a href="/manual/vote-note.php?id=123293&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V123293" title="50% like this...">
+    0
+    </div>
+  </div>
+  <a href="#123293" class="name">
+  <strong class="user"><em>lilJoshu</em></strong></a><a class="genanchor" href="#123293"> &para;</a><div class="date" title="2018-11-01 02:38"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom123293">
+<div class="phpcode"><code><span class="html">
+Remember,<br /><br />Although $_SERVER["REQUEST_METHOD"] is initially built with GET, POST, PUT, HEAD in mind, a server can allow more. <br /><br />This may be important if you're building a RESTful interfaces that will also use methods such as PATCH and DELETE.<br /><br />Also important as a security risk as a possible point of injection. In the event of building something acting based on REQUEST_METHOD, it's recommended to put it in a switch statement.<br /><br /><span class="default">&lt;?php<br /></span><span class="keyword">switch (</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"REQUEST_METHOD"</span><span class="keyword">]){<br />&nbsp;&nbsp; case </span><span class="string">"PUT"</span><span class="keyword">:<br />&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">foo_replace_data</span><span class="keyword">();<br />&nbsp; &nbsp; &nbsp;&nbsp; break;<br />&nbsp;&nbsp; case </span><span class="string">"POST"</span><span class="keyword">:<br />&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">foo_add_data</span><span class="keyword">();<br />&nbsp; &nbsp; &nbsp;&nbsp; break;<br />&nbsp;&nbsp; case </span><span class="string">"HEAD"</span><span class="keyword">;<br />&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">foo_set_that_cookie</span><span class="keyword">();<br />&nbsp; &nbsp; &nbsp;&nbsp; break;<br />&nbsp;&nbsp; case </span><span class="string">"GET"</span><span class="keyword">:<br />&nbsp;&nbsp; default:<br />&nbsp; &nbsp; &nbsp; </span><span class="default">foo_fetch_stuff</span><span class="keyword">()<br />&nbsp; &nbsp; &nbsp; break;<br />}<br /><br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="116934">  <div class="votes">
+    <div id="Vu116934">
+    <a href="/manual/vote-note.php?id=116934&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd116934">
+    <a href="/manual/vote-note.php?id=116934&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V116934" title="50% like this...">
+    0
+    </div>
+  </div>
+  <a href="#116934" class="name">
+  <strong class="user"><em>plugwash at p10link dot net</em></strong></a><a class="genanchor" href="#116934"> &para;</a><div class="date" title="2015-03-24 01:38"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom116934">
+<div class="phpcode"><code><span class="html">
+Be aware that it's a bad idea to access x-forwarded-for and similar headers through this array. The header names are mangled when populating the array and this mangling can introduce spoofing vulnerabilities.<br /><br />See <a href="http://en.wikipedia.org/wiki/User:Brion_VIBBER/Cool_Cat_incident_report" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/User:Brion_VIBBER/Cool_Cat_incident_report</a> for details of a real world exploit of this.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84919">  <div class="votes">
+    <div id="Vu84919">
+    <a href="/manual/vote-note.php?id=84919&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd84919">
+    <a href="/manual/vote-note.php?id=84919&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V84919" title="50% like this...">
+    1
+    </div>
+  </div>
+  <a href="#84919" class="name">
+  <strong class="user"><em>silverquick at gmail dot com</em></strong></a><a class="genanchor" href="#84919"> &para;</a><div class="date" title="2008-08-05 05:55"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom84919">
+<div class="phpcode"><code><span class="html">
+I think the HTTPS element will only be present under Apache 2.x. It's not in the list of "special" variables here:<br /><a href="http://httpd.apache.org/docs/1.3/mod/mod_rewrite.html#RewriteCond" rel="nofollow" target="_blank">http://httpd.apache.org/docs/1.3/mod/mod_rewrite.html#RewriteCond</a><br />But it is here:<br /><a href="http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html#rewritecond" rel="nofollow" target="_blank">http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html#rewritecond</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="122495">  <div class="votes">
+    <div id="Vu122495">
+    <a href="/manual/vote-note.php?id=122495&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd122495">
+    <a href="/manual/vote-note.php?id=122495&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V122495" title="49% like this...">
+    -1
+    </div>
+  </div>
+  <a href="#122495" class="name">
+  <strong class="user"><em>2962051004 at qq dot com</em></strong></a><a class="genanchor" href="#122495"> &para;</a><div class="date" title="2018-03-11 11:46"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom122495">
+<div class="phpcode"><code><span class="html">
+<span class="default">&lt;?php<br /></span><span class="comment">/*<br />Sometimes you will find that your website will not get the correct user IP after adding CDN, then this function will help you<br />*/<br /></span><span class="keyword">function </span><span class="default">real_ip</span><span class="keyword">()<br />{<br />&nbsp;&nbsp; </span><span class="default">$ip </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REMOTE_ADDR'</span><span class="keyword">];<br />&nbsp; &nbsp; if (isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_FORWARDED_FOR'</span><span class="keyword">]) &amp;&amp; </span><span class="default">preg_match_all</span><span class="keyword">(</span><span class="string">'#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_FORWARDED_FOR'</span><span class="keyword">], </span><span class="default">$matches</span><span class="keyword">)) {<br />&nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">$matches</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">] AS </span><span class="default">$xip</span><span class="keyword">) {<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'#^(10|172\.16|192\.168)\.#'</span><span class="keyword">, </span><span class="default">$xip</span><span class="keyword">)) {<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ip </span><span class="keyword">= </span><span class="default">$xip</span><span class="keyword">;<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; &nbsp; &nbsp; }<br />&nbsp; &nbsp; } elseif (isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CLIENT_IP'</span><span class="keyword">]) &amp;&amp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^([0-9]{1,3}\.){3}[0-9]{1,3}$/'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CLIENT_IP'</span><span class="keyword">])) {<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ip </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CLIENT_IP'</span><span class="keyword">];<br />&nbsp; &nbsp; } elseif (isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CF_CONNECTING_IP'</span><span class="keyword">]) &amp;&amp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^([0-9]{1,3}\.){3}[0-9]{1,3}$/'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CF_CONNECTING_IP'</span><span class="keyword">])) {<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ip </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_CF_CONNECTING_IP'</span><span class="keyword">];<br />&nbsp; &nbsp; } elseif (isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_REAL_IP'</span><span class="keyword">]) &amp;&amp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^([0-9]{1,3}\.){3}[0-9]{1,3}$/'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_REAL_IP'</span><span class="keyword">])) {<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ip </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_X_REAL_IP'</span><span class="keyword">];<br />&nbsp; &nbsp; }<br />&nbsp; &nbsp; return </span><span class="default">$ip</span><span class="keyword">;<br /><br />}<br />echo </span><span class="default">real_ip</span><span class="keyword">();<br /><br /></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="125050">  <div class="votes">
+    <div id="Vu125050">
+    <a href="/manual/vote-note.php?id=125050&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd125050">
+    <a href="/manual/vote-note.php?id=125050&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V125050" title="47% like this...">
+    -1
+    </div>
+  </div>
+  <a href="#125050" class="name">
+  <strong class="user"><em>DanielTahar</em></strong></a><a class="genanchor" href="#125050"> &para;</a><div class="date" title="2020-05-27 01:36"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom125050">
+<div class="phpcode"><code><span class="html">
+To expand a bit on the price you could pay for relying on 'HTTP_REFERER': several large news sites I read often have paywalls, with cookies in place so you can only read X articles before you must subscribe; if using Incognito, they count the number of times you accessed via the same IP; everything to get you to subscribe. However, in order to be appealing, any visit where the 'HTTP_REFERER' is Google News will give you the entire article. I'm sure it's a dilemma their webmasters have, but for now any time someone sends you a story on one of them, all you have to do is search for the title and click the result from Google News. Bottom line: never count on it.<br /><br />PS (1): ofcourse i'm talking about a friend. I pay for content.<br />PS (2): after some debate, the RFC decided to keep 'HTTP_REFERER', although it's misspelled.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="124840">  <div class="votes">
+    <div id="Vu124840">
+    <a href="/manual/vote-note.php?id=124840&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd124840">
+    <a href="/manual/vote-note.php?id=124840&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V124840" title="46% like this...">
+    -2
+    </div>
+  </div>
+  <a href="#124840" class="name">
+  <strong class="user"><em>Johan Winge</em></strong></a><a class="genanchor" href="#124840"> &para;</a><div class="date" title="2020-03-22 07:17"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom124840">
+<div class="phpcode"><code><span class="html">
+It should probably be noted that the value of $_SERVER['SERVER_PROTOCOL'] will never contain the substring "HTTPS". Assuming this is a common source of bugs and confusion. Instead, see $_SERVER['HTTPS'].</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93046">  <div class="votes">
+    <div id="Vu93046">
+    <a href="/manual/vote-note.php?id=93046&amp;page=reserved.variables.server&amp;vote=up" title="Vote up!" class="usernotes-voteu">up</a>
+    </div>
+    <div id="Vd93046">
+    <a href="/manual/vote-note.php?id=93046&amp;page=reserved.variables.server&amp;vote=down" title="Vote down!" class="usernotes-voted">down</a>
+    </div>
+    <div class="tally" id="V93046" title="48% like this...">
+    -2
+    </div>
+  </div>
+  <a href="#93046" class="name">
+  <strong class="user"><em>cupy at email dot cz</em></strong></a><a class="genanchor" href="#93046"> &para;</a><div class="date" title="2009-08-20 08:24"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom93046">
+<div class="phpcode"><code><span class="html">
+Tech note:<br />$_SERVER['argc'] and $_SERVER['argv'][] has some funny behaviour,<br />used from linux (bash) commandline, when called like <br />"php ./script_name.php 0x020B" <br />there is everything correct, but <br />"./script_name.php 0x020B"<br />is not correct - "0" is passed instead of "0x020B" as $_SERVER['argv'][1] - see the script below.<br />Looks like the parameter is not passed well from bash to PHP.<br />(but, inspected on the level of bash, 0x020B is understood well as $1)<br /><br />try this example:<br /><br />-------------&gt;8------------------<br />cat ./script_name.php<br />#! /usr/bin/php<br /><br />if( $_SERVER['argc'] == 2)<br />&nbsp; {<br />&nbsp; &nbsp; // funny... we have to do this trick to pass e.g. 0x020B from parameters<br />&nbsp; &nbsp; // ignore this: "PHP Notice:&nbsp; Undefined offset:&nbsp; 2 in ..."<br />&nbsp; &nbsp; $EID = $_SERVER['argv'][1] + $_SERVER['argv'][2] + $_SERVER['argv'][3];<br />&nbsp; }<br /> else<br />&nbsp;&nbsp; {&nbsp; &nbsp; &nbsp; &nbsp; // default<br />&nbsp; &nbsp;&nbsp; $EID = 0x0210; // PPS failure<br />&nbsp;&nbsp; }</span>
+</code></div>
+  </div>
+ </div></div>
+<div class="foot"><a href="/manual/add-note.php?sect=reserved.variables.server&amp;redirect=https://www.php.net/manual/en/reserved.variables.server.php">＋<small>add a note</small></a></div>
+</section>    </section><!-- layout-content -->
+        <aside class='layout-menu'>
+
+        <ul class='parent-menu-list'>
+                                    <li>
+                <a href="reserved.variables.php">Predefined Variables</a>
+
+                                    <ul class='child-menu-list'>
+
+                                                <li class="">
+                            <a href="language.variables.superglobals.php" title="Superglobals">Superglobals</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.globals.php" title="$GLOBALS">$GLOBALS</a>
+                        </li>
+                                                <li class="current">
+                            <a href="reserved.variables.server.php" title="$_&#8203;SERVER">$_&#8203;SERVER</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.get.php" title="$_&#8203;GET">$_&#8203;GET</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.post.php" title="$_&#8203;POST">$_&#8203;POST</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.files.php" title="$_&#8203;FILES">$_&#8203;FILES</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.request.php" title="$_&#8203;REQUEST">$_&#8203;REQUEST</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.session.php" title="$_&#8203;SESSION">$_&#8203;SESSION</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.environment.php" title="$_&#8203;ENV">$_&#8203;ENV</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.cookies.php" title="$_&#8203;COOKIE">$_&#8203;COOKIE</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.httpresponseheader.php" title="$http_&#8203;response_&#8203;header">$http_&#8203;response_&#8203;header</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.argc.php" title="$argc">$argc</a>
+                        </li>
+                                                <li class="">
+                            <a href="reserved.variables.argv.php" title="$argv">$argv</a>
+                        </li>
+                        
+                    </ul>
+                
+            </li>
+                        
+                        <li>
+                <span class="header">Deprecated</span>
+                <ul class="child-menu-list">
+                                    <li class="">
+                        <a href="reserved.variables.phperrormsg.php" title="$php_&#8203;errormsg">$php_&#8203;errormsg</a>
+                    </li>
+                                </ul>
+            </li>
+                    </ul>
+    </aside>
+
+
+  </div><!-- layout -->
+
+  <footer>
+    <div class="container footer-content">
+      <div class="row-fluid">
+      <ul class="footmenu">
+        <li><a href="/copyright.php">Copyright &copy; 2001-2023 The PHP Group</a></li>
+        <li><a href="/my.php">My PHP.net</a></li>
+        <li><a href="/contact.php">Contact</a></li>
+        <li><a href="/sites.php">Other PHP.net sites</a></li>
+        <li><a href="/privacy.php">Privacy policy</a></li>
+      </ul>
+      </div>
+    </div>
+  </footer>
+
+    
+ <!-- External and third party libraries. -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="/cached.php?t=1657730402&amp;f=/js/ext/hogan-3.0.2.min.js"></script>
+<script src="/cached.php?t=1421837618&amp;f=/js/ext/typeahead.min.js"></script>
+<script src="/cached.php?t=1657876202&amp;f=/js/ext/mousetrap.min.js"></script>
+<script src="/cached.php?t=1657730402&amp;f=/js/ext/jquery.scrollTo.min.js"></script>
+<script src="/cached.php?t=1653918602&amp;f=/js/search.js"></script>
+<script src="/cached.php?t=1671018002&amp;f=/js/common.js"></script>
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="/images/to-top@2x.png"></a>
+
+</body>
+</html>
