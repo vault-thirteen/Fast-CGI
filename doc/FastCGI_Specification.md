@@ -49,7 +49,7 @@ Document Version: 1.0
 
 * * *
 
-### <a name="S1">1\. Introduction</a>
+### <a name="S1" id="S1">1\. Introduction</a>
 
 FastCGI is an open extension to CGI that provides high performance for all Internet applications without the penalties of Web server APIs.
 
@@ -67,15 +67,15 @@ A FastCGI application plays one of several well-defined _roles_. The most famili
 
 In the remainder of this specification the terms "FastCGI application," "application process," or "application server" are abbreviated to "application" whenever that won't cause confusion.
 
-### <a name="S2">2\. Initial Process State</a>
+### <a name="S2" id="S2">2\. Initial Process State</a>
 
-#### <a name="S2.1">2.1 Argument list</a>
+#### <a name="S2.1" id="S2.1">2.1 Argument list</a>
 
 By default the Web server creates an argument list containing a single element, the name of the application, taken to be the last component of the executable's path name. The Web server may provide a way to specify a different application name, or a more elaborate argument list.
 
 Note that the file executed by the Web server might be an interpreter file (a text file that starts with the characters <tt>#!</tt>), in which case the application's argument list is constructed as described in the <tt>execve</tt> manpage.
 
-#### <a name="S2.2">2.2 File descriptors</a>
+#### <a name="S2.2" id="S2.2">2.2 File descriptors</a>
 
 The Web server leaves a single file descriptor, <tt>FCGI_LISTENSOCK_FILENO</tt>, open when the application begins execution. This descriptor refers to a listening socket created by the Web server.
 
@@ -83,17 +83,17 @@ The Web server leaves a single file descriptor, <tt>FCGI_LISTENSOCK_FILENO</tt>,
 
 The Web server's choice of reliable transport, Unix stream pipes (<tt>AF_UNIX</tt>) or TCP/IP (<tt>AF_INET</tt>), is implicit in the internal state of the <tt>FCGI_LISTENSOCK_FILENO</tt> socket.
 
-#### <a name="S2.3">2.3 Environment variables</a>
+#### <a name="S2.3" id="S2.3">2.3 Environment variables</a>
 
 The Web server may use environment variables to pass parameters to the application. This specification defines one such variable, <tt>FCGI_WEB_SERVER_ADDRS</tt>; we expect more to be defined as the specification evolves. The Web server may provide a way to bind other environment variables, such as the <tt>PATH</tt> variable.
 
-#### <a name="S2.4">2.4 Other state</a>
+#### <a name="S2.4" id="S2.4">2.4 Other state</a>
 
 The Web server may provide a way to specify other components of an application's initial process state, such as the priority, user ID, group ID, root directory, and working directory of the process.
 
-### <a name="S3">3\. Protocol Basics</a>
+### <a name="S3" id="S3">3\. Protocol Basics</a>
 
-#### <a name="S3.1">3.1 Notation</a>
+#### <a name="S3.1" id="S3.1">3.1 Notation</a>
 
 We use C language notation to define protocol message formats. All structure elements are defined in terms of the <tt>unsigned char</tt> type, and are arranged so that an ISO C compiler lays them out in the obvious manner, with no padding. The first byte defined in the structure is transmitted first, the second byte second, etc.
 
@@ -114,7 +114,7 @@ Second, we extend C <tt>struct</tt>s to allow the form
 
 meaning a structure of varying length, where the length of a component is determined by the values of the indicated earlier component or components.
 
-#### <a name="S3.2">3.2 Accepting Transport Connections</a>
+#### <a name="S3.2" id="S3.2">3.2 Accepting Transport Connections</a>
 
 A FastCGI application calls <tt>accept()</tt> on the socket referred to by file descriptor <tt>FCGI_LISTENSOCK_FILENO</tt> to accept a new transport connection. If the <tt>accept()</tt> succeeds, and the <tt>FCGI_WEB_SERVER_ADDRS</tt> environment variable is bound, the application application immediately performs the following special processing:
 
@@ -126,7 +126,7 @@ A FastCGI application calls <tt>accept()</tt> on the socket referred to by file 
 
 An application may accept several concurrent transport connections, but it need not do so.
 
-#### <a name="S3.3">3.3 Records</a>
+#### <a name="S3.3" id="S3.3">3.3 Records</a>
 
 Applications execute requests from a Web server using a simple protocol. Details of the protocol depend upon the application's role, but roughly speaking the Web server first sends parameters and other data to the application, then the application sends result data to the Web server, and finally the application sends the Web server an indication that the request is complete.
 
@@ -185,7 +185,7 @@ The second distinction is between _discrete_ and _stream_ records. A discrete re
 
 These two classifications are independent. Among the record types defined in this version of the FastCGI protocol, all management record types are also discrete record types, and nearly all application record types are stream record types. But three application record types are discrete, and nothing prevents defining a management record type that's a stream in some later version of the protocol.
 
-#### <a name="S3.4">3.4 Name-Value Pairs</a>
+#### <a name="S3.4" id="S3.4">3.4 Name-Value Pairs</a>
 
 In many of their roles, FastCGI applications need to read and write varying numbers of variable-length values. So it is useful to adopt a standard format for encoding a name-value pair.
 
@@ -241,7 +241,7 @@ The high-order bit of the first byte of a length indicates the length's encoding
 
 This name-value pair format allows the sender to transmit binary values without additional encoding, and enables the receiver to allocate the correct amount of storage immediately even for large values.
 
-#### <a name="S3.5">3.5 Closing Transport Connections</a>
+#### <a name="S3.5" id="S3.5">3.5 Closing Transport Connections</a>
 
 The Web server controls the lifetime of transport connections. The Web server can close a connection when no requests are active. Or the Web server can delegate close authority to the application (see <tt>FCGI_BEGIN_REQUEST</tt>). In this case the application closes the connection at the end of a specified request.
 
@@ -251,9 +251,9 @@ A simple application gets a significant performance boost by closing the transpo
 
 When an application closes a connection or finds that a connection has closed, the application initiates a new connection.
 
-### <a name="S4">4\. Management Record Types</a>
+### <a name="S4" id="S4">4\. Management Record Types</a>
 
-#### <a name="S4.1">4.1 <tt>FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
+#### <a name="S4.1" id="S4.1">4.1 <tt>FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
 
 The Web server can query specific variables within the application. The server will typically perform a query on application startup in order to to automate certain aspects of system configuration.
 
@@ -269,7 +269,7 @@ The application responds by sending a record <tt>{FCGI_GET_VALUES_RESULT, 0, ...
 
 An application may receive a <tt>FCGI_GET_VALUES</tt> record at any time. The application's response should not involve the application proper but only the FastCGI library.
 
-#### <a name="S4.2">4.2 <tt>FCGI_UNKNOWN_TYPE</tt></a>
+#### <a name="S4.2" id="S4.2">4.2 <tt>FCGI_UNKNOWN_TYPE</tt></a>
 
 The set of management record types is likely to grow in future versions of this protocol. To provide for this evolution, the protocol includes the <tt>FCGI_UNKNOWN_TYPE</tt> management record. When an application receives a management record whose type <tt>T</tt> it does not understand, the application responds with <tt>{FCGI_UNKNOWN_TYPE, 0, {T}}</tt>.
 
@@ -284,9 +284,9 @@ The <tt>contentData</tt> component of a <tt>FCGI_UNKNOWN_TYPE</tt> record has th
 
 The <tt>type</tt> component is the type of the unrecognized management record.
 
-### <a name="S5">5\. Application Record Types</a>
+### <a name="S5" id="S5">5\. Application Record Types</a>
 
-#### <a name="S5.1">5.1 <tt>FCGI_BEGIN_REQUEST</tt></a>
+#### <a name="S5.1" id="S5.1">5.1 <tt>FCGI_BEGIN_REQUEST</tt></a>
 
 The Web server sends a <tt>FCGI_BEGIN_REQUEST</tt> record to start a request.
 
@@ -313,13 +313,13 @@ The <tt>flags</tt> component contains a bit that controls connection shutdown:
 
 *   <tt>flags & FCGI_KEEP_CONN</tt>: If zero, the application closes the connection after responding to this request. If not zero, the application does not close the connection after responding to this request; the Web server retains responsibility for the connection.  
 
-#### <a name="S5.2">5.2 Name-Value Pair Stream: <tt>FCGI_PARAMS</tt></a>
+#### <a name="S5.2" id="S5.2">5.2 Name-Value Pair Stream: <tt>FCGI_PARAMS</tt></a>
 
 <tt>FCGI_PARAMS</tt>
 
 is a stream record type used in sending name-value pairs from the Web server to the application. The name-value pairs are sent down the stream one after the other, in no specified order.
 
-#### <a name="S5.3">5.3 Byte Streams: <tt>FCGI_STDIN</tt>, <tt>FCGI_DATA</tt>, <tt>FCGI_STDOUT</tt>, <tt>FCGI_STDERR</tt></a>
+#### <a name="S5.3" id="S5.3">5.3 Byte Streams: <tt>FCGI_STDIN</tt>, <tt>FCGI_DATA</tt>, <tt>FCGI_STDOUT</tt>, <tt>FCGI_STDERR</tt></a>
 
 <tt>FCGI_STDIN</tt>
 
@@ -327,7 +327,7 @@ is a stream record type used in sending arbitrary data from the Web server to th
 
 <tt>FCGI_STDOUT</tt> and <tt>FCGI_STDERR</tt> are stream record types for sending arbitrary data and error data respectively from the application to the Web server.
 
-#### <a name="S5.4">5.4 <tt>FCGI_ABORT_REQUEST</tt></a>
+#### <a name="S5.4" id="S5.4">5.4 <tt>FCGI_ABORT_REQUEST</tt></a>
 
 The Web server sends a <tt>FCGI_ABORT_REQUEST</tt> record to abort a request. After receiving <tt>{FCGI_ABORT_REQUEST, R}</tt>, the application responds as soon as possible with <tt>{FCGI_END_REQUEST, R, {FCGI_REQUEST_COMPLETE, appStatus}}</tt>. This is truly a response from the application, not a low-level acknowledgement from the FastCGI library.
 
@@ -335,7 +335,7 @@ A Web server aborts a FastCGI request when an HTTP client closes its transport c
 
 When a Web server is not multiplexing requests over a transport connection, the Web server can abort a request by closing the request's transport connection. But with multiplexed requests, closing the transport connection has the unfortunate effect of aborting _all_ the requests on the connection.
 
-#### <a name="S5.5">5.5 <tt>FCGI_END_REQUEST</tt></a>
+#### <a name="S5.5" id="S5.5">5.5 <tt>FCGI_END_REQUEST</tt></a>
 
 The application sends a <tt>FCGI_END_REQUEST</tt> record to terminate a request, either because the application has processed the request or because the application has rejected the request.
 
@@ -361,9 +361,9 @@ The <tt>protocolStatus</tt> component is a protocol-level status code; the possi
 *   <tt>FCGI_OVERLOADED</tt>: rejecting a new request. This happens when the application runs out of some resource, e.g. database connections.
 *   <tt>FCGI_UNKNOWN_ROLE</tt>: rejecting a new request. This happens when the Web server has specified a role that is unknown to the application.  
 
-### <a name="S6">6\. Roles</a>
+### <a name="S6" id="S6">6\. Roles</a>
 
-#### <a name="S6.1">6.1 Role Protocols</a>
+#### <a name="S6.1" id="S6.1">6.1 Role Protocols</a>
 
 Role protocols only include records with application record types. They transfer essentially all data using streams.
 
@@ -383,7 +383,7 @@ When a role protocol uses <tt>FCGI_PARAMS</tt> to transmit textual values, such 
 
 Role protocols do not support the non-parsed header feature of CGI. FastCGI applications set response status using the <tt>Status</tt> and <tt>Location</tt> CGI headers.
 
-#### <a name="S6.2">6.2 Responder</a>
+#### <a name="S6.2" id="S6.2">6.2 Responder</a>
 
 A Responder FastCGI application has the same purpose as a CGI/1.1 program: It receives all the information associated with an HTTP request and generates an HTTP response.
 
@@ -396,7 +396,7 @@ It suffices to explain how each element of CGI/1.1 is emulated by a Responder:
 
 A Responder performing an update, e.g. implementing a <tt>POST</tt> method, should compare the number of bytes received on <tt>FCGI_STDIN</tt> with <tt>CONTENT_LENGTH</tt> and abort the update if the two numbers are not equal.
 
-#### <a name="S6.3">6.3 Authorizer</a>
+#### <a name="S6.3" id="S6.3">6.3 Authorizer</a>
 
 An Authorizer FastCGI application receives all the information associated with an HTTP request and generates an authorized/unauthorized decision. In case of an authorized decision the Authorizer can also associate name-value pairs with the HTTP request; when giving an unauthorized decision the Authorizer sends a complete response to the HTTP client.
 
@@ -415,7 +415,7 @@ Since CGI/1.1 defines a perfectly good way to represent the information associat
 
     For Authorizer response status values other than "200" (OK), the Web server denies access and sends the response status, headers, and content back to the HTTP client.
 
-#### <a name="S6.4">6.4 Filter</a>
+#### <a name="S6.4" id="S6.4">6.4 Filter</a>
 
 A Filter FastCGI application receives all the information associated with an HTTP request, plus an extra stream of data from a file stored on the Web server, and generates a "filtered" version of the data stream as an HTTP response.
 
@@ -431,7 +431,7 @@ The steps taken by a Filter are similar to those of a Responder. The server pres
 
 A Filter should compare the number of bytes received on <tt>FCGI_STDIN</tt> with <tt>CONTENT_LENGTH</tt> and on <tt>FCGI_DATA</tt> with <tt>FCGI_DATA_LENGTH</tt>. If the numbers don't match and the Filter is a query, the Filter response should provide an indication that data is missing. If the numbers don't match and the Filter is an update, the Filter should abort the update.
 
-### <a name="S7">7\. Errors</a>
+### <a name="S7" id="S7">7\. Errors</a>
 
 A FastCGI application exits with zero status to indicate that it terminated on purpose, e.g. in order to perform a crude form of garbage collection. A FastCGI application that exits with nonzero status is assumed to have crashed. How a Web server or other application manager responds to applications that exit with zero or nonzero status is outside the scope of this specification.
 
@@ -441,7 +441,7 @@ FastCGI applications report application-level errors with the <tt>FCGI_STDERR</t
 
 On Unix, applications report lower-level errors, including FastCGI protocol errors and syntax errors in FastCGI environment variables, to <tt>syslog</tt>. Depending upon the severity of the error, the application may either continue or exit with nonzero status.
 
-### <a name="S8">8\. Types and Constants</a>
+### <a name="S8" id="S8">8\. Types and Constants</a>
 
 ```
 /*
@@ -556,11 +556,11 @@ typedef struct {
 } FCGI_UnknownTypeRecord;
 ```
 
-### <a name="S9">9\. References</a>
+### <a name="S9" id="S9">9\. References</a>
 
 [The WWW Common Gateway Interface at W3C](https://www.w3.org/CGI/)
 
-### <a name="SA">A. Table: Properties of the record types</a>
+### <a name="SA" id="SA">A. Table: Properties of the record types</a>
 
 The following chart lists all of the record types and indicates these properties of each:
 
@@ -586,7 +586,7 @@ The following chart lists all of the record types and indicates these properties
 
 ```
 
-### <a name="SB">B. Typical Protocol Message Flow</a>
+### <a name="SB" id="SB">B. Typical Protocol Message Flow</a>
 
 Additional notational conventions for the examples:
 
