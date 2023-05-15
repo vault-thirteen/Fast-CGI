@@ -7,7 +7,7 @@ GitHub page, which is a copy of the abandoned www.fastcgi.com website.
 
 ## Logotype
 
-![FastCGI Logotype](../img/Logo_GreyBg_330x200.png)
+![FastCGI Logotype](../../img/Logo_GreyBg_330x200.png)
 
 ## Specification
 
