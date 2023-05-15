@@ -253,7 +253,8 @@ When an application closes a connection or finds that a connection has closed, t
 
 ### <a name="section-4" id="section-4">4\. Management Record Types</a>
 
-#### <a name="section-4.1" id="section-4.1">4.1 <tt>FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
+<a name="section-4.1" id="section-4.1"></a>
+#### <a><tt>4.1 FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
 
 The Web server can query specific variables within the application. The server will typically perform a query on application startup in order to to automate certain aspects of system configuration.
 
