@@ -15,7 +15,7 @@ Document Version: 1.0
 
 * * *
 
-*   [1\. Introduction](#section-S1)
+*   [1\. Introduction](#S1)
 *   [2\. Initial Process State](#S2)
     *   [2.1 Argument list](#S2.1)
     *   [2.2 File descriptors](#S2.2)
@@ -49,7 +49,7 @@ Document Version: 1.0
 
 * * *
 
-### <a name="section-S1" id="section-S1">1\. Introduction</a>
+### <a name="S1" id="S1">1\. Introduction</a>
 
 FastCGI is an open extension to CGI that provides high performance for all Internet applications without the penalties of Web server APIs.
 
