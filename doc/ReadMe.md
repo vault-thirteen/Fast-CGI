@@ -1,9 +1,10 @@
 # Documents
 
-THis folder contains various documents about FastCGI and CGI.  
+This folder contains various documents about FastCGI and CGI.  
 Some documents describe CGI variables related to the PHP programming language.  
 
-Data Sources:
+## Data Sources
+
 *   **CGI** (RFC 3875)
     * The Common Gateway Interface (CGI) Version 1.1
       * https://datatracker.ietf.org/doc/html/rfc3875
