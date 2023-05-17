@@ -1,5 +1,12 @@
 # Fast CGI
 
+This folder contains the specification of the FastCGI interface.
+
+The file which is in a Markdown format (*.md) has a working internal document 
+navigation, i.e. clickable links which make viewing the document much easier 
+than in those documents which have no navigation. This file is a slightly 
+modified version of the file taken from the source mentioned below.
+
 The documentation in this folder is partially taken from following sources:
 * [FastCGI-Archives](https://github.com/FastCGI-Archives/fastcgi-archives.github.io) 
 GitHub page, which is a copy of the abandoned www.fastcgi.com website.
