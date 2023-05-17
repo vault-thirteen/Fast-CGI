@@ -6,7 +6,7 @@ FastCGI compatibility layer for Go language.
 
 This repository provides access to some documentation of CGI and FastCGI 
 interfaces and programming tools which may be useful for building applications 
-using the FastCGI interface.
+using the FastCGI interface in Go programming language, a.k.a. Golang.
 
 ## Structure
 
