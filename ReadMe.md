@@ -91,7 +91,7 @@ For more complex tasks, the `Client` object and its methods can be used.
 
 > <b>FastCGI</b> interface provides a cross-platform and
 cross-language interface for communication between totally different programming
-language. For example, with the help of <b>FastCGI</b> it is possible to call
+languages. For example, with the help of <b>FastCGI</b> it is possible to call
 a function of a PHP language from the code written in Go language, where Go is
 a compiled language and PHP is an interpreted language with no runtime
 "engine".
