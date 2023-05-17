@@ -1,6 +1,6 @@
 package request
 
-import "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
+import "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 
 /* {FCGI_ABORT_REQUEST, R} */
 type AbortRequest struct {

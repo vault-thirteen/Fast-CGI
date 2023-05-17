@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	nvpair "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/NameValuePair"
+	nvpair "github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
 )
 
 // Uint16ToBytes converts an uint16 into an array (slice) of bytes using the

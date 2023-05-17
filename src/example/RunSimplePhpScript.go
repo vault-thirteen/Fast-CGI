@@ -3,9 +3,9 @@ package example
 import (
 	"bytes"
 
-	cl "github.com/vault-thirteen/Fast-CGI/srcx/pkg/Client"
-	nvpair "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/NameValuePair"
-	dm "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
+	cl "github.com/vault-thirteen/Fast-CGI/src/pkg/Client"
+	nvpair "github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
+	dm "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 	"github.com/vault-thirteen/errorz"
 )
 

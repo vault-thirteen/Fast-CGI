@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"io"
 
-	vl "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/VariableLength"
+	vl "github.com/vault-thirteen/Fast-CGI/src/pkg/models/VariableLength"
 	"github.com/vault-thirteen/auxie/reader"
 )
 

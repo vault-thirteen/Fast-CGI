@@ -5,8 +5,8 @@ import (
 	"errors"
 	"math"
 
-	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/common"
-	dm "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/common"
+	dm "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 )
 
 // ByteStreamRequest is a generic request for requests that use byte stream as

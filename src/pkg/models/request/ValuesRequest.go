@@ -5,9 +5,9 @@ import (
 	"errors"
 	"math"
 
-	nvpair "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/NameValuePair"
-	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/common"
-	dm "github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
+	nvpair "github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
+	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/common"
+	dm "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 )
 
 // ValuesRequest is a generic request for requests that use values, a.k.a.
