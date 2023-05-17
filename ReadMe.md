@@ -110,7 +110,7 @@ are sufficient for their purposes.
 
 <b>Reason 4</b>
 
-> This library allows to bring a new life into old projects
+> This library makes it possible to bring a new life into old projects
 written in other programming languages that support the <b>FastCGI</b>
 interface. It is not necessary to re-write PHP projects in Go from scratch.
 This is why it is said in this repository, that this project is a compatibility
