@@ -12,5 +12,5 @@ using the FastCGI interface in Go programming language, a.k.a. Golang.
 
 The structure of this repository is quite simple.
 
-* [DOC](doc) folder contains the documentation.
-* [SRC](src) folder contains the library for Go language.
+* [DOC](doc/ReadMe.md) folder contains the documentation.
+* [SRC](src/ReadMe.md) folder contains the library for Go language.
