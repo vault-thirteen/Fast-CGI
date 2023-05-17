@@ -33,10 +33,10 @@ follows:
 
 ## Usage
 
-Usage examples can be found in the ['example'](../example) folder.
+Usage examples can be found in the ['example'](example) folder.
 
 A test application performing an execution of a simple PHP script is here:  
-[cmd/RunSimplePhpScript](../cmd/RunSimplePhpScript)
+[cmd/RunSimplePhpScript](cmd/RunSimplePhpScript)
 
 The most simple usage example requires only a few lines of code and is as
 simple as the following code:
