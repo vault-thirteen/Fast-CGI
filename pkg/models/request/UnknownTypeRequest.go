@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 )
 
 /*
@@ -11,7 +11,7 @@ import (
 	} FCGI_UnknownTypeRecord;
 */
 type UnknownTypeRequest struct {
-	Header dm.Header
+	Header dm.dm
 	Body   dm.UnknownTypeRequestBody
 }
 

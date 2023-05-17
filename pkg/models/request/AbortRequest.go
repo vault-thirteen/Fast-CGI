@@ -1,10 +1,10 @@
 package request
 
-import "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
+import "github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 
 /* {FCGI_ABORT_REQUEST, R} */
 type AbortRequest struct {
-	Header dm.Header
+	Header dm.dm
 }
 
 func NewAbortRequest(requestId uint16) (br *AbortRequest) {

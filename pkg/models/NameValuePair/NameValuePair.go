@@ -2,9 +2,9 @@ package nvpair
 
 import (
 	"bytes"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/VariableLength"
 	"io"
 
-	vl "github.com/vault-thirteen/Fast-CGI/src/pkg/models/VariableLength"
 	"github.com/vault-thirteen/auxie/reader"
 )
 

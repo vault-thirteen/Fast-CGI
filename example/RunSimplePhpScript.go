@@ -2,10 +2,10 @@ package example
 
 import (
 	"bytes"
+	"github.com/vault-thirteen/Fast-CGI/pkg/Client"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
+	dm2 "github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 
-	cl "github.com/vault-thirteen/Fast-CGI/src/pkg/Client"
-	nvpair "github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
-	dm "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 	"github.com/vault-thirteen/errorz"
 )
 
@@ -32,14 +32,14 @@ func RunSimplePhpScript(
 
 	requestId := uint16(1)
 	params := []*nvpair.NameValuePair{
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, scriptFilePath),
+		nvpair.NewNameValuePairWithTextValueU(dm2.Parameter_ScriptFilename, scriptFilePath),
 	}
 	stdin := []byte{}
 
 	var tcpData bytes.Buffer
 	var ba []byte
 
-	ba = c.CreateBeginRequest(requestId, dm.FCGI_RESPONDER, dm.FCGI_KEEP_CONN)
+	ba = c.CreateBeginRequest(requestId, dm2.FCGI_RESPONDER, dm2.FCGI_KEEP_CONN)
 	_, err = tcpData.Write(ba)
 	if err != nil {
 		return nil, nil, err
@@ -77,16 +77,16 @@ func RunSimplePhpScript(
 		return nil, nil, err
 	}
 
-	var recs []*dm.Record
+	var recs []*dm2.Record
 	recs, err = c.ReadResponseUntilEnd()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	recs = dm.FilterRecordsByRequestId(recs, requestId)
+	recs = dm2.FilterRecordsByRequestId(recs, requestId)
 
-	stdOut = dm.GetStdOutFromRecords(recs)
-	stdErr = dm.GetStdErrFromRecords(recs)
+	stdOut = dm2.GetStdOutFromRecords(recs)
+	stdErr = dm2.GetStdErrFromRecords(recs)
 
 	return stdOut, stdErr, nil
 }

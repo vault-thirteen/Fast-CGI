@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 )
 
 /*
@@ -11,7 +11,7 @@ import (
 	} FCGI_EndRequestRecord;
 */
 type EndRequest struct {
-	Header dm.Header         // 8 bytes.
+	Header dm.dm             // 8 bytes.
 	Body   dm.EndRequestBody // 8 bytes.
 }
 

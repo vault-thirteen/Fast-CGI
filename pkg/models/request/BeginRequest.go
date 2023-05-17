@@ -1,6 +1,8 @@
 package request
 
-import "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
+import (
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
+)
 
 /*
 	typedef struct {
@@ -9,8 +11,8 @@ import "github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
 	} FCGI_BeginRequestRecord;
 */
 type BeginRequest struct {
-	Header dm.Header           // 8 bytes.
-	Body   dm.BeginRequestBody // 8 bytes.
+	Header dm.Header // 8 bytes.
+	Body   dm.dm     // 8 bytes.
 }
 
 func NewBeginRequest(requestId uint16, role dm.Role, flags byte) (br *BeginRequest) {
