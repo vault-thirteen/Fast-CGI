@@ -3,9 +3,9 @@ package dm
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
 	"io"
 
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
 	"github.com/vault-thirteen/auxie/reader"
 )
 
@@ -163,7 +163,7 @@ func (r *Record) ToBytes() (ba []byte, err error) {
 	return buf.Bytes(), nil
 }
 
-func (r *Record) ParseContentAsNVPs() (nvps []*nvpair.nvpair, err error) {
+func (r *Record) ParseContentAsNVPs() (nvps []*nvpair.NameValuePair, err error) {
 	if r.ContentLength == 0 {
 		return nil, nil
 	}

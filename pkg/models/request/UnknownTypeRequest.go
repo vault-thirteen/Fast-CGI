@@ -11,7 +11,7 @@ import (
 	} FCGI_UnknownTypeRecord;
 */
 type UnknownTypeRequest struct {
-	Header dm.dm
+	Header dm.Header
 	Body   dm.UnknownTypeRequestBody
 }
 

@@ -4,7 +4,7 @@ import "github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 
 /* {FCGI_ABORT_REQUEST, R} */
 type AbortRequest struct {
-	Header dm.dm
+	Header dm.Header
 }
 
 func NewAbortRequest(requestId uint16) (br *AbortRequest) {

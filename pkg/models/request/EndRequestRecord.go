@@ -11,7 +11,7 @@ import (
 	} FCGI_EndRequestRecord;
 */
 type EndRequest struct {
-	Header dm.dm             // 8 bytes.
+	Header dm.Header         // 8 bytes.
 	Body   dm.EndRequestBody // 8 bytes.
 }
 

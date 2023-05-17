@@ -11,8 +11,8 @@ import (
 	} FCGI_BeginRequestRecord;
 */
 type BeginRequest struct {
-	Header dm.Header // 8 bytes.
-	Body   dm.dm     // 8 bytes.
+	Header dm.Header           // 8 bytes.
+	Body   dm.BeginRequestBody // 8 bytes.
 }
 
 func NewBeginRequest(requestId uint16, role dm.Role, flags byte) (br *BeginRequest) {
