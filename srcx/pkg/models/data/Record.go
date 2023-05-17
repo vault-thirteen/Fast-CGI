@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
+	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/NameValuePair"
 	"github.com/vault-thirteen/auxie/reader"
 )
 

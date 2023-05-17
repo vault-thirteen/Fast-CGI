@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/vault-thirteen/Fast-CGI/src/example"
+	"github.com/vault-thirteen/Fast-CGI/srcx/example"
 )
 
 const (

@@ -3,9 +3,9 @@ package cl
 import (
 	"net"
 
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/NameValuePair"
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/request"
+	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/NameValuePair"
+	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/request"
 )
 
 type Client struct {

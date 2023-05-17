@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/vault-thirteen/Fast-CGI/src/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/srcx/pkg/models/data"
 )
 
 /*
