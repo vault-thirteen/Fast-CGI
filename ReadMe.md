@@ -28,7 +28,7 @@ Golang.*
 So, knowing all the above, the structure of this repository is as 
 follows:
 
-* [DOC](doc/ReadMe.md) folder contains the documentation.
+* [DOC](doc) folder contains the documentation.
 * Other folders contain various parts of the library for Go language.
 
 ## Usage
