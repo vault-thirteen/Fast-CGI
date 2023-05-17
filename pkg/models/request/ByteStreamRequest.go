@@ -3,16 +3,17 @@ package request
 import (
 	"bytes"
 	"errors"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/common"
-	dm2 "github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 	"math"
+
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/common"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 )
 
 // ByteStreamRequest is a generic request for requests that use byte stream as
 // a content, such as StdInRequest, DataRequest, StdOutRequest and
 // StdErrRequest.
 type ByteStreamRequest struct {
-	Header dm2.Header
+	Header dm.Header
 	Bytes  []byte
 }
 
@@ -23,12 +24,12 @@ func NewByteStreamRequest(requestType byte, requestId uint16, bytes []byte) (bsr
 	}
 
 	bsr = &ByteStreamRequest{
-		Header: dm2.Header{
-			Version:       dm2.FCGI_VERSION_1,
+		Header: dm.Header{
+			Version:       dm.FCGI_VERSION_1,
 			Type:          requestType,
 			RequestId:     requestId,
 			ContentLength: uint16(contentLength),
-			PaddingLength: byte(dm2.CalculatePadding(contentLength)),
+			PaddingLength: byte(dm.CalculatePadding(contentLength)),
 		},
 		Bytes: bytes,
 	}
@@ -37,19 +38,19 @@ func NewByteStreamRequest(requestType byte, requestId uint16, bytes []byte) (bsr
 }
 
 func NewStdInRequest(requestId uint16, stdin []byte) (sir *ByteStreamRequest, err error) {
-	return NewByteStreamRequest(dm2.FCGI_STDIN, requestId, stdin)
+	return NewByteStreamRequest(dm.FCGI_STDIN, requestId, stdin)
 }
 
 func NewDataRequest(requestId uint16, data []byte) (dr *ByteStreamRequest, err error) {
-	return NewByteStreamRequest(dm2.FCGI_DATA, requestId, data)
+	return NewByteStreamRequest(dm.FCGI_DATA, requestId, data)
 }
 
 func NewStdOutRequest(requestId uint16, stdout []byte) (sor *ByteStreamRequest, err error) {
-	return NewByteStreamRequest(dm2.FCGI_STDOUT, requestId, stdout)
+	return NewByteStreamRequest(dm.FCGI_STDOUT, requestId, stdout)
 }
 
 func NewStdErrRequest(requestId uint16, stderr []byte) (ser *ByteStreamRequest, err error) {
-	return NewByteStreamRequest(dm2.FCGI_STDERR, requestId, stderr)
+	return NewByteStreamRequest(dm.FCGI_STDERR, requestId, stderr)
 }
 
 func (bsr *ByteStreamRequest) ToBytes() (ba []byte, err error) {
@@ -65,7 +66,7 @@ func (bsr *ByteStreamRequest) ToBytes() (ba []byte, err error) {
 		return nil, err
 	}
 
-	err = dm2.WritePaddingToBytesBuffer(&buf, bsr.Header.PaddingLength)
+	err = dm.WritePaddingToBytesBuffer(&buf, bsr.Header.PaddingLength)
 	if err != nil {
 		return nil, err
 	}

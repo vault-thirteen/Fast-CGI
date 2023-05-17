@@ -3,6 +3,7 @@ package dm
 import (
 	"bytes"
 	"encoding/binary"
+
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
 )
 

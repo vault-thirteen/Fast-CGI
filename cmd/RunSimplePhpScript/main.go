@@ -3,9 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/vault-thirteen/Fast-CGI/example"
 	"log"
 	"os"
+
+	"github.com/vault-thirteen/Fast-CGI/example"
 )
 
 const (
