@@ -101,17 +101,17 @@ func RunSimplePhpScriptAndGetHttpData(
 	serverNetwork string,
 	serverAddress string,
 	scriptFilePath string,
-) (headers []*http.Header, body []byte, err error) {
+) (data *h.Data, err error) {
 	var stdOut []byte
 	var stdErr []byte
 	stdOut, stdErr, err = RunSimplePhpScript(serverNetwork, serverAddress, scriptFilePath)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	if len(stdErr) > 0 {
-		return nil, nil, errors.New(string(stdErr))
+		return nil, errors.New(string(stdErr))
 	}
 
-	return http.SplitHttpHeadersFromStdout(stdOut)
+	return h.SplitHttpHeadersFromStdout(stdOut)
 }

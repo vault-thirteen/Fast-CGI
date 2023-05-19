@@ -77,16 +77,18 @@ func runSimplePhpScript(scriptFilePath string) (err error) {
 }
 
 func runSimplePhpScriptAndGetHttpData(scriptFilePath string) (err error) {
-	var httpHeaders []*http.Header
-	var httpBody []byte
-	httpHeaders, httpBody, err = example.RunSimplePhpScriptAndGetHttpData(TestServerNetwork, TestServerAddress, scriptFilePath)
+	var httpData *h.Data
+	httpData, err = example.RunSimplePhpScriptAndGetHttpData(TestServerNetwork, TestServerAddress, scriptFilePath)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println(fmt.Sprintf("HTTP status: %v (%v).", httpData.StatusCode, httpData.StatusText))
+	fmt.Println()
+
 	fmt.Println("HTTP headers:")
 	fmt.Println("--------------------------------------------------------------------------------")
-	for _, hdr := range httpHeaders {
+	for _, hdr := range httpData.Headers {
 		fmt.Println(fmt.Sprintf("[%v] = [%v]", hdr.Name, hdr.Value))
 	}
 	fmt.Println("--------------------------------------------------------------------------------")
@@ -94,7 +96,7 @@ func runSimplePhpScriptAndGetHttpData(scriptFilePath string) (err error) {
 
 	fmt.Println("HTTP body:")
 	fmt.Println("--------------------------------------------------------------------------------")
-	fmt.Println(string(httpBody))
+	fmt.Println(string(httpData.Body))
 	fmt.Println("--------------------------------------------------------------------------------")
 	fmt.Println()
 
