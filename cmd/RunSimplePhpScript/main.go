@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/vault-thirteen/Fast-CGI/example"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 )
 
 const (
@@ -31,7 +32,8 @@ func main() {
 		showOutro()
 	}
 
-	err = runSimplePhpScript(scriptFilePath)
+	//err = runSimplePhpScript(scriptFilePath)
+	err = runSimplePhpScriptAndGetHttpData(scriptFilePath)
 	mustBeNoError(err)
 }
 
@@ -70,6 +72,31 @@ func runSimplePhpScript(scriptFilePath string) (err error) {
 			return err
 		}
 	}
+
+	return nil
+}
+
+func runSimplePhpScriptAndGetHttpData(scriptFilePath string) (err error) {
+	var httpHeaders []*http.Header
+	var httpBody []byte
+	httpHeaders, httpBody, err = example.RunSimplePhpScriptAndGetHttpData(TestServerNetwork, TestServerAddress, scriptFilePath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("HTTP headers:")
+	fmt.Println("--------------------------------------------------------------------------------")
+	for _, hdr := range httpHeaders {
+		fmt.Println(fmt.Sprintf("[%v] = [%v]", hdr.Name, hdr.Value))
+	}
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println()
+
+	fmt.Println("HTTP body:")
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println(string(httpBody))
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println()
 
 	return nil
 }

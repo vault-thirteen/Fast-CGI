@@ -2,10 +2,12 @@ package example
 
 import (
 	"bytes"
+	"errors"
 
 	"github.com/vault-thirteen/Fast-CGI/pkg/Client"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 	"github.com/vault-thirteen/errorz"
 )
 
@@ -89,4 +91,27 @@ func RunSimplePhpScript(
 	stdErr = dm.GetStdErrFromRecords(recs)
 
 	return stdOut, stdErr, nil
+}
+
+// RunSimplePhpScriptAndGetHttpData runs a simple PHP script, gets its output,
+// splits the outpud into HTTP headers and HTTP body. Only the `SCRIPT_FILENAME`
+// parameter is provided to the PHP script, that is why it is simple. The
+// PHP-CGI server must be started manually before running this function.
+func RunSimplePhpScriptAndGetHttpData(
+	serverNetwork string,
+	serverAddress string,
+	scriptFilePath string,
+) (headers []*http.Header, body []byte, err error) {
+	var stdOut []byte
+	var stdErr []byte
+	stdOut, stdErr, err = RunSimplePhpScript(serverNetwork, serverAddress, scriptFilePath)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if len(stdErr) > 0 {
+		return nil, nil, errors.New(string(stdErr))
+	}
+
+	return http.SplitHttpHeadersFromStdout(stdOut)
 }
