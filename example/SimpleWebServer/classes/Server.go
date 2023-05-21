@@ -209,7 +209,7 @@ func (srv *Server) Stop() (err error) {
 	}
 	fmt.Println("Done")
 
-	fmt.Print("CGI Client Shutdown ... ")
+	fmt.Print("FastCGI Client Shutdown ... ")
 	err = srv.cgiClient.Close()
 	if err != nil {
 		return err
