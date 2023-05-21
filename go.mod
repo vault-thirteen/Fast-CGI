@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/vault-thirteen/auxie v0.12.4
 	github.com/vault-thirteen/errorz v1.1.0
+	github.com/vault-thirteen/header v1.2.0
 	github.com/vault-thirteen/tester v1.1.0
 )
 

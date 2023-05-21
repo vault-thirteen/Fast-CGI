@@ -1,4 +1,4 @@
-package request
+package rm
 
 import (
 	"bytes"
@@ -21,7 +21,7 @@ type ValuesRequest struct {
 func NewValuesRequest(requestType byte, requestId uint16, values []*nvpair.NameValuePair) (vr *ValuesRequest, err error) {
 	contentLength := nvpair.MeasureNameValuePairs(values)
 	if contentLength > math.MaxUint16 {
-		return nil, errors.New(common.ErrContentIsTooLong)
+		return nil, errors.New(cm.ErrContentIsTooLong)
 	}
 
 	vr = &ValuesRequest{

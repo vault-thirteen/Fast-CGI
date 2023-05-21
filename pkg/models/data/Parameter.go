@@ -38,6 +38,8 @@ const (
 	Parameter_PhpAuthUser        = "PHP_AUTH_USER"
 	Parameter_PhpSelf            = "PHP_SELF"
 	Parameter_RedirectRemoteUser = "REDIRECT_REMOTE_USER"
+	Parameter_RedirectStatus     = "REDIRECT_STATUS"
+	Parameter_RequestScheme      = "REQUEST_SCHEME"
 	Parameter_RequestTimeFloat   = "REQUEST_TIME_FLOAT"
 	Parameter_ServerAdmin        = "SERVER_ADMIN"
 	Parameter_ServerSignature    = "SERVER_SIGNATURE"

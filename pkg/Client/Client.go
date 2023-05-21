@@ -35,8 +35,8 @@ func (c *Client) Close() (err error) {
 
 // 4.1.1. FCGI_GET_VALUES.
 func (c *Client) CreateGetValuesRequest(params []*nvpair.NameValuePair) (ba []byte, err error) {
-	var r *request.ValuesRequest
-	r, err = request.NewGetValuesRequest(params)
+	var r *rm.ValuesRequest
+	r, err = rm.NewGetValuesRequest(params)
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +46,8 @@ func (c *Client) CreateGetValuesRequest(params []*nvpair.NameValuePair) (ba []by
 
 // 4.1.2. FCGI_GET_VALUES_RESULT.
 func (c *Client) CreateGetValuesResultRequest(params []*nvpair.NameValuePair) (ba []byte, err error) {
-	var r *request.ValuesRequest
-	r, err = request.NewGetValuesResultRequest(params)
+	var r *rm.ValuesRequest
+	r, err = rm.NewGetValuesResultRequest(params)
 	if err != nil {
 		return nil, err
 	}
@@ -57,18 +57,18 @@ func (c *Client) CreateGetValuesResultRequest(params []*nvpair.NameValuePair) (b
 
 // 4.2. FCGI_UNKNOWN_TYPE.
 func (c *Client) CreateUnknownTypeRequest(recordType dm.RecordType) (ba []byte) {
-	return request.NewUnknownTypeRequest(recordType).ToBytes()
+	return rm.NewUnknownTypeRequest(recordType).ToBytes()
 }
 
 // 5.1. FCGI_BEGIN_REQUEST.
 func (c *Client) CreateBeginRequest(requestId uint16, role dm.Role, flags byte) (ba []byte) {
-	return request.NewBeginRequest(requestId, role, flags).ToBytes()
+	return rm.NewBeginRequest(requestId, role, flags).ToBytes()
 }
 
 // 5.2. FCGI_PARAMS.
 func (c *Client) CreateParamsRequest(requestId uint16, params []*nvpair.NameValuePair) (ba []byte, err error) {
-	var r *request.ValuesRequest
-	r, err = request.NewParamsRequest(requestId, params)
+	var r *rm.ValuesRequest
+	r, err = rm.NewParamsRequest(requestId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +78,8 @@ func (c *Client) CreateParamsRequest(requestId uint16, params []*nvpair.NameValu
 
 // 5.3.1. FCGI_STDIN.
 func (c *Client) CreateStdInRequest(requestId uint16, stdin []byte) (ba []byte, err error) {
-	var r *request.ByteStreamRequest
-	r, err = request.NewStdInRequest(requestId, stdin)
+	var r *rm.ByteStreamRequest
+	r, err = rm.NewStdInRequest(requestId, stdin)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +89,8 @@ func (c *Client) CreateStdInRequest(requestId uint16, stdin []byte) (ba []byte, 
 
 // 5.3.2. FCGI_DATA.
 func (c *Client) CreateDataRequest(requestId uint16, data []byte) (ba []byte, err error) {
-	var r *request.ByteStreamRequest
-	r, err = request.NewDataRequest(requestId, data)
+	var r *rm.ByteStreamRequest
+	r, err = rm.NewDataRequest(requestId, data)
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +100,8 @@ func (c *Client) CreateDataRequest(requestId uint16, data []byte) (ba []byte, er
 
 // 5.3.3. FCGI_STDOUT.
 func (c *Client) CreateStdOutRequest(requestId uint16, stdout []byte) (ba []byte, err error) {
-	var r *request.ByteStreamRequest
-	r, err = request.NewStdOutRequest(requestId, stdout)
+	var r *rm.ByteStreamRequest
+	r, err = rm.NewStdOutRequest(requestId, stdout)
 	if err != nil {
 		return nil, err
 	}
@@ -111,8 +111,8 @@ func (c *Client) CreateStdOutRequest(requestId uint16, stdout []byte) (ba []byte
 
 // 5.3.4. FCGI_STDERR.
 func (c *Client) CreateStdErrRequest(requestId uint16, stderr []byte) (ba []byte, err error) {
-	var r *request.ByteStreamRequest
-	r, err = request.NewStdErrRequest(requestId, stderr)
+	var r *rm.ByteStreamRequest
+	r, err = rm.NewStdErrRequest(requestId, stderr)
 	if err != nil {
 		return nil, err
 	}
@@ -122,12 +122,12 @@ func (c *Client) CreateStdErrRequest(requestId uint16, stderr []byte) (ba []byte
 
 // 5.4. FCGI_ABORT_REQUEST.
 func (c *Client) CreateAbortRequest(requestId uint16) (ba []byte) {
-	return request.NewAbortRequest(requestId).ToBytes()
+	return rm.NewAbortRequest(requestId).ToBytes()
 }
 
 // 5.5. FCGI_END_REQUEST.
 func (c *Client) CreateEndRequest(requestId uint16, appStatus uint32, protocolStatus byte) (ba []byte) {
-	return request.NewEndRequest(requestId, appStatus, protocolStatus).ToBytes()
+	return rm.NewEndRequest(requestId, appStatus, protocolStatus).ToBytes()
 }
 
 func (c *Client) SendRequest(data []byte) (err error) {

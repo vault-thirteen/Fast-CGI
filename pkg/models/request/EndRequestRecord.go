@@ -1,4 +1,4 @@
-package request
+package rm
 
 import (
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"

@@ -6,8 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/vault-thirteen/Fast-CGI/example"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
+	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
 )
 
 const (
@@ -54,7 +53,7 @@ func showOutro() {
 
 func runSimplePhpScript(scriptFilePath string) (err error) {
 	var stdOut, stdErr []byte
-	stdOut, stdErr, err = example.RunSimplePhpScript(TestServerNetwork, TestServerAddress, scriptFilePath)
+	stdOut, stdErr, err = pm.RunOnceSimplePhpScript(TestServerNetwork, TestServerAddress, scriptFilePath)
 	if err != nil {
 		return err
 	}
@@ -77,8 +76,8 @@ func runSimplePhpScript(scriptFilePath string) (err error) {
 }
 
 func runSimplePhpScriptAndGetHttpData(scriptFilePath string) (err error) {
-	var httpData *h.Data
-	httpData, err = example.RunSimplePhpScriptAndGetHttpData(TestServerNetwork, TestServerAddress, scriptFilePath)
+	var httpData *pm.Data
+	httpData, err = pm.RunOnceSimplePhpScriptAndGetHttpData(TestServerNetwork, TestServerAddress, scriptFilePath)
 	if err != nil {
 		return err
 	}

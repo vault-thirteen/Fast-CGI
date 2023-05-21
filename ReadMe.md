@@ -35,52 +35,10 @@ follows:
 
 Usage examples can be found in the ['example'](example) folder.
 
-A test application performing an execution of a simple PHP script is here:  
-[cmd/RunSimplePhpScript](cmd/RunSimplePhpScript)
-
 The most simple usage example requires only a few lines of code and is as
 simple as the following code:
 ```go
-package main
-
-import (
-  "fmt"
-  "os"
-
-  "github.com/vault-thirteen/Fast-CGI/example"
-)
-
-func main() {
-  var err error
-  err = runSimplePhpScript(`D:\Scripts\script.php`)
-  if err != nil {
-    panic(err)
-  }
-}
-
-func runSimplePhpScript(scriptFilePath string) (err error) {
-  var stdOut, stdErr []byte
-  stdOut, stdErr, err = example.RunSimplePhpScript("tcp", "127.0.0.1:9000", scriptFilePath)
-  if err != nil {
-    return err
-  }
-
-  if len(stdErr) > 0 {
-    _, err = fmt.Fprintln(os.Stderr, string(stdErr))
-    if err != nil {
-      return err
-    }
-  }
-
-  if len(stdOut) > 0 {
-    _, err = fmt.Fprintln(os.Stdout, string(stdOut))
-    if err != nil {
-      return err
-    }
-  }
-
-  return nil
-}
+TODO
 ```
 
 For more complex tasks, the `Client` object and its methods can be used.

@@ -1,4 +1,4 @@
-package request
+package rm
 
 import (
 	"bytes"
@@ -20,7 +20,7 @@ type ByteStreamRequest struct {
 func NewByteStreamRequest(requestType byte, requestId uint16, bytes []byte) (bsr *ByteStreamRequest, err error) {
 	contentLength := len(bytes)
 	if contentLength > math.MaxUint16 {
-		return nil, errors.New(common.ErrContentIsTooLong)
+		return nil, errors.New(cm.ErrContentIsTooLong)
 	}
 
 	bsr = &ByteStreamRequest{
