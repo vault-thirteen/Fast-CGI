@@ -32,25 +32,23 @@ const (
 )
 
 type Server struct {
-	httpServer *http.Server
 	settings   *Settings
+	httpServer *http.Server
 	cgiClient  *cl.Client
 }
 
-func NewServer() (srv *Server, err error) {
-	srv = &Server{}
+func NewServer(settings *Settings) (srv *Server, err error) {
+	srv = &Server{
+		settings: settings,
+	}
 
 	srv.httpServer = &http.Server{
-		Addr:    net.JoinHostPort(WebServerHost, WebServerPort),
+		Addr:    net.JoinHostPort(srv.settings.ServerHost, srv.settings.ServerPort),
 		Handler: http.Handler(http.HandlerFunc(srv.router)),
 	}
 
-	srv.settings, err = NewSettings()
-	if err != nil {
-		return nil, err
-	}
-
-	srv.cgiClient, err = cl.New(PhpServerNetwork, PhpServerAddress)
+	phpServerAddress := net.JoinHostPort(srv.settings.PhpServerHost, srv.settings.PhpServerPort)
+	srv.cgiClient, err = cl.New(srv.settings.PhpServerNetwork, phpServerAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +76,7 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request) {
 	phpScriptOutput, phpErr = pm.ExecPhpScriptAndGetHttpData(srv.cgiClient, requestId, parameters, stdin)
 	if phpErr != nil {
 		// Headers.
-		rw.Header().Set(header.HttpHeaderServer, ServerSoftwareName)
+		rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)
 
 		// Status.
 		rw.WriteHeader(http.StatusInternalServerError)
@@ -95,7 +93,7 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request) {
 	for _, phpHdr := range phpScriptOutput.Headers {
 		rw.Header().Set(phpHdr.Name, phpHdr.Value)
 	}
-	rw.Header().Set(header.HttpHeaderServer, ServerSoftwareName)
+	rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)
 
 	// Status.
 	if phpScriptOutput.StatusCode == 0 {
@@ -126,7 +124,7 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 		return nil, nil, err
 	}
 
-	scriptFilePath := filepath.Join(srv.settings.documentRootPath, req.URL.Path)
+	scriptFilePath := filepath.Join(srv.settings.DocumentRootPath, req.URL.Path)
 
 	remoteAddrParts := strings.Split(req.RemoteAddr, HostPortDelimiter)
 	if len(remoteAddrParts) != 2 {
@@ -134,7 +132,7 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 	}
 
 	var serverIPAddr *net.IPAddr
-	serverIPAddr, err = net.ResolveIPAddr(GolangNetNetworkIP, srv.settings.serverHost)
+	serverIPAddr, err = net.ResolveIPAddr(GolangNetNetworkIP, srv.settings.ServerHost)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -143,9 +141,9 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_AuthType, authScheme),                                      // 4.1.1.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ContentLength, strconv.Itoa(len(stdin))),                   // 4.1.2.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ContentType, req.Header.Get(header.HttpHeaderContentType)), // 4.1.3.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentRoot, srv.settings.documentRootPath),
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentRoot, srv.settings.DocumentRootPath),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentUri, req.URL.Path),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_GatewayInterface, srv.settings.gatewayInterface), // 4.1.4.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_GatewayInterface, srv.settings.GatewayInterface), // 4.1.4.
 		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathInfo, ""), // 4.1.5.
 		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathTranslated, ""), // 4.1.6.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_QueryString, req.URL.RawQuery), // 4.1.7.
@@ -161,10 +159,10 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, scriptFilePath),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, filepath.Base(scriptFilePath)), // 4.1.13.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerAddr, serverIPAddr.String()),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerName, srv.settings.serverName),         // 4.1.14.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerPort, srv.settings.serverPort),         // 4.1.15.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerName, srv.settings.ServerName),         // 4.1.14.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerPort, srv.settings.ServerPort),         // 4.1.15.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerProtocol, req.Proto),                   // 4.1.16.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerSoftware, srv.settings.serverSoftware), // 4.1.17.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerSoftware, srv.settings.ServerSoftware), // 4.1.17.
 		// HTTP_XXX // 4.1.18.  Protocol-Specific Meta-Variables
 	}
 

@@ -1,61 +1,50 @@
 package c
 
 import (
+	"encoding/json"
+	"io"
 	"os"
-	"path/filepath"
-)
 
-const (
-	PhpServerNetwork   = "tcp"
-	PhpServerAddress   = "127.0.0.1:9000"
-	WebServerName      = "localhost" // Domain name.
-	WebServerHost      = "localhost" // IP address or domain name.
-	WebServerPort      = "8000"
-	ServerProtocol     = "HTTP"
-	GatewayInterface   = "CGI/1.1"
-	ServerSoftwareName = "DemoGoServer/0.0.0"
+	"github.com/vault-thirteen/errorz"
 )
 
 type Settings struct {
-	documentRootPath string
-	serverProtocol   string
-	gatewayInterface string
-	serverSoftware   string
-	serverName       string
-	serverHost       string
-	serverPort       string
+	DocumentRootPath string `json:"documentRootPath"` // Path to the 'www' folder.
+	ServerProtocol   string `json:"serverProtocol"`   // HTTP.
+	GatewayInterface string `json:"gatewayInterface"` // CGI/1.1.
+	ServerSoftware   string `json:"serverSoftware"`   // DemoGoServer/0.0.0.
+	ServerName       string `json:"serverName"`       // Domain name: localhost.
+	ServerHost       string `json:"serverHost"`       // IP address or domain name: localhost.
+	ServerPort       string `json:"serverPort"`       // 8000.
+	PhpServerNetwork string `json:"phpServerNetwork"` // tcp.
+	PhpServerHost    string `json:"phpServerHost"`    // 127.0.0.1.
+	PhpServerPort    string `json:"phpServerPort"`    // 9000.
 }
 
-func NewSettings() (set *Settings, err error) {
-	set = &Settings{
-		//documentRootPath: "",
-		serverProtocol:   ServerProtocol,
-		gatewayInterface: GatewayInterface,
-		serverSoftware:   ServerSoftwareName,
-		serverName:       WebServerName,
-		serverHost:       WebServerHost,
-		serverPort:       WebServerPort,
+func NewSettings(settingsFilePath string) (set *Settings, err error) {
+	var file *os.File
+	file, err = os.Open(settingsFilePath)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		derr := file.Close()
+		if derr != nil {
+			err = errorz.Combine(err, derr)
+		}
+	}()
+
+	var fileText []byte
+	fileText, err = io.ReadAll(file)
+	if err != nil {
+		return nil, err
 	}
 
-	set.documentRootPath, err = getDocumentRootPath()
+	set = &Settings{}
+	err = json.Unmarshal(fileText, set)
 	if err != nil {
 		return nil, err
 	}
 
 	return set, nil
-}
-
-// getDocumentRootPath returns the path to the 'www' folder.
-// In this demonstration example we assume that server's executable file is
-// located in the 'www' folder for simplicity.
-func getDocumentRootPath() (drp string, err error) {
-	var exePath string
-	exePath, err = os.Executable()
-	if err != nil {
-		return drp, err
-	}
-
-	drp = filepath.Dir(exePath)
-
-	return drp, nil
 }

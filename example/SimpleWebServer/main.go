@@ -6,6 +6,7 @@ package main
 // "production"-ready code would be different.
 
 import (
+	"errors"
 	"log"
 	"os"
 	"os/signal"
@@ -14,11 +15,30 @@ import (
 	"github.com/vault-thirteen/Fast-CGI/example/SimpleWebServer/classes"
 )
 
+const ErrNotEnoughArguments = "not enough arguments"
+
 func main() {
-	srv, err := c.NewServer()
+	settingsFilePath, err := getSettingsFilePath()
 	mustBeNoError(err)
+
+	var settings *c.Settings
+	settings, err = c.NewSettings(settingsFilePath)
+	mustBeNoError(err)
+
+	var srv *c.Server
+	srv, err = c.NewServer(settings)
+	mustBeNoError(err)
+
 	srv.Run()
 	waitForQuitSignalFromOS(srv)
+}
+
+func getSettingsFilePath() (sfp string, err error) {
+	if len(os.Args) < 2 {
+		return sfp, errors.New(ErrNotEnoughArguments)
+	}
+
+	return os.Args[1], nil
 }
 
 func mustBeNoError(err error) {

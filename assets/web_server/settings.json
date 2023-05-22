@@ -1,0 +1,12 @@
+{
+  "documentRootPath": "D:\\Temp\\www",
+  "serverProtocol": "HTTP",
+  "gatewayInterface": "CGI/1.1",
+  "serverSoftware": "DemoGoServer/0.0.0",
+  "serverName": "localhost",
+  "serverHost": "localhost",
+  "serverPort": "8000",
+  "phpServerNetwork": "tcp",
+  "phpServerHost": "127.0.0.1",
+  "phpServerPort": "9000"
+}
