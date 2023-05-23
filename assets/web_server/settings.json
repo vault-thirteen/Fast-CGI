@@ -11,5 +11,8 @@
   "phpServerPort": "9000",
   "phpFileExtensions": [
     "php", "phtml", "php3", "php4", "php5", "phps"
-  ]
+  ],
+  "fileServerCacheSizeLimit": 0,
+  "fileServerCacheVolumeLimit": 128000000,
+  "fileServerCacheRecordTtl": 300
 }

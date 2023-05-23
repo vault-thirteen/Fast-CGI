@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -18,6 +19,8 @@ import (
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
+	sfs "github.com/vault-thirteen/Simple-File-Server"
+	"github.com/vault-thirteen/auxie/file"
 	"github.com/vault-thirteen/header"
 )
 
@@ -35,6 +38,7 @@ type Server struct {
 	settings   *Settings
 	httpServer *http.Server
 	cgiClient  *cl.Client
+	fileServer *sfs.SimpleFileServer
 }
 
 func NewServer(settings *Settings) (srv *Server, err error) {
@@ -53,6 +57,16 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 		return nil, err
 	}
 
+	srv.fileServer, err = sfs.NewSimpleFileServer(
+		srv.settings.DocumentRootPath,
+		srv.settings.FileServerCacheSizeLimit,
+		srv.settings.FileServerCacheVolumeLimit,
+		srv.settings.FileServerCacheRecordTtl,
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return srv, nil
 }
 
@@ -63,9 +77,10 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 
 	if srv.isExtOfPhpScript(scriptFileExt) {
 		srv.runPhpScript(rw, req, scriptFilePath, scriptFileName)
-	} else {
-		srv.respondWithNotAllowed(rw)
+		return
 	}
+
+	srv.serveOrdinaryFile(rw, req)
 }
 
 func (srv *Server) isExtOfPhpScript(ext string) bool {
@@ -195,13 +210,48 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFileP
 	return stdin, parameters, nil
 }
 
+func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, req *http.Request) {
+	filePath := strings.ReplaceAll(req.URL.Path, `/`, string(os.PathSeparator))
+
+	var fileContents []byte
+	var fileExists bool
+	var err error
+	fileContents, fileExists, err = srv.fileServer.GetFileContents(filePath)
+	if err != nil {
+		if err.Error() == file.ErrObjectIsNotFile {
+			srv.respondWithNotAllowed(rw)
+		} else {
+			srv.respondWithInternalServerError(rw, err)
+		}
+		return
+	}
+	if !fileExists {
+		srv.respondWithNotFound(rw)
+		return
+	}
+
+	srv.respondWithData(rw, fileContents)
+}
+
 func (srv *Server) respondWithInternalServerError(rw http.ResponseWriter, err error) {
 	log.Println(err)
 	rw.WriteHeader(http.StatusInternalServerError)
 }
 
+func (srv *Server) respondWithNotFound(rw http.ResponseWriter) {
+	rw.WriteHeader(http.StatusNotFound)
+}
+
 func (srv *Server) respondWithNotAllowed(rw http.ResponseWriter) {
 	rw.WriteHeader(http.StatusForbidden)
+}
+
+func (srv *Server) respondWithData(rw http.ResponseWriter, data []byte) {
+	var err error
+	_, err = rw.Write(data)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func (srv *Server) Run() {

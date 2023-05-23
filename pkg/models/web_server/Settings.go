@@ -14,17 +14,23 @@ const (
 )
 
 type Settings struct {
-	DocumentRootPath  string   `json:"documentRootPath"`  // Path to the 'www' folder.
-	ServerProtocol    string   `json:"serverProtocol"`    // HTTP.
-	GatewayInterface  string   `json:"gatewayInterface"`  // CGI/1.1.
-	ServerSoftware    string   `json:"serverSoftware"`    // DemoGoServer/0.0.0.
-	ServerName        string   `json:"serverName"`        // Domain name: localhost.
-	ServerHost        string   `json:"serverHost"`        // IP address or domain name: localhost.
-	ServerPort        string   `json:"serverPort"`        // 8000.
+	DocumentRootPath string `json:"documentRootPath"` // Path to the 'www' folder.
+
+	ServerProtocol   string `json:"serverProtocol"`   // HTTP.
+	GatewayInterface string `json:"gatewayInterface"` // CGI/1.1.
+	ServerSoftware   string `json:"serverSoftware"`   // DemoGoServer/0.0.0.
+	ServerName       string `json:"serverName"`       // Domain name: localhost.
+	ServerHost       string `json:"serverHost"`       // IP address or domain name: localhost.
+	ServerPort       string `json:"serverPort"`       // 8000.
+
 	PhpServerNetwork  string   `json:"phpServerNetwork"`  // tcp.
 	PhpServerHost     string   `json:"phpServerHost"`     // 127.0.0.1.
 	PhpServerPort     string   `json:"phpServerPort"`     // 9000.
 	PhpFileExtensions []string `json:"phpFileExtensions"` // "php", "phtml", ...
+
+	FileServerCacheSizeLimit   int  `json:"fileServerCacheSizeLimit"`
+	FileServerCacheVolumeLimit int  `json:"fileServerCacheVolumeLimit"`
+	FileServerCacheRecordTtl   uint `json:"fileServerCacheRecordTtl"`
 }
 
 func NewSettings(settingsFilePath string) (set *Settings, err error) {
