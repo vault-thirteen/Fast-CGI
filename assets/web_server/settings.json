@@ -8,5 +8,8 @@
   "serverPort": "8000",
   "phpServerNetwork": "tcp",
   "phpServerHost": "127.0.0.1",
-  "phpServerPort": "9000"
+  "phpServerPort": "9000",
+  "phpFileExtensions": [
+    "php", "phtml", "php3", "php4", "php5", "phps"
+  ]
 }

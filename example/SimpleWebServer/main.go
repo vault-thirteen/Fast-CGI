@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/vault-thirteen/Fast-CGI/example/SimpleWebServer/classes"
+	ws "github.com/vault-thirteen/Fast-CGI/pkg/models/web_server"
 )
 
 const ErrNotEnoughArguments = "not enough arguments"
@@ -21,12 +21,12 @@ func main() {
 	settingsFilePath, err := getSettingsFilePath()
 	mustBeNoError(err)
 
-	var settings *c.Settings
-	settings, err = c.NewSettings(settingsFilePath)
+	var settings *ws.Settings
+	settings, err = ws.NewSettings(settingsFilePath)
 	mustBeNoError(err)
 
-	var srv *c.Server
-	srv, err = c.NewServer(settings)
+	var srv *ws.Server
+	srv, err = ws.NewServer(settings)
 	mustBeNoError(err)
 
 	srv.Run()
@@ -47,7 +47,7 @@ func mustBeNoError(err error) {
 	}
 }
 
-func waitForQuitSignalFromOS(srv *c.Server) {
+func waitForQuitSignalFromOS(srv *ws.Server) {
 	osSignals := make(chan os.Signal, 16)
 	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM)
 

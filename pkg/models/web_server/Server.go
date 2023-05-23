@@ -1,4 +1,4 @@
-package c
+package ws
 
 import (
 	"context"
@@ -57,15 +57,33 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
-	srv.runPhpScript(rw, req)
+	scriptFilePath := filepath.Join(srv.settings.DocumentRootPath, req.URL.Path)
+	scriptFileName := filepath.Base(scriptFilePath)
+	scriptFileExt := filepath.Ext(scriptFileName)
+
+	if srv.isExtOfPhpScript(scriptFileExt) {
+		srv.runPhpScript(rw, req, scriptFilePath, scriptFileName)
+	} else {
+		srv.respondWithNotAllowed(rw)
+	}
 }
 
-func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request) {
+func (srv *Server) isExtOfPhpScript(ext string) bool {
+	for _, phpExt := range srv.settings.PhpFileExtensions {
+		if ext == phpExt {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, scriptFilePath string, scriptFileName string) {
 	var requestId uint16 = 1
 	var parameters []*nvpair.NameValuePair
 	var stdin []byte
 	var err error
-	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req)
+	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req, scriptFilePath, scriptFileName)
 	if err != nil {
 		srv.respondWithInternalServerError(rw, err)
 		return
@@ -109,7 +127,7 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []byte, parameters []*nvpair.NameValuePair, err error) {
+func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFilePath string, scriptFileName string) (stdin []byte, parameters []*nvpair.NameValuePair, err error) {
 	stdin, err = io.ReadAll(req.Body)
 	if err != nil {
 		return nil, nil, err
@@ -123,8 +141,6 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 	if err != nil {
 		return nil, nil, err
 	}
-
-	scriptFilePath := filepath.Join(srv.settings.DocumentRootPath, req.URL.Path)
 
 	remoteAddrParts := strings.Split(req.RemoteAddr, HostPortDelimiter)
 	if len(remoteAddrParts) != 2 {
@@ -157,7 +173,7 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestScheme, req.URL.Scheme), // Apache HTTP Server Header.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestUri, req.RequestURI),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, scriptFilePath),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, filepath.Base(scriptFilePath)), // 4.1.13.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, scriptFileName), // 4.1.13.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerAddr, serverIPAddr.String()),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerName, srv.settings.ServerName),         // 4.1.14.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerPort, srv.settings.ServerPort),         // 4.1.15.
@@ -182,6 +198,10 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request) (stdin []by
 func (srv *Server) respondWithInternalServerError(rw http.ResponseWriter, err error) {
 	log.Println(err)
 	rw.WriteHeader(http.StatusInternalServerError)
+}
+
+func (srv *Server) respondWithNotAllowed(rw http.ResponseWriter) {
+	rw.WriteHeader(http.StatusForbidden)
 }
 
 func (srv *Server) Run() {
