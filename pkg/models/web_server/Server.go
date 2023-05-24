@@ -59,6 +59,8 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 
 	srv.fileServer, err = sfs.NewSimpleFileServer(
 		srv.settings.DocumentRootPath,
+		srv.settings.FolderDefaultFiles,
+		srv.settings.IsCachingEnabled,
 		srv.settings.FileServerCacheSizeLimit,
 		srv.settings.FileServerCacheVolumeLimit,
 		srv.settings.FileServerCacheRecordTtl,
@@ -71,16 +73,32 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
-	scriptFilePath := filepath.Join(srv.settings.DocumentRootPath, req.URL.Path)
-	scriptFileName := filepath.Base(scriptFilePath)
-	scriptFileExt := filepath.Ext(scriptFileName)
+	relPath := strings.ReplaceAll(req.URL.Path, `/`, string(os.PathSeparator))
 
-	if srv.isExtOfPhpScript(scriptFileExt) {
-		srv.runPhpScript(rw, req, scriptFilePath, scriptFileName)
-		return
+	// If a folder is requested, replace it with a default file.
+	if sfs.IsPathFolder(req.URL.Path) {
+		fileName, fileExists, err := srv.fileServer.GetFolderDefaultFilename(relPath)
+		if err != nil {
+			srv.respondWithInternalServerError(rw, err)
+			return
+		}
+		if !fileExists {
+			srv.respondWithNotFound(rw)
+			return
+		}
+
+		relPath = filepath.Join(relPath, fileName)
 	}
 
-	srv.serveOrdinaryFile(rw, req)
+	fileName := filepath.Base(relPath)
+	fileExt := filepath.Ext(fileName)
+
+	if srv.isExtOfPhpScript(fileExt) {
+		absPath := filepath.Join(srv.settings.DocumentRootPath, relPath)
+		srv.runPhpScript(rw, req, absPath, fileName)
+	} else {
+		srv.serveOrdinaryFile(rw, relPath)
+	}
 }
 
 func (srv *Server) isExtOfPhpScript(ext string) bool {
@@ -210,13 +228,8 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFileP
 	return stdin, parameters, nil
 }
 
-func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, req *http.Request) {
-	filePath := strings.ReplaceAll(req.URL.Path, `/`, string(os.PathSeparator))
-
-	var fileContents []byte
-	var fileExists bool
-	var err error
-	fileContents, fileExists, err = srv.fileServer.GetFileContents(filePath)
+func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string) {
+	fileContents, fileExists, err := srv.fileServer.GetFile(relFilePath)
 	if err != nil {
 		if err.Error() == file.ErrObjectIsNotFile {
 			srv.respondWithNotAllowed(rw)

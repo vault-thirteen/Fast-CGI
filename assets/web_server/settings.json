@@ -1,5 +1,6 @@
 {
   "documentRootPath": "D:\\Temp\\www",
+  "folderDefaultFiles": ["index.html", "index.htm", "index.php"],
   "serverProtocol": "HTTP",
   "gatewayInterface": "CGI/1.1",
   "serverSoftware": "DemoGoServer/0.0.0",
@@ -12,6 +13,7 @@
   "phpFileExtensions": [
     "php", "phtml", "php3", "php4", "php5", "phps"
   ],
+  "isCachingEnabled": true,
   "fileServerCacheSizeLimit": 0,
   "fileServerCacheVolumeLimit": 128000000,
   "fileServerCacheRecordTtl": 300

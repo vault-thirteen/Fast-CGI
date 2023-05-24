@@ -14,7 +14,8 @@ const (
 )
 
 type Settings struct {
-	DocumentRootPath string `json:"documentRootPath"` // Path to the 'www' folder.
+	DocumentRootPath   string   `json:"documentRootPath"`   // Path to the 'www' folder.
+	FolderDefaultFiles []string `json:"folderDefaultFiles"` // List of default file names for a folder.
 
 	ServerProtocol   string `json:"serverProtocol"`   // HTTP.
 	GatewayInterface string `json:"gatewayInterface"` // CGI/1.1.
@@ -28,6 +29,7 @@ type Settings struct {
 	PhpServerPort     string   `json:"phpServerPort"`     // 9000.
 	PhpFileExtensions []string `json:"phpFileExtensions"` // "php", "phtml", ...
 
+	IsCachingEnabled           bool `json:"isCachingEnabled"`
 	FileServerCacheSizeLimit   int  `json:"fileServerCacheSizeLimit"`
 	FileServerCacheVolumeLimit int  `json:"fileServerCacheVolumeLimit"`
 	FileServerCacheRecordTtl   uint `json:"fileServerCacheRecordTtl"`
