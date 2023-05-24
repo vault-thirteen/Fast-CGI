@@ -19,6 +19,7 @@ import (
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
+	mime "github.com/vault-thirteen/MIME"
 	sfs "github.com/vault-thirteen/Simple-File-Server"
 	"github.com/vault-thirteen/auxie/file"
 	"github.com/vault-thirteen/header"
@@ -32,6 +33,7 @@ const (
 const (
 	HostPortDelimiter  = ":"
 	GolangNetNetworkIP = "ip" // These constants should be exported by Golang ! Source: net/iprawsock.go.
+	MimeTypeDefault    = "application/octet-stream"
 )
 
 type Server struct {
@@ -39,6 +41,10 @@ type Server struct {
 	httpServer *http.Server
 	cgiClient  *cl.Client
 	fileServer *sfs.SimpleFileServer
+
+	// MIME types.
+	// Key: file extension (dot-prefixed); Value: MIME type.
+	mimeTypes map[string]string
 }
 
 func NewServer(settings *Settings) (srv *Server, err error) {
@@ -69,6 +75,42 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 		return nil, err
 	}
 
+	srv.mimeTypes = map[string]string{
+		".css":   mime.TypeTextCss,
+		".htm":   mime.TypeTextHtml,
+		".html":  mime.TypeTextHtml,
+		".js":    mime.TypeApplicationJavascript,
+		".json":  mime.TypeApplicationJson,
+		".pdf":   mime.TypeApplicationPdf,
+		".txt":   mime.TypeTextPlain,
+		".xhtml": mime.TypeApplicationXhtmlXml,
+		".xml":   mime.TypeApplicationXml,
+
+		// Images.
+		".avif": mime.TypeImageAvif,
+		".bmp":  mime.TypeImageBmp,
+		".gif":  mime.TypeImageGif,
+		".ico":  mime.TypeImageVndMicrosoftIcon,
+		".jpeg": mime.TypeImageJpeg,
+		".jpg":  mime.TypeImageJpeg,
+		".png":  mime.TypeImagePng,
+		".svg":  mime.TypeImageSvgXml,
+		".webp": mime.TypeImageWebp,
+
+		// Audio.
+		".aac":  mime.TypeAudioAac,
+		".mp3":  mime.TypeAudioMpeg,
+		".opus": mime.TypeAudioOpus,
+
+		// Video.
+		".mp4":  mime.TypeVideoMp4,
+		".mpeg": mime.TypeVideoMpeg,
+
+		// Archive.
+		".rar": mime.TypeApplicationVndRar,
+		".zip": mime.TypeApplicationZip,
+	}
+
 	return srv, nil
 }
 
@@ -97,8 +139,19 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 		absPath := filepath.Join(srv.settings.DocumentRootPath, relPath)
 		srv.runPhpScript(rw, req, absPath, fileName)
 	} else {
-		srv.serveOrdinaryFile(rw, relPath)
+		srv.serveOrdinaryFile(rw, relPath, fileExt)
 	}
+}
+
+func (srv *Server) getMimeTypeByExt(ext string) (mimeType string) {
+	var ok bool
+	mimeType, ok = srv.mimeTypes[ext]
+	if !ok {
+		log.Println(fmt.Sprintf("unknown file extension: %v.", ext))
+		return MimeTypeDefault
+	}
+
+	return mimeType
 }
 
 func (srv *Server) isExtOfPhpScript(ext string) bool {
@@ -138,6 +191,14 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, scrip
 			log.Println(err)
 		}
 		return
+	}
+
+	if srv.settings.FixRelativeRedirects {
+		err = phpScriptOutput.FixLocationHeader(req.URL.Path)
+		if err != nil {
+			srv.respondWithInternalServerError(rw, err)
+			return
+		}
 	}
 
 	// Headers.
@@ -228,7 +289,7 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFileP
 	return stdin, parameters, nil
 }
 
-func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string) {
+func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string, fileExt string) {
 	fileContents, fileExists, err := srv.fileServer.GetFile(relFilePath)
 	if err != nil {
 		if err.Error() == file.ErrObjectIsNotFile {
@@ -243,7 +304,7 @@ func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string)
 		return
 	}
 
-	srv.respondWithData(rw, fileContents)
+	srv.respondWithData(rw, fileContents, fileExt)
 }
 
 func (srv *Server) respondWithInternalServerError(rw http.ResponseWriter, err error) {
@@ -259,7 +320,10 @@ func (srv *Server) respondWithNotAllowed(rw http.ResponseWriter) {
 	rw.WriteHeader(http.StatusForbidden)
 }
 
-func (srv *Server) respondWithData(rw http.ResponseWriter, data []byte) {
+func (srv *Server) respondWithData(rw http.ResponseWriter, data []byte, fileExt string) {
+	rw.Header().Set(header.HttpHeaderContentType, srv.getMimeTypeByExt(fileExt))
+	rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)
+
 	var err error
 	_, err = rw.Write(data)
 	if err != nil {

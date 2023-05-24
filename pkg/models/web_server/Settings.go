@@ -29,6 +29,11 @@ type Settings struct {
 	PhpServerPort     string   `json:"phpServerPort"`     // 9000.
 	PhpFileExtensions []string `json:"phpFileExtensions"` // "php", "phtml", ...
 
+	// PHP is known to use an old-school variant of the 'Location' HTTP header.
+	// FixRelativeRedirects, when enabled, fixed outdated URLs.
+	// This feature is experimental and not safe.
+	FixRelativeRedirects bool `json:"fixRelativeRedirects"`
+
 	IsCachingEnabled           bool `json:"isCachingEnabled"`
 	FileServerCacheSizeLimit   int  `json:"fileServerCacheSizeLimit"`
 	FileServerCacheVolumeLimit int  `json:"fileServerCacheVolumeLimit"`

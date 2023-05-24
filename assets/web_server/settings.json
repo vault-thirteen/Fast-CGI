@@ -13,6 +13,7 @@
   "phpFileExtensions": [
     "php", "phtml", "php3", "php4", "php5", "phps"
   ],
+  "fixRelativeRedirects": true,
   "isCachingEnabled": true,
   "fileServerCacheSizeLimit": 0,
   "fileServerCacheVolumeLimit": 128000000,

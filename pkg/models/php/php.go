@@ -5,10 +5,12 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"path"
 	"strings"
 
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/common"
 	"github.com/vault-thirteen/auxie/number"
+	"github.com/vault-thirteen/header"
 )
 
 const (
@@ -17,12 +19,16 @@ const (
 	// Status is a virtual HTTP header. It looks like PHP returns HTTP status
 	// information inside a virtual HTTP header named 'Status'.
 	Status = "status"
+
+	OldRelativeUrlMarker = `./`
+	ForwardSlash         = `/`
 )
 
 const (
-	ErrNoHeaderOnLine     = "no header on line: %v"
-	ErrHeaderNameIsEmpty  = "header name is empty: %v"
-	ErrHeaderValueIsEmpty = "header value is empty: %v"
+	ErrNoHeaderOnLine            = "no header on line: %v"
+	ErrHeaderNameIsEmpty         = "header name is empty: %v"
+	ErrHeaderValueIsEmpty        = "header value is empty: %v"
+	ErrTooManyRelativeUrlMarkers = "too many relative URL markers: %v"
 )
 
 // Data is data returned by a PHP script.
@@ -128,4 +134,34 @@ func ParseStatus(statusValue string) (statusCode uint, statusText string, err er
 	n++
 	statusText = strings.TrimSpace(statusValue[n:])
 	return statusCode, statusText, nil
+}
+
+// FixLocationHeader fixes relative URLs in 'Location' HTTP headers.
+// 'currentUrlPath' is the value of 'URL.Path' of the current request.
+func (dta *Data) FixLocationHeader(currentUrlPath string) (err error) {
+	currentUrlPathStripped := strings.TrimSuffix(strings.TrimPrefix(currentUrlPath, ForwardSlash), ForwardSlash)
+
+	for _, hdr := range dta.Headers {
+		if hdr.Name == header.HttpHeaderLocation {
+			hdr.Value, err = fixRelativeUrl(hdr.Value, currentUrlPathStripped)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+// fixRelativeUrl fixes the relative URL specified in 'url' parameter.
+func fixRelativeUrl(url string, currentUrlPathStripped string) (fixedUrl string, err error) {
+	markersCount := strings.Count(url, OldRelativeUrlMarker)
+	if markersCount == 0 {
+		return url, nil
+	}
+	if markersCount > 1 {
+		return "", fmt.Errorf(ErrTooManyRelativeUrlMarkers, url)
+	}
+
+	return ForwardSlash + path.Join(currentUrlPathStripped, url[strings.Index(url, OldRelativeUrlMarker)+2:]), nil
 }
