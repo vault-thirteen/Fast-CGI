@@ -95,14 +95,14 @@ func SplitHeadersFromStdout(stdout []byte) (data *Data, err error) {
 
 // ParseHeader parses a PHP output line of text containing the HTTP header.
 func ParseHeader(line string) (hdr *Header, err error) {
-	parts := strings.Split(line, HeaderNameValueDelimiter)
-	if len(parts) != 2 {
+	sepIdx := strings.Index(line, HeaderNameValueDelimiter)
+	if sepIdx < 0 {
 		return nil, fmt.Errorf(ErrNoHeaderOnLine, line)
 	}
 
 	hdr = &Header{
-		Name:  strings.TrimSpace(parts[0]),
-		Value: strings.TrimSpace(parts[1]),
+		Name:  strings.TrimSpace(line[:sepIdx]),
+		Value: strings.TrimSpace(line[sepIdx+1:]),
 	}
 
 	if len(hdr.Name) == 0 {
