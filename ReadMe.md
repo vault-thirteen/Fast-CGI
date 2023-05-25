@@ -166,8 +166,8 @@ layer.
       mechanisms for guessing the real meaning of a URL. All this situation
       introduces at least two consequences: poor performance of a web server 
       and a huge hole in the security of an entire system. This `Extra Path` 
-      feature should be disabled every time except those corner cases when you 
-      really need it to experiment with some legacy code.  
+      feature should be disabled all the time except those corner cases when 
+      you really need it to experiment with some legacy code.  
 
 ## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
