@@ -179,7 +179,19 @@ layer.
       the `install` folder. Together with another ancient habit to use relative 
       links, this makes all the relations between pages, files and scripts – a 
       total nonsense. Relative links stop working, CSS styles stop being used, 
-      JavaScript dies and so on. The page breaks apart into sand and dust ... 
+      JavaScript dies and so on. The page breaks apart into sand and dust ...  
+   
+   *  The above stated bug with page levels can be mitigated using HTTP 
+      redirects. The example web server tries to use 307 and 302 status 
+      redirects for requests having HTTP body and those without it. But it 
+      looks like this redirect can break some sensitive scripts which do not 
+      allow redirects for some reason.  
+
+3. Experiment with phpBB 3 forum installation has shown that the installer has 
+bugs. For example, the same page is linked with and without a trailing slash, 
+which is a violation of common sense and is critical for parsing the CGI extra 
+paths. Another bug is that the installer starts looping the `/installer/status` 
+request infinitely at 15% of the installation progress. R.i.P., phpBB.  
 
 ## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
