@@ -2,6 +2,16 @@
 ### For Go Programming Language
 ![FastCGI Logotype](img/Logo_GreyBg_330x200.png)
 
+## <a name="section-0" id="section-0">Contents</a>
+* [Description](#section-1)
+* [Repository Structure](#section-2)
+* [Usage](#section-3)
+* [Why ?](#section-4)
+* [Résumé](#section-5)
+* [Feedback](#section-6)
+
+## <a name="section-1" id="section-1">Description</a>
+
 This repository stores documentation of CGI and FastCGI interfaces and 
 programming tools which may be useful for building applications using the 
 FastCGI interface in Go programming language, a.k.a. Golang.
@@ -15,7 +25,12 @@ The library implements methods for a FastCGI <b>client</b>, mostly.
 Implementation of a FastCGI <b>server</b> can be found in a built-in standard library
 of Go language – `net/http/fcgi` package, https://pkg.go.dev/net/http/fcgi.
 
-## Structure
+The library provides a simple experimental web server to use with legacy 
+scripts supporting the CGI and FastCGI interfaces. This server should not be 
+used anywhere except some experiments with PHP scripts because it has several 
+issues which are described further in the [Résumé](#section-5) section.
+
+## <a name="section-2" id="section-2">Repository Structure</a>
 
 **N.B.** *Due to some bugs in Go language, the structure of this repository is 
 heavily modified to meet the requirements of the Google's Golang proxy server 
@@ -31,7 +46,7 @@ follows:
 * [DOC](doc) folder contains the documentation.
 * Other folders contain various parts of the library for Go language.
 
-## Usage
+## <a name="section-3" id="section-3">Usage</a>
 
 Usage examples can be found in the ['example'](example) folder.
 
@@ -83,7 +98,7 @@ func runSimplePhpScript(scriptFilePath string) (err error) {
 
 For more complex tasks, the `Client` object and its methods can be used.
 
-## Why ?
+## <a name="section-4" id="section-4">Why ?</a>
 
 <b>Reason 1</b>
 
@@ -114,7 +129,50 @@ interface. It is not necessary to re-write PHP projects in Go from scratch.
 This is why it is said in this repository, that this project is a compatibility
 layer.
 
-## Feedback
+
+## <a name="section-5" id="section-5">Résumé</a>
+
+1. The **FastCGI** interface itself is not so bad even with all its drawbacks.
+<br><br>
+   *  It uses 16-bit fields for data transmission making it practically useless 
+      for HTTP bodies being longer than 65535 bytes, but it does its job when 
+      you need to connect totally different systems together. The main problem 
+      lies much deeper than FastCGI.
+
+
+2. The main problem is the **CGI** interface which is even older than 
+**FastCGI** interface and has several serious issues.
+<br><br>
+
+   *  First of all, CGI was made for UNIX operating systems. It was using 
+      so-called UNIX sockets to make it work faster than a turtle. Other 
+      operating systems, such as Microsoft Windows, do not have UNIX sockets 
+      and use TCP network protocol for inter-process communication. This 
+      approach itself decreases the already slow protocol and makes it even 
+      slower.
+<br><br>
+
+   *  CGI on UNIX uses forward slash symbols in all paths – in URL and in paths 
+      inside an operating system. This creates difficulties for non-UNIX 
+      operating systems.
+<br><br>
+
+   *  The `Extra Path` feature of the CGI interface is very dumb and dangerous 
+      at the same time. Yes, this is **D&D**, but it is not about dragons this 
+      time. First of all, it breaks URL parsing completely, because there is no 
+      way to distinguish files and folders by only looking at their names. So, 
+      the URL `http://some.machine/cgi-bin/display.pl/cgi/cgi_doc.txt`
+      in real life may be a Perl script `display.pl` with a CGI "extra path", 
+      or it may be a text file `cgi_doc.txt` sitting inside a folder with dot 
+      symbol in its name. This "feature" makes CGI unusable in real-world 
+      applications because it forces owners of web servers to invent stupid 
+      mechanisms for guessing the real meaning of a URL. All this situation
+      introduces at least two consequences: poor performance of a web server 
+      and a huge hole in the security of an entire system. This `Extra Path` 
+      feature should be disabled every time except those corner cases when you 
+      really need it to experiment with some legacy code.
+
+## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
 * Comments should be written to the `Discussions` section:
   [here](https://github.com/vault-thirteen/Fast-CGI/discussions)
