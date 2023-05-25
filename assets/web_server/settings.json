@@ -15,8 +15,9 @@
   ],
   "fixRelativeRedirects": true,
   "isCgiExtraPathEnabled": true,
-  "isCachingEnabled": true,
+  "isCachingEnabled": false,
   "fileServerCacheSizeLimit": 0,
   "fileServerCacheVolumeLimit": 128000000,
-  "fileServerCacheRecordTtl": 300
+  "fileServerCacheRecordTtl": 300,
+  "phpbbDoNotRedirectExtraPathInstallerStatus": true
 }

@@ -141,15 +141,11 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	if len(psi.UrlExtraPath) > 0 {
-		// Redirect works with simple pages, but it loops infinitely when
-		// installation starts. It looks like phpBB installer does not like
-		// redirects.
-		srv.redirectToFriendlyUrlWithoutExtraPath(rw, req, psi)
+	if srv.redirectToFriendlyUrlWithoutExtraPathIfNeeded(rw, req, psi) {
 		return
 	}
 
-	log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", psi.UrlRelPath, psi.UrlExtraPath)) //TODO
+	//log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", psi.UrlRelPath, psi.UrlExtraPath)) //DEBUG.
 	psi.FilePath = strings.ReplaceAll(psi.UrlRelPath, `/`, string(os.PathSeparator))
 
 	// If a folder is requested, replace it with a default file.

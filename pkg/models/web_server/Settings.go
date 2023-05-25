@@ -44,6 +44,10 @@ type Settings struct {
 	FileServerCacheSizeLimit   int  `json:"fileServerCacheSizeLimit"`
 	FileServerCacheVolumeLimit int  `json:"fileServerCacheVolumeLimit"`
 	FileServerCacheRecordTtl   uint `json:"fileServerCacheRecordTtl"`
+
+	// This setting forbids redirecting phpBB requests using `/installer/status`
+	// CGI extra path. Such requests are done directly.
+	PhpbbDoNotRedirectExtraPathInstallerStatus bool `json:"phpbbDoNotRedirectExtraPathInstallerStatus"`
 }
 
 func NewSettings(settingsFilePath string) (set *Settings, err error) {

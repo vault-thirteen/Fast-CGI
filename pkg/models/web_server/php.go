@@ -17,9 +17,13 @@ import (
 )
 
 const (
-	HostPortDelimiter    = ":"
-	GolangNetNetworkIP   = "ip" // These constants should be exported by Golang ! Source: net/iprawsock.go.
-	ExtraPathSingleSlash = `/`
+	HostPortDelimiter  = ":"
+	GolangNetNetworkIP = "ip" // These constants should be exported by Golang ! Source: net/iprawsock.go.
+)
+
+const (
+	ExtraPathSingleSlash     = `/`
+	ExtraPathInstallerStatus = `/installer/status`
 )
 
 func (srv *Server) isExtOfPhpScript(ext string) bool {
@@ -127,7 +131,7 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, psi *
 		return
 	}
 
-	//nvpair.PrintParameters(parameters) // DEBUG. //TODO
+	//nvpair.PrintParameters(parameters) // DEBUG.
 
 	var phpScriptOutput *pm.Data
 	var phpErr error
@@ -183,6 +187,21 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, psi *
 // 'requestURI' is the original request URI with extra path.
 func (srv *Server) composeFriendlyUrlWithoutExtraPath(requestURI, extraPath string) (friendlyUrl string) {
 	return strings.TrimSuffix(requestURI, extraPath) + "?" + pm.QueryParamExtraPath + "=" + extraPath
+}
+
+// redirectToFriendlyUrlWithoutExtraPathIfNeeded redirects to a friendly URL without CGI extra path if needed.
+// If a redirect has happened, 'true' is returned, otherwise – false.
+func (srv *Server) redirectToFriendlyUrlWithoutExtraPathIfNeeded(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) (isRedirectDone bool) {
+	if len(psi.UrlExtraPath) == 0 {
+		return false
+	}
+
+	if (srv.settings.PhpbbDoNotRedirectExtraPathInstallerStatus) && (psi.UrlExtraPath == ExtraPathInstallerStatus) {
+		return false
+	}
+
+	srv.redirectToFriendlyUrlWithoutExtraPath(rw, req, psi)
+	return true
 }
 
 func (srv *Server) redirectToFriendlyUrlWithoutExtraPath(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) {
