@@ -115,23 +115,25 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
-	var relPath = req.URL.Path
-	var extraPath string
+	var psi = &pm.PhpScriptInfo{
+		OriginalUrlPath: req.URL.Path,
+		UrlRelPath:      req.URL.Path,
+	}
+
 	if srv.settings.IsCgiExtraPathEnabled {
-		var path string
-		var err error
-		path, extraPath, err = srv.fileServer.FindExtraPath(relPath)
+		path, extraPath, err := srv.fileServer.FindExtraPath(psi.UrlRelPath)
 		if err == nil {
-			relPath = path
+			psi.UrlRelPath = path
+			psi.UrlExtraPath = extraPath
 		}
 	}
 
-	log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", relPath, extraPath)) //TODO
-	relPath = strings.ReplaceAll(relPath, `/`, string(os.PathSeparator))
+	log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", psi.UrlRelPath, psi.UrlExtraPath)) //TODO
+	psi.FilePath = strings.ReplaceAll(psi.UrlRelPath, `/`, string(os.PathSeparator))
 
 	// If a folder is requested, replace it with a default file.
-	if sfs.IsPathFolder(req.URL.Path) {
-		fileName, fileExists, err := srv.fileServer.GetFolderDefaultFilename(relPath)
+	if sfs.IsPathFolder(psi.OriginalUrlPath) {
+		fileName, fileExists, err := srv.fileServer.GetFolderDefaultFilename(psi.UrlRelPath)
 		if err != nil {
 			srv.respondWithInternalServerError(rw, err)
 			return
@@ -141,17 +143,20 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		relPath = filepath.Join(relPath, fileName)
+		psi.FilePath = filepath.Join(psi.FilePath, fileName)
 	}
 
-	fileName := filepath.Base(relPath)
-	fileExt := filepath.Ext(fileName)
+	psi.FileName = filepath.Base(psi.FilePath)
+	psi.FileExt = filepath.Ext(psi.FileName)
 
-	if srv.isExtOfPhpScript(fileExt) {
-		absPath := filepath.Join(srv.settings.DocumentRootPath, relPath)
-		srv.runPhpScript(rw, req, absPath, fileName)
+	if srv.isExtOfPhpScript(psi.FileExt) {
+		psi.FileAbsPath = filepath.Join(srv.settings.DocumentRootPath, psi.FilePath)
+		if len(psi.UrlExtraPath) > 0 {
+			psi.FileAbsExtraPath = filepath.Join(srv.settings.DocumentRootPath, psi.UrlExtraPath)
+		}
+		srv.runPhpScript(rw, req, psi)
 	} else {
-		srv.serveOrdinaryFile(rw, relPath, fileExt)
+		srv.serveOrdinaryFile(rw, psi.FilePath, psi.FileExt)
 	}
 }
 
@@ -176,12 +181,12 @@ func (srv *Server) isExtOfPhpScript(ext string) bool {
 	return false
 }
 
-func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, scriptFilePath string, scriptFileName string) {
+func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) {
 	var requestId uint16 = 1
 	var parameters []*nvpair.NameValuePair
 	var stdin []byte
 	var err error
-	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req, scriptFilePath, scriptFileName)
+	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req, psi)
 	if err != nil {
 		srv.respondWithInternalServerError(rw, err)
 		return
@@ -233,7 +238,7 @@ func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, scrip
 	}
 }
 
-func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFilePath string, scriptFileName string) (stdin []byte, parameters []*nvpair.NameValuePair, err error) {
+func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, psi *pm.PhpScriptInfo) (stdin []byte, parameters []*nvpair.NameValuePair, err error) {
 	stdin, err = io.ReadAll(req.Body)
 	if err != nil {
 		return nil, nil, err
@@ -266,8 +271,8 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFileP
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentRoot, srv.settings.DocumentRootPath),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentUri, req.URL.Path),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_GatewayInterface, srv.settings.GatewayInterface), // 4.1.4.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathInfo, ""), // 4.1.5.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathTranslated, ""), // 4.1.6.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathInfo, psi.UrlExtraPath),                      // 4.1.5.
+		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathTranslated, psi.FileAbsExtraPath),            // 4.1.6.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_QueryString, req.URL.RawQuery), // 4.1.7.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RedirectStatus, strconv.Itoa(http.StatusOK)),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemoteAddr, remoteAddrParts[0]), // Host. 4.1.8.
@@ -278,8 +283,8 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, scriptFileP
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestMethod, req.Method),     // 4.1.12.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestScheme, req.URL.Scheme), // Apache HTTP Server Header.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestUri, req.RequestURI),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, scriptFilePath),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, scriptFileName), // 4.1.13.
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, psi.FileAbsPath),
+		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, psi.FileName), // 4.1.13.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerAddr, serverIPAddr.String()),
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerName, srv.settings.ServerName),         // 4.1.14.
 		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerPort, srv.settings.ServerPort),         // 4.1.15.
