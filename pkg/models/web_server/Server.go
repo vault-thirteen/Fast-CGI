@@ -115,7 +115,19 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
-	relPath := strings.ReplaceAll(req.URL.Path, `/`, string(os.PathSeparator))
+	var relPath = req.URL.Path
+	var extraPath string
+	if srv.settings.IsCgiExtraPathEnabled {
+		var path string
+		var err error
+		path, extraPath, err = srv.fileServer.FindExtraPath(relPath)
+		if err == nil {
+			relPath = path
+		}
+	}
+
+	log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", relPath, extraPath)) //TODO
+	relPath = strings.ReplaceAll(relPath, `/`, string(os.PathSeparator))
 
 	// If a folder is requested, replace it with a default file.
 	if sfs.IsPathFolder(req.URL.Path) {

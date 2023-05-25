@@ -34,6 +34,12 @@ type Settings struct {
 	// This feature is experimental and not safe.
 	FixRelativeRedirects bool `json:"fixRelativeRedirects"`
 
+	// IsCgiExtraPathEnabled flag enables support for CGI feature called "Extra
+	// Path". This feature allows to make crazy-looking URLs which are
+	// impossible to be parsed, something like the following:
+	// http://some.machine/cgi-bin/display.pl/cgi/cgi_doc.txt
+	IsCgiExtraPathEnabled bool `json:"isCgiExtraPathEnabled"`
+
 	IsCachingEnabled           bool `json:"isCachingEnabled"`
 	FileServerCacheSizeLimit   int  `json:"fileServerCacheSizeLimit"`
 	FileServerCacheVolumeLimit int  `json:"fileServerCacheVolumeLimit"`
