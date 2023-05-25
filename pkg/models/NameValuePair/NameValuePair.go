@@ -2,6 +2,7 @@ package nvpair
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/VariableLength"
@@ -124,4 +125,11 @@ func (nvp *NameValuePair) ToBytes() (ba []byte, err error) {
 	}
 
 	return buf.Bytes(), nil
+}
+
+// PrintParameters is used for debugging parameters.
+func PrintParameters(params []*NameValuePair) {
+	for i, p := range params {
+		fmt.Println(fmt.Sprintf("%v.\t[%v]=[%v]", i+1, string(p.Name), string(p.Value)))
+	}
 }

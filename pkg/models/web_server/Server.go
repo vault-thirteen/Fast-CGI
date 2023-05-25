@@ -2,7 +2,6 @@ package ws
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -10,14 +9,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/vault-thirteen/Fast-CGI/pkg/Client"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
 	mime "github.com/vault-thirteen/MIME"
 	sfs "github.com/vault-thirteen/Simple-File-Server"
@@ -31,9 +26,7 @@ const (
 )
 
 const (
-	HostPortDelimiter  = ":"
-	GolangNetNetworkIP = "ip" // These constants should be exported by Golang ! Source: net/iprawsock.go.
-	MimeTypeDefault    = "application/octet-stream"
+	MimeTypeDefault = "application/octet-stream"
 )
 
 type Server struct {
@@ -75,7 +68,13 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 		return nil, err
 	}
 
-	srv.mimeTypes = map[string]string{
+	srv.mimeTypes = srv.getMimeTypes()
+
+	return srv, nil
+}
+
+func (srv *Server) getMimeTypes() (mimeTypes map[string]string) {
+	return map[string]string{
 		".css":   mime.TypeTextCss,
 		".htm":   mime.TypeTextHtml,
 		".html":  mime.TypeTextHtml,
@@ -110,29 +109,55 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 		".rar": mime.TypeApplicationVndRar,
 		".zip": mime.TypeApplicationZip,
 	}
-
-	return srv, nil
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
+	body, _ := io.ReadAll(req.Body) //TODO
+	log.Println("[BODY]", string(body))
+
 	var psi = &pm.PhpScriptInfo{
 		OriginalUrlPath: req.URL.Path,
 		UrlRelPath:      req.URL.Path,
 	}
 
+	psi.QueryParamExtraPath = req.URL.Query().Get(pm.QueryParamExtraPath)
+
+	var isFolderCheckDisabled = false
 	if srv.settings.IsCgiExtraPathEnabled {
 		path, extraPath, err := srv.fileServer.FindExtraPath(psi.UrlRelPath)
 		if err == nil {
 			psi.UrlRelPath = path
 			psi.UrlExtraPath = extraPath
 		}
+
+		// The installer of phpBB has a bug:
+		// The installation process is started by a redirect to the page:
+		// "http://localhost:8000/phpBB3/install/app.php", no trailing slash.
+		// The link to itself from the page leads to another URL:
+		// "http://localhost:8000/phpBB3/install/app.php/", with trailing slash.
+		// What can I say ? You guys are very lame. Because of you I had to
+		// write all this stupid shit. This video very vividly shows how phpBB
+		// and CGI work together in a modern web server. Enjoy the movie:
+		// https://www.youtube.com/watch?v=JHA6OxF3k0g
+		if psi.UrlExtraPath == ExtraPathSingleSlash {
+			psi.UrlExtraPath = ""
+			isFolderCheckDisabled = true
+		}
+	}
+
+	if len(psi.UrlExtraPath) > 0 {
+		// Redirect works with simple pages, but it loops infinitely when
+		// installation starts. It looks like phpBB installer does not like
+		// redirects.
+		srv.redirectToFriendlyUrlWithoutExtraPath(rw, req, psi)
+		return
 	}
 
 	log.Println(fmt.Sprintf("path=[%v], extra-path=[%v].", psi.UrlRelPath, psi.UrlExtraPath)) //TODO
 	psi.FilePath = strings.ReplaceAll(psi.UrlRelPath, `/`, string(os.PathSeparator))
 
 	// If a folder is requested, replace it with a default file.
-	if sfs.IsPathFolder(psi.OriginalUrlPath) {
+	if (sfs.IsPathFolder(psi.OriginalUrlPath)) && (!isFolderCheckDisabled) {
 		fileName, fileExists, err := srv.fileServer.GetFolderDefaultFilename(psi.UrlRelPath)
 		if err != nil {
 			srv.respondWithInternalServerError(rw, err)
@@ -169,141 +194,6 @@ func (srv *Server) getMimeTypeByExt(ext string) (mimeType string) {
 	}
 
 	return mimeType
-}
-
-func (srv *Server) isExtOfPhpScript(ext string) bool {
-	for _, phpExt := range srv.settings.PhpFileExtensions {
-		if ext == phpExt {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) {
-	var requestId uint16 = 1
-	var parameters []*nvpair.NameValuePair
-	var stdin []byte
-	var err error
-	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req, psi)
-	if err != nil {
-		srv.respondWithInternalServerError(rw, err)
-		return
-	}
-
-	var phpScriptOutput *pm.Data
-	var phpErr error
-	phpScriptOutput, phpErr = pm.ExecPhpScriptAndGetHttpData(srv.cgiClient, requestId, parameters, stdin)
-	if phpErr != nil {
-		// Headers.
-		rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)
-
-		// Status.
-		rw.WriteHeader(http.StatusInternalServerError)
-
-		// Body.
-		_, err = rw.Write([]byte(phpErr.Error()))
-		if err != nil {
-			log.Println(err)
-		}
-		return
-	}
-
-	if srv.settings.FixRelativeRedirects {
-		err = phpScriptOutput.FixLocationHeader(req.URL.Path)
-		if err != nil {
-			srv.respondWithInternalServerError(rw, err)
-			return
-		}
-	}
-
-	// Headers.
-	for _, phpHdr := range phpScriptOutput.Headers {
-		rw.Header().Set(phpHdr.Name, phpHdr.Value)
-	}
-	rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)
-
-	// Status.
-	if phpScriptOutput.StatusCode == 0 {
-		rw.WriteHeader(http.StatusOK)
-	} else {
-		rw.WriteHeader(int(phpScriptOutput.StatusCode))
-	}
-
-	// Body.
-	_, err = rw.Write(phpScriptOutput.Body)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
-func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, psi *pm.PhpScriptInfo) (stdin []byte, parameters []*nvpair.NameValuePair, err error) {
-	stdin, err = io.ReadAll(req.Body)
-	if err != nil {
-		return nil, nil, err
-	}
-	if len(stdin) != int(req.ContentLength) {
-		return nil, nil, errors.New(ErrContentLengthMismatch)
-	}
-
-	var authScheme string
-	authScheme, _, err = hm.ParseAuthorizationHeader(req.Header.Get(header.HttpHeaderAuthorization))
-	if err != nil {
-		return nil, nil, err
-	}
-
-	remoteAddrParts := strings.Split(req.RemoteAddr, HostPortDelimiter)
-	if len(remoteAddrParts) != 2 {
-		return nil, nil, errors.New(ErrRemoteAddrParts)
-	}
-
-	var serverIPAddr *net.IPAddr
-	serverIPAddr, err = net.ResolveIPAddr(GolangNetNetworkIP, srv.settings.ServerHost)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	parameters = []*nvpair.NameValuePair{
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_AuthType, authScheme),                                      // 4.1.1.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ContentLength, strconv.Itoa(len(stdin))),                   // 4.1.2.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ContentType, req.Header.Get(header.HttpHeaderContentType)), // 4.1.3.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentRoot, srv.settings.DocumentRootPath),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_DocumentUri, req.URL.Path),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_GatewayInterface, srv.settings.GatewayInterface), // 4.1.4.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathInfo, psi.UrlExtraPath),                      // 4.1.5.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_PathTranslated, psi.FileAbsExtraPath),            // 4.1.6.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_QueryString, req.URL.RawQuery), // 4.1.7.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RedirectStatus, strconv.Itoa(http.StatusOK)),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemoteAddr, remoteAddrParts[0]), // Host. 4.1.8.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemoteHost, ""),                 // FQDN. 4.1.9.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemoteIdent, ""),                // 4.1.10.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemotePort, remoteAddrParts[1]), // Port.
-		//nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RemoteUser, ""),                 // 4.1.11.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestMethod, req.Method),     // 4.1.12.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestScheme, req.URL.Scheme), // Apache HTTP Server Header.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_RequestUri, req.RequestURI),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptFilename, psi.FileAbsPath),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ScriptName, psi.FileName), // 4.1.13.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerAddr, serverIPAddr.String()),
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerName, srv.settings.ServerName),         // 4.1.14.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerPort, srv.settings.ServerPort),         // 4.1.15.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerProtocol, req.Proto),                   // 4.1.16.
-		nvpair.NewNameValuePairWithTextValueU(dm.Parameter_ServerSoftware, srv.settings.ServerSoftware), // 4.1.17.
-		// HTTP_XXX // 4.1.18.  Protocol-Specific Meta-Variables
-	}
-
-	// Add Client's HTTP Headers.
-	hm.AddHttpHeadersToParameters(&parameters, req.Header)
-
-	// There is a known bug or vulnerability with 'HTTP_HOST' header. It is
-	// recommended to ignore this header in PHP while a client is able to
-	// change this header manually. In any case, the server always sends its
-	// address using the following variables: 'SERVER_ADDR', 'SERVER_NAME' and
-	// 'SERVER_PORT', which should be used instead of client's 'HTTP_HOST'
-	// header.
-
-	return stdin, parameters, nil
 }
 
 func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string, fileExt string) {
