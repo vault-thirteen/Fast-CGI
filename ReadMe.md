@@ -133,7 +133,7 @@ layer.
 ## <a name="section-5" id="section-5">Résumé</a>
 
 1. The **FastCGI** interface itself is not so bad even with all its drawbacks.
-<br><br>
+<br>
    *  It uses 16-bit fields for data transmission making it practically useless 
       for HTTP bodies being longer than 65535 bytes, but it does its job when 
       you need to connect totally different systems together. The main problem 
