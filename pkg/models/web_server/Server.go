@@ -3,7 +3,6 @@ package ws
 import (
 	"context"
 	"fmt"
-	"io"
 	"log"
 	"net"
 	"net/http"
@@ -112,9 +111,6 @@ func (srv *Server) getMimeTypes() (mimeTypes map[string]string) {
 }
 
 func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
-	body, _ := io.ReadAll(req.Body) //TODO
-	log.Println("[BODY]", string(body))
-
 	var psi = &pm.PhpScriptInfo{
 		OriginalUrlPath: req.URL.Path,
 		UrlRelPath:      req.URL.Path,

@@ -187,5 +187,18 @@ func (srv *Server) composeFriendlyUrlWithoutExtraPath(requestURI, extraPath stri
 
 func (srv *Server) redirectToFriendlyUrlWithoutExtraPath(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) {
 	rw.Header().Set(header.HttpHeaderLocation, srv.composeFriendlyUrlWithoutExtraPath(req.RequestURI, psi.UrlExtraPath))
-	rw.WriteHeader(http.StatusTemporaryRedirect)
+
+	httpBody, err := io.ReadAll(req.Body)
+	if err != nil {
+		srv.respondWithInternalServerError(rw, err)
+		return
+	}
+
+	if len(httpBody) > 0 {
+		// 307 Redirect preserves original HTTP body.
+		rw.WriteHeader(http.StatusTemporaryRedirect)
+	} else {
+		// 302 Redirect does not preserve original HTTP body.
+		rw.WriteHeader(http.StatusFound)
+	}
 }
