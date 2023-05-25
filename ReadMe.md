@@ -174,12 +174,12 @@ layer.
       try to install the ancient phpBB3 forum and open following URL –
       http://localhost:8000/phpBB3/install/app.php/support – the PHP script 
       acts as it should, thinking that the document is located at the level of 
-      `install` folder, but all the modern web browesers see this URL as a 
-      folder `support`, which is two levels above the `install` folder. 
-      Together with another ancient habit to use relative links, this makes all 
-      the relations between pages, files and scripts – a total nonsense. 
-      Relative links stop working, CSS styles stop being used, JavaScript dies 
-      and so on. The page breaks apart into sand and dust ... 
+      `install` folder, but all the modern web browsers see this URL as an 
+      `install` file sitting in the `app.php` folder, which is one level above 
+      the `install` folder. Together with another ancient habit to use relative 
+      links, this makes all the relations between pages, files and scripts – a 
+      total nonsense. Relative links stop working, CSS styles stop being used, 
+      JavaScript dies and so on. The page breaks apart into sand and dust ... 
 
 ## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
