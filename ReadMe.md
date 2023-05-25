@@ -175,7 +175,7 @@ layer.
       http://localhost:8000/phpBB3/install/app.php/support – the PHP script 
       acts as it should, thinking that the document is located at the level of 
       `install` folder, but all the modern web browsers see this URL as an 
-      `install` file sitting in the `app.php` folder, which is one level above 
+      `support` file sitting in the `app.php` folder, which is one level above 
       the `install` folder. Together with another ancient habit to use relative 
       links, this makes all the relations between pages, files and scripts – a 
       total nonsense. Relative links stop working, CSS styles stop being used, 
