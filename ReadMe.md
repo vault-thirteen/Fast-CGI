@@ -141,21 +141,18 @@ layer.
 
 
 2. The main problem is the **CGI** interface which is even older than 
-**FastCGI** interface and has several serious issues.
-<br><br>
+**FastCGI** interface and has several serious issues.  
 
    *  First of all, CGI was made for UNIX operating systems. It was using 
       so-called UNIX sockets to make it work faster than a turtle. Other 
       operating systems, such as Microsoft Windows, do not have UNIX sockets 
       and use TCP network protocol for inter-process communication. This 
       approach itself decreases the already slow protocol and makes it even 
-      slower.
-<br><br>
+      slower.  
 
    *  CGI on UNIX uses forward slash symbols in all paths – in URL and in paths 
       inside an operating system. This creates difficulties for non-UNIX 
-      operating systems.
-<br><br>
+      operating systems.  
 
    *  The `Extra Path` feature of the CGI interface is very dumb and dangerous 
       at the same time. Yes, this is **D&D**, but it is not about dragons this 
@@ -170,7 +167,7 @@ layer.
       introduces at least two consequences: poor performance of a web server 
       and a huge hole in the security of an entire system. This `Extra Path` 
       feature should be disabled every time except those corner cases when you 
-      really need it to experiment with some legacy code.
+      really need it to experiment with some legacy code.  
 
 ## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
