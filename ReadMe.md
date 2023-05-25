@@ -168,6 +168,18 @@ layer.
       and a huge hole in the security of an entire system. This `Extra Path` 
       feature should be disabled all the time except those corner cases when 
       you really need it to experiment with some legacy code.  
+   
+   *  Another problem of the `Extra Path` CGI feature is that it breaks 
+      directory levels and spoils the page hierarchy. So, for example, when you
+      try to install the ancient phpBB3 forum and open following URL –
+      http://localhost:8000/phpBB3/install/app.php/support – the PHP script 
+      acts as it should, thinking that the document is located at the level of 
+      `install` folder, but all the modern web browesers see this URL as a 
+      folder `support`, which is two levels above the `install` folder. 
+      Together with another ancient habit to use relative links, this makes all 
+      the relations between pages, files and scripts – a total nonsense. 
+      Relative links stop working, CSS styles stop being used, JavaScript dies 
+      and so on. The page breaks apart into sand and dust ... 
 
 ## <a name="section-6" id="section-6">Feedback</a>
 If you have any feedback, you are free to direct it to this GitHub repository:
