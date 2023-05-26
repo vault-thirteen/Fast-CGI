@@ -121,21 +121,14 @@ func (srv *Server) prepareInputDataToRunPhpScript(req *http.Request, psi *pm.Php
 }
 
 func (srv *Server) runPhpScript(rw http.ResponseWriter, req *http.Request, psi *pm.PhpScriptInfo) {
-	var requestId uint16 = 1
-	var parameters []*nvpair.NameValuePair
-	var stdin []byte
-	var err error
-	stdin, parameters, err = srv.prepareInputDataToRunPhpScript(req, psi)
+	stdin, parameters, err := srv.prepareInputDataToRunPhpScript(req, psi)
 	if err != nil {
 		srv.respondWithInternalServerError(rw, err)
 		return
 	}
-
 	//nvpair.PrintParameters(parameters) // DEBUG.
 
-	var phpScriptOutput *pm.Data
-	var phpErr error
-	phpScriptOutput, phpErr = pm.ExecPhpScriptAndGetHttpData(srv.cgiClient, requestId, parameters, stdin)
+	phpScriptOutput, phpErr := srv.scriptRunner.RunScript(srv.cgiClient, parameters, stdin)
 	if phpErr != nil {
 		// Headers.
 		rw.Header().Set(header.HttpHeaderServer, srv.settings.ServerSoftware)

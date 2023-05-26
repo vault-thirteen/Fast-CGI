@@ -11,8 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vault-thirteen/Fast-CGI/pkg/Client"
-	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
+	cl "github.com/vault-thirteen/Fast-CGI/pkg/Client"
+	sr "github.com/vault-thirteen/Fast-CGI/pkg/models/ScriptRunner"
+	pm "github.com/vault-thirteen/Fast-CGI/pkg/models/php"
 	mime "github.com/vault-thirteen/MIME"
 	sfs "github.com/vault-thirteen/Simple-File-Server"
 	"github.com/vault-thirteen/auxie/file"
@@ -29,10 +30,11 @@ const (
 )
 
 type Server struct {
-	settings   *Settings
-	httpServer *http.Server
-	cgiClient  *cl.Client
-	fileServer *sfs.SimpleFileServer
+	settings     *Settings
+	httpServer   *http.Server
+	cgiClient    *cl.Client
+	scriptRunner *sr.ScriptRunner
+	fileServer   *sfs.SimpleFileServer
 
 	// MIME types.
 	// Key: file extension (dot-prefixed); Value: MIME type.
@@ -50,10 +52,13 @@ func NewServer(settings *Settings) (srv *Server, err error) {
 	}
 
 	phpServerAddress := net.JoinHostPort(srv.settings.PhpServerHost, srv.settings.PhpServerPort)
+
 	srv.cgiClient, err = cl.New(srv.settings.PhpServerNetwork, phpServerAddress)
 	if err != nil {
 		return nil, err
 	}
+
+	srv.scriptRunner = sr.New()
 
 	srv.fileServer, err = sfs.NewSimpleFileServer(
 		srv.settings.DocumentRootPath,
