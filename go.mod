@@ -3,7 +3,7 @@ module github.com/vault-thirteen/Fast-CGI
 go 1.20
 
 require (
-	github.com/vault-thirteen/MIME v1.8.0
+	github.com/vault-thirteen/MIME v1.9.0
 	github.com/vault-thirteen/Simple-File-Server v0.8.0
 	github.com/vault-thirteen/auxie v0.14.0
 	github.com/vault-thirteen/errorz v1.2.0
