@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/vault-thirteen/MIME v1.10.0
-	github.com/vault-thirteen/Simple-File-Server v0.9.0
+	github.com/vault-thirteen/Simple-File-Server v0.9.1
 	github.com/vault-thirteen/auxie v0.15.2
 	github.com/vault-thirteen/errorz v1.2.0
 	github.com/vault-thirteen/header v1.4.0
