@@ -8,12 +8,12 @@ github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZV
 github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
 github.com/vault-thirteen/Cache v0.11.0 h1:IschqFk12a6AQmWrYLsLcDDOwmAwYN92Nke+EMtqqZo=
 github.com/vault-thirteen/Cache v0.11.0/go.mod h1:j6ckAIglFfYq24MyHAxWXsJxaXDlxto1zUl8ESWf/4M=
-github.com/vault-thirteen/MIME v1.11.1 h1:UYoTb+pMn31o6TvAaIDxApPOPr7m9FWf97YByP6NaUc=
-github.com/vault-thirteen/MIME v1.11.1/go.mod h1:5+/Bf7SREg5+gfIkfOcS1FZEBRCSTUfuk7gmjBk2TzI=
+github.com/vault-thirteen/MIME v1.12.0 h1:V0GeC4WxP50KLkLMcj7w/wPwI8QEfiU4N95OCVspkNw=
+github.com/vault-thirteen/MIME v1.12.0/go.mod h1:5+/Bf7SREg5+gfIkfOcS1FZEBRCSTUfuk7gmjBk2TzI=
 github.com/vault-thirteen/Simple-File-Server v0.9.1 h1:QAK8psYP+CtZ8+b5zMHRvj2IUqF16xOElIJcBlrj9Ko=
 github.com/vault-thirteen/Simple-File-Server v0.9.1/go.mod h1:D1T4LwqDXab7FmTl9FH1zQhRu9bTf9MZpfEzsJ1ZrjQ=
-github.com/vault-thirteen/auxie v0.16.0 h1:0kJamr9uGRHOKGrk7FUKmoGKd0MhH4y0bxxuqpAEYzc=
-github.com/vault-thirteen/auxie v0.16.0/go.mod h1:ct485UlvnuhU9yi2mPLtTlDTqHdzMLdr4NUFP3nOHOo=
+github.com/vault-thirteen/auxie v0.16.1 h1:9/DoIhxjQGdaSk2DXSEmOxbHjyZpEdWafOwsHTt1dbg=
+github.com/vault-thirteen/auxie v0.16.1/go.mod h1:WceU0ogsplXrpdA/WXVstdcvIwFAsA3GJLuZDPq/vmI=
 github.com/vault-thirteen/errorz v1.2.0 h1:i2w9yHqYrsqOWyVPVMeEfv1TIATULW8PxnRGhySeyZ8=
 github.com/vault-thirteen/errorz v1.2.0/go.mod h1:+1mqgPir0fmbjS/MmElLOouoNycetmwtYdmmbjQI9PI=
 github.com/vault-thirteen/header v1.4.0 h1:ddFPWEJOpXqHoNNKpEdq9Kt3J+JXhxZBaRLgOknQZ+A=
