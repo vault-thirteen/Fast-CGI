@@ -14,8 +14,8 @@ import (
 	cl "github.com/vault-thirteen/Fast-CGI/pkg/Client"
 	sr "github.com/vault-thirteen/Fast-CGI/pkg/models/ScriptRunner"
 	pm "github.com/vault-thirteen/Fast-CGI/pkg/models/php"
-	mime "github.com/vault-thirteen/MIME"
 	sfs "github.com/vault-thirteen/Simple-File-Server"
+	mime "github.com/vault-thirteen/auxie/MIME"
 	"github.com/vault-thirteen/auxie/file"
 	"github.com/vault-thirteen/auxie/header"
 )
