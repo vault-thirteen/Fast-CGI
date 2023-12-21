@@ -7,7 +7,7 @@ import (
 	"github.com/vault-thirteen/Fast-CGI/pkg/Client"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/NameValuePair"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
-	"github.com/vault-thirteen/errorz"
+	ae "github.com/vault-thirteen/auxie/errors"
 )
 
 // RunOnceSimplePhpScript runs a simple PHP script once and gets its output.
@@ -54,7 +54,7 @@ func RunOncePhpScript(serverNetwork string, serverAddress string, requestId uint
 	defer func() {
 		derr := client.Close()
 		if derr != nil {
-			err = errorz.Combine(err, derr)
+			err = ae.Combine(err, derr)
 		}
 	}()
 

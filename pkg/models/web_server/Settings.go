@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/vault-thirteen/errorz"
+	ae "github.com/vault-thirteen/auxie/errors"
 )
 
 const (
@@ -59,7 +59,7 @@ func NewSettings(settingsFilePath string) (set *Settings, err error) {
 	defer func() {
 		derr := file.Close()
 		if derr != nil {
-			err = errorz.Combine(err, derr)
+			err = ae.Combine(err, derr)
 		}
 	}()
 

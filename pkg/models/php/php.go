@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/common"
+	"github.com/vault-thirteen/auxie/header"
 	"github.com/vault-thirteen/auxie/number"
-	"github.com/vault-thirteen/header"
 )
 
 const (

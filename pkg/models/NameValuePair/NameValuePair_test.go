@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/vault-thirteen/auxie/reader"
-	"github.com/vault-thirteen/tester"
+	"github.com/vault-thirteen/auxie/tester"
 )
 
 func Test_NewNameValuePairWithTextValue(t *testing.T) {

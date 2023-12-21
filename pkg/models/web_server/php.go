@@ -13,7 +13,7 @@ import (
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/data"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/http"
 	"github.com/vault-thirteen/Fast-CGI/pkg/models/php"
-	"github.com/vault-thirteen/header"
+	"github.com/vault-thirteen/auxie/header"
 )
 
 const (

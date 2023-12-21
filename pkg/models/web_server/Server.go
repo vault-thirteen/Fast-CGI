@@ -17,7 +17,7 @@ import (
 	mime "github.com/vault-thirteen/MIME"
 	sfs "github.com/vault-thirteen/Simple-File-Server"
 	"github.com/vault-thirteen/auxie/file"
-	"github.com/vault-thirteen/header"
+	"github.com/vault-thirteen/auxie/header"
 )
 
 const (
