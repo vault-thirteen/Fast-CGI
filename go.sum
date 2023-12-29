@@ -10,5 +10,5 @@ github.com/vault-thirteen/Cache v0.12.2 h1:CIomXddnpv2+cCUf6mSl3xj+G6uU+UnYn0gx4
 github.com/vault-thirteen/Cache v0.12.2/go.mod h1:/dbsQnBlUyUGLFTFLxHwsH1k3bnFpURQEP63ZApBtwg=
 github.com/vault-thirteen/Simple-File-Server v0.10.2 h1:/u5NMJ7f0SYabAwJxKADok7woEaKCsME3OlKwE8O6GQ=
 github.com/vault-thirteen/Simple-File-Server v0.10.2/go.mod h1:hh58bnETIEuZH3Z9n08eTNAlCuP/CBgIgbL49kEwm9U=
-github.com/vault-thirteen/auxie v0.21.0 h1:Hced6J8j1xozr8BNq288byx98tF38HJOb66H0gNg4OI=
-github.com/vault-thirteen/auxie v0.21.0/go.mod h1:jlNi5ZRto40p8jMAIjt7oJD5iKmmnQE6v9uHlqT01ag=
+github.com/vault-thirteen/auxie v0.22.0 h1:kiIImbM47dObNUloniG+yYJY3ky8GRKWU0NBJG+h7CU=
+github.com/vault-thirteen/auxie v0.22.0/go.mod h1:jlNi5ZRto40p8jMAIjt7oJD5iKmmnQE6v9uHlqT01ag=
