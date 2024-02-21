@@ -17,7 +17,7 @@ programming tools which may be useful for building applications using the
 _FastCGI_ interface in _Go_ programming language, a.k.a. _Golang_.
 
 These tools include a library written in _Go_ language. This library provides 
-objects, methods and functions to work with FastCGI interface in _Go_ 
+objects, methods and functions to work with _FastCGI_ interface in _Go_ 
 programming language.
 
 The library implements methods for a _FastCGI_ <b>client</b>, mostly.
@@ -36,16 +36,15 @@ issues which are described further in the [Résumé](#section-5) section.
 **N.B.** *Due to some bugs in Go language, the structure of this repository is 
 heavily modified to meet the requirements of the Google's Golang proxy server 
 which often throws funny messages. The most funny of them are messages stating 
-that a package was downloaded but not found. If you are, like me, used to a 
-strict repository layout which separates source code into an `src` folder and 
-other stuff – into other folders, this structure is forbidden by Google's 
-Golang.* 
+that a package was downloaded but not found. If you are used to a strict 
+repository layout which separates source code into an `src` folder and other 
+stuff – into other folders, this structure is forbidden by Google's Golang.* 
 
 So, knowing all the above, the structure of this repository is as 
 follows:
 
-* [DOC](doc) folder contains the documentation.
-* Other folders contain various parts of the library for Go language.
+* ['doc'](doc) folder contains the documentation.
+* Other folders contain various parts of the library for _Go_ language.
 
 ## <a name="section-3" id="section-3">Usage</a>
 
