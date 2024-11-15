@@ -2,6 +2,7 @@ package ws
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -155,12 +156,23 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 
 	// If a folder is requested, replace it with a default file.
 	if (sfs.IsPathFolder(psi.OriginalUrlPath)) && (!isFolderCheckDisabled) {
-		fileName, fileExists, err := srv.fileServer.GetFolderDefaultFilename(psi.UrlRelPath)
+		fileName, err := srv.fileServer.GetFolderDefaultFilename(psi.UrlRelPath)
 		if err != nil {
-			srv.respondWithInternalServerError(rw, err)
-			return
+			switch err.Error() {
+			case sfs.ErrFileIsNotFound:
+				srv.respondWithNotFound(rw)
+				return
+
+			case sfs.ErrPathIsNotValid:
+				srv.respondWithNotAllowed(rw)
+				return
+
+			default:
+				srv.respondWithInternalServerError(rw, err)
+				return
+			}
 		}
-		if !fileExists {
+		if len(fileName) == 0 {
 			srv.respondWithNotFound(rw)
 			return
 		}
@@ -194,21 +206,35 @@ func (srv *Server) getMimeTypeByExt(ext string) (mimeType string) {
 }
 
 func (srv *Server) serveOrdinaryFile(rw http.ResponseWriter, relFilePath string, fileExt string) {
-	fileContents, fileExists, err := srv.fileServer.GetFile(relFilePath)
+	fileExists, err := srv.fileServer.FileExists(relFilePath)
 	if err != nil {
 		if err.Error() == file.ErrObjectIsNotFile {
 			srv.respondWithNotAllowed(rw)
+			return
 		} else {
 			srv.respondWithInternalServerError(rw, err)
+			return
 		}
-		return
 	}
 	if !fileExists {
 		srv.respondWithNotFound(rw)
 		return
 	}
 
+	var fileContents []byte
+	fileContents, err = srv.fileServer.GetFile(relFilePath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			srv.respondWithNotFound(rw)
+			return
+		} else {
+			srv.respondWithInternalServerError(rw, err)
+			return
+		}
+	}
+
 	srv.respondWithData(rw, fileContents, fileExt)
+	return
 }
 
 func (srv *Server) respondWithInternalServerError(rw http.ResponseWriter, err error) {
