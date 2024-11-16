@@ -159,11 +159,11 @@ func (srv *Server) router(rw http.ResponseWriter, req *http.Request) {
 		fileName, err := srv.fileServer.GetFolderDefaultFilename(psi.UrlRelPath)
 		if err != nil {
 			switch err.Error() {
-			case sfs.ErrFileIsNotFound:
+			case sfs.Err_FileIsNotFound:
 				srv.respondWithNotFound(rw)
 				return
 
-			case sfs.ErrPathIsNotValid:
+			case sfs.Err_PathIsNotValid:
 				srv.respondWithNotAllowed(rw)
 				return
 
