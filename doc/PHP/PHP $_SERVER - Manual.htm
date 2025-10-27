@@ -1257,7 +1257,20 @@ On Windows IIS 7 you must use $_SERVER['LOCAL_ADDR'] rather than $_SERVER['SERVE
   <strong class="user"><em>jarrod at squarecrow dot com</em></strong></a><a class="genanchor" href="#92829"> &para;</a><div class="date" title="2009-08-10 08:31"><strong>13 years ago</strong></div>
   <div class="text" id="Hcom92829">
 <div class="phpcode"><code><span class="html">
-$_SERVER['DOCUMENT_ROOT'] is incredibly useful especially when working in your development environment. If you're working on large projects you'll likely be including a large number of files into your pages. For example:<br /><br /><span class="default">&lt;?php<br /></span><span class="comment">//Defines constants to use for "include" URLS - helps keep our paths clean<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CLASSES"</span><span class="keyword">,&nbsp; </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/classes/"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CONTROLS"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/controls/"</span><span class="keyword">);<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STRING_BUILDER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"stringbuilder.php"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"SESSION_MANAGER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"sessionmanager.php"</span><span class="keyword">);<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STANDARD_CONTROLS"</span><span class="keyword">,&nbsp; &nbsp; </span><span class="default">REGISTRY_CONTROLS</span><span class="keyword">.</span><span class="string">"standardcontrols.php"</span><span class="keyword">);<br /></span><span class="default">?&gt;<br /></span><br />In development environments, you're rarely working with your root folder, especially if you're running PHP locally on your box and using DOCUMENT_ROOT is a great way to maintain URL conformity. This will save you hours of work preparing your application for deployment from your box to a production server (not to mention save you the headache of include path failures).</span>
+$_SERVER['DOCUMENT_ROOT'] is incredibly useful especially when working in your development environment. If you're working on large projects you'll likely be including a large number of files into your pages. For example:
+<br />
+<br /><span class="default">&lt;?php
+<br /></span><span class="comment">//Defines constants to use for "include" URLS - helps keep our paths clean
+<br />
+<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CLASSES"</span><span class="keyword">,&nbsp; </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/classes/"</span><span class="keyword">);
+<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"REGISTRY_CONTROLS"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">].</span><span class="string">"/SOAP/controls/"</span><span class="keyword">);
+<br />
+<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STRING_BUILDER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"stringbuilder.php"</span><span class="keyword">);
+<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"SESSION_MANAGER"</span><span class="keyword">,&nbsp; &nbsp;&nbsp; </span><span class="default">REGISTRY_CLASSES</span><span class="keyword">. </span><span class="string">"sessionmanager.php"</span><span class="keyword">);
+<br />&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">define</span><span class="keyword">(</span><span class="string">"STANDARD_CONTROLS"</span><span class="keyword">,&nbsp; &nbsp; </span><span class="default">REGISTRY_CONTROLS</span><span class="keyword">.</span><span class="string">"standardcontrols.php"</span><span class="keyword">);
+<br /></span><span class="default">?&gt;
+<br /></span>
+<br />In development environments, you're rarely working with your root folder, especially if you're running PHP locally on your box and using DOCUMENT_ROOT is a great way to maintain URL conformity. This will save you hours of work preparing your application for deployment from your box to a production server (not to mention save you the headache of include path failures).</span>
 </code></div>
   </div>
  </div>
@@ -1352,7 +1365,15 @@ A table of everything in the $_SERVER array can be found near the bottom of the 
   <strong class="user"><em>picov at e-link dot it</em></strong></a><a class="genanchor" href="#106142"> &para;</a><div class="date" title="2011-10-13 10:59"><strong>11 years ago</strong></div>
   <div class="text" id="Hcom106142">
 <div class="phpcode"><code><span class="html">
-A simple function to detect if the current page address was rewritten by mod_rewrite:<br /><br /><span class="default">&lt;?php<br /></span><span class="keyword">public function </span><span class="default">urlWasRewritten</span><span class="keyword">() {<br />&nbsp; </span><span class="default">$realScriptName</span><span class="keyword">=</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_NAME'</span><span class="keyword">];<br />&nbsp; </span><span class="default">$virtualScriptName</span><span class="keyword">=</span><span class="default">reset</span><span class="keyword">(</span><span class="default">explode</span><span class="keyword">(</span><span class="string">"?"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">]));<br />&nbsp; return !(</span><span class="default">$realScriptName</span><span class="keyword">==</span><span class="default">$virtualScriptName</span><span class="keyword">);<br />}<br /></span><span class="default">?&gt;</span>
+A simple function to detect if the current page address was rewritten by mod_rewrite:
+<br />
+<br /><span class="default">&lt;?php
+<br /></span><span class="keyword">public function </span><span class="default">urlWasRewritten</span><span class="keyword">() {
+<br />&nbsp; </span><span class="default">$realScriptName</span><span class="keyword">=</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_NAME'</span><span class="keyword">];
+<br />&nbsp; </span><span class="default">$virtualScriptName</span><span class="keyword">=</span><span class="default">reset</span><span class="keyword">(</span><span class="default">explode</span><span class="keyword">(</span><span class="string">"?"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">]));
+<br />&nbsp; return !(</span><span class="default">$realScriptName</span><span class="keyword">==</span><span class="default">$virtualScriptName</span><span class="keyword">);
+<br />}
+<br /></span><span class="default">?&gt;</span>
 </span>
 </code></div>
   </div>
@@ -1411,7 +1432,14 @@ $_SERVER['DOCUMENT_ROOT'] may contain backslashes on windows systems, and of cou
   <strong class="user"><em>pudding06 at gmail dot com</em></strong></a><a class="genanchor" href="#90656"> &para;</a><div class="date" title="2009-05-02 02:44"><strong>14 years ago</strong></div>
   <div class="text" id="Hcom90656">
 <div class="phpcode"><code><span class="html">
-Here's a simple, quick but effective way to block unwanted external visitors to your local server:<br /><br /><span class="default">&lt;?php<br /></span><span class="comment">// only local requests<br /></span><span class="keyword">if (</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REMOTE_ADDR'</span><span class="keyword">] !== </span><span class="string">'127.0.0.1'</span><span class="keyword">) die(</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /"</span><span class="keyword">));<br /></span><span class="default">?&gt;<br /></span><br />This will direct all external traffic to your home page. Of course you could send a 404 or other custom error. Best practice is not to stay on the page with a custom error message as you acknowledge that the page does exist. That's why I redirect unwanted calls to (for example) phpmyadmin.</span>
+Here's a simple, quick but effective way to block unwanted external visitors to your local server:
+<br />
+<br /><span class="default">&lt;?php
+<br /></span><span class="comment">// only local requests
+<br /></span><span class="keyword">if (</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REMOTE_ADDR'</span><span class="keyword">] !== </span><span class="string">'127.0.0.1'</span><span class="keyword">) die(</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /"</span><span class="keyword">));
+<br /></span><span class="default">?&gt;
+<br /></span>
+<br />This will direct all external traffic to your home page. Of course you could send a 404 or other custom error. Best practice is not to stay on the page with a custom error message as you acknowledge that the page does exist. That's why I redirect unwanted calls to (for example) phpmyadmin.</span>
 </code></div>
   </div>
  </div>
