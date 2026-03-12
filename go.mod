@@ -1,15 +1,15 @@
 module github.com/vault-thirteen/Fast-CGI
 
-go 1.24.12
+go 1.25.8
 
 require (
-	github.com/vault-thirteen/Simple-File-Server v0.16.8
-	github.com/vault-thirteen/auxie v0.31.2
+	github.com/vault-thirteen/Simple-File-Server v0.16.9
+	github.com/vault-thirteen/auxie v0.31.3
 )
 
 require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
-	github.com/vault-thirteen/Cache v0.17.8 // indirect
+	github.com/vault-thirteen/Cache v0.17.9 // indirect
 )
