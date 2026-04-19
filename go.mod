@@ -1,10 +1,10 @@
 module github.com/vault-thirteen/Fast-CGI
 
-go 1.25.8
+go 1.25.9
 
 require (
 	github.com/vault-thirteen/Simple-File-Server v0.16.9
-	github.com/vault-thirteen/auxie v0.31.3
+	github.com/vault-thirteen/auxie v0.32.0
 )
 
 require (
