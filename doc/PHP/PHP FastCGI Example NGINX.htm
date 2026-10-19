@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head><script src="/common.js?matcher"></script><script src="/common.js?single"></script><script   src="https://us.gimp.zeronaught.com/__imp_apg__/js/volt-nginx_ppjsbqkq-d097e567.js" id="_imp_apg_dip_" _imp_apg_cid_="volt-nginx_ppjsbqkq-d097e567" _imp_apg_api_domain_="https://us.gimp.zeronaught.com"  ></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <link rel="canonical" href="https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/" />
+  
+    <meta content="How to configure NGINX with PHP FastCGI Process Manager." name="description" />
+
+    <title>PHP FastCGI Example | NGINX</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nginx.css?ver=201509101510" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="icon" type="image/png" href="../../../../_static/favicon-48x48.ico" sizes="48x48">
+    <link rel="icon" type="image/png" href="../../../../_static/favicon-64x46.ico" sizes="64x46">
+    <link rel="search" title="Search" href="../../../../search/" />
+    <link rel="top" title="NGINX" href="../../../../" />
+    <link rel="up" title="Getting Started" href="../../../" />
+    <link rel="next" title="PHP-FastCGI on Windows" href="../phpfastcgionwindows/" />
+    <link rel="prev" title="Server Block Examples" href="../server_blocks/" /> 
+    <script type="text/javascript">
+        // workaround for rewriting anchor tags
+        $(function() {
+            if(window.location.hash != '') {
+              var parts = window.location.hash.split('#', 2);
+              var anchor = parts[1].replace(/[\W_]/g, '-').toLowerCase();
+              window.location.hash = parts[0] + '#' + anchor;
+            }
+        });
+    </script>   
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+
+  <link rel="stylesheet" href='../../../../_static/css/bootstrap.min.css'>
+
+<link rel='stylesheet' id='nginx-theme-style-css'
+          href='../../../../_static/nginx-theme.css?ver=1438882823'
+          type='text/css' media='all'/>
+          
+
+  <link rel="stylesheet" href='../../../../_static/style.css'>
+  <link rel="stylesheet" type='text/css' href='../../../../_static/nginx-site-header.css'>
+</head>
+<body>
+  <!-- Header Section Start -->
+
+  <!-- NGINX SITE HEADER START -->
+<header id="masthead" class="site-header" itemscope itemtype="http://schema.org/Organization">
+  <!-- GDPR HTML start -->
+<div data-nosnippet id="nx_gdpr_modal2" class="hidden">
+  <div id="gdpr_modal_inner2">
+    <div id="nx_gdpr_modal_more_info2" class="hidden">
+      <div class="less-info-wrap">
+        <a id="gdpr-less-info" href="#less-info" title="less" aria-label="less">&lt;</a>
+      </div>
+       <form>
+       <fieldset> 
+           <legend>Your Cookie Settings</legend>  
+        <div class="gdpr_info_section">
+          <div class="gdpr_modal_chkbox2">
+            <!--<input title="yes" type="checkbox" id="gdpr_func_con_checkbox"
+                   value="yes" checked="checked" disabled/> -->
+          </div>
+          <p>Analytics cookies are off for visitors from the UK or EEA unless they click Accept or submit a form on nginx.com. They’re on by default for everybody else. Follow the <a href="https://www.nginx.com/privacy-policy/#analytics-opt-outs" title="Privacy Policy" aria-label="Privacy Policy">instructions here</a> to deactivate analytics cookies. This deactivation will work even if you later click Accept or submit a form.</p>
+        </div>
+        <div class="gdpr_info_section">
+          <div class="gdpr_modal_chkbox2">
+            <input title="yes" type="checkbox"
+                   id="nx_gdpr_social_con_checkbox"
+                   value="yes" checked/>
+          </div>
+          <p>Check this box so we and our advertising and social media partners can use cookies on nginx.com to better tailor ads to your interests.  Uncheck it to withdraw consent.</p>
+        </div></fieldset>
+      </form>
+    </div>
+    <div id="nx_gdpr_modal_main2">
+      <h2>Cookie preferences</h2>
+      <p>Accept cookies for analytics, social media, and advertising, or <a id="gdpr-more-info" href="#more-info" title="more" aria-label="more">learn more and adjust your preferences</a>. These cookies are on by default for visitors outside the UK and EEA. <a href="https://www.nginx.com/privacy-policy/#analytics-opt-outs" title="Privacy Policy" aria-label="Privacy Policy" >Privacy Notice</a>.</p>     
+      </div>
+
+    <div class="submit-button-wrap">
+      <button class="nginx-button button-secondary" id="nx_gdpr_accept_btn">Accept</button>
+    </div>
+  </div>
+</div><!-- /#nx_gdpr_modal -->
+<!-- GDPR HTML end -->
+    <!-- sticky-menu show-sticky-menu-->
+	<div class="site-header-inner">
+
+		<div class="site-branding-wrapper">
+			<div class="site-branding">
+				<div class="site-title" itemprop="name"><a href="https://www.nginx.com/" rel="home"><img src="https://www.nginx.com/wp-content/uploads/2020/06/NGINX-Logo-White-Endorsement-RGB.svg" alt="Web Server Load Balancing with NGINX Plus"></a></div>
+			</div><!-- /.site-branding -->
+		</div><!-- /.nx-site-branding-wrapper -->
+
+		<div class="header-menus">
+
+			<div class="header-actions-menu-location-wrapper">
+				<nav class="header-actions-menu-location">
+					<div class="menu-header-actions-container"><ul id="menu-header-actions" class="menu"><li id="menu-item-5252" class="free-trial-menu-btn menu-item menu-item-type-custom menu-item-object-custom menu-item-5252"><a title="Free Trial" aria-label="Free Trial" href="https://www.nginx.com/free-trial-request/"><span class="inner">Free Trial</span></a></li>
+<li id="menu-item-4811" class="contact-sales-menu-btn menu-item menu-item-type-custom menu-item-object-custom menu-item-4811"><a title="Contact Us" aria-label="Contact Us" href="https://www.nginx.com/contact-sales/"><span class="inner">Contact Us</span></a></li>
+</ul></div>				</nav><!-- /.header-actions-menu-location -->
+			</div><!-- /.header-actions-menu-location -->
+			<div class="primary-menu-location-wrapper">
+      			<a class="menu-logo" href="https://www.nginx.com/" rel="home"><img src="https://www.nginx.com/wp-content/uploads/2020/06/NGINX-Logo-White-Endorsement-RGB.svg" alt="Web Server Load Balancing with NGINX Plus"></a>
+				<nav id="site-navigation" class="primary-menu-location">
+					<div class="menu-primary-container"><ul id="menu-primary" class="menu"><li id="menu-item-57695" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-57695"><a title="Products" aria-label="Products" href="https://www.nginx.com/products/"><span class="inner">Products</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-53220" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53220"><a title="NGINX Plus" aria-label="NGINX Plus" href="https://www.nginx.com/products/nginx/"><span class="inner">NGINX Plus</span></a></li>
+	<li id="menu-item-53219" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53219"><a title="NGINX Controller" aria-label="NGINX Controller" href="https://www.nginx.com/products/nginx-controller/"><span class="inner">NGINX Controller</span></a></li>
+	<li id="menu-item-53226" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53226"><a title="NGINX App Protect" aria-label="NGINX App Protect" href="https://www.nginx.com/products/nginx-app-protect/"><span class="inner">NGINX App Protect</span></a></li>
+	<li id="menu-item-53225" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53225"><a title="NGINX Unit" aria-label="NGINX Unit" href="https://www.nginx.com/products/nginx-unit/"><span class="inner">NGINX Unit</span></a></li>
+	
+	<li id="menu-item-53221" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53221"><a title="NGINX Amplify" aria-label="NGINX Amplify" href="https://www.nginx.com/products/nginx-amplify/"><span class="inner">NGINX Amplify</span></a></li>
+</ul>
+</li>
+<li id="menu-item-3572" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3572"><a title="Solutions" aria-label="Solutions" href="https://www.nginx.com/solutions/"><span class="inner">Solutions</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-53543" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53543"><a title="ADC / Load balancing" aria-label="ADC / Load balancing" href="https://www.nginx.com/solutions/adc/"><span class="inner">ADC / Load balancing</span></a></li>
+	<li id="menu-item-53542" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53542"><a title="Microservices" aria-label="Microservices" href="https://www.nginx.com/solutions/microservices/"><span class="inner">Microservices</span></a></li>
+	<li id="menu-item-53544" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53544"><a title="Cloud" aria-label="Cloud" href="https://www.nginx.com/solutions/cloud/"><span class="inner">Cloud</span></a></li>
+	<li id="menu-item-53545" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53545"><a title="Security" aria-label="Security" href="https://www.nginx.com/solutions/application-security/"><span class="inner">Security</span></a></li>
+	<li id="menu-item-53546" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53546"><a title="Web &amp; Mobile Performance" aria-label="Web &amp; Mobile Performance" href="https://www.nginx.com/solutions/web-mobile-acceleration/"><span class="inner">Web &#038; Mobile Performance</span></a></li>
+	<li id="menu-item-53547" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53547"><a title="API Management" aria-label="API Management" href="https://www.nginx.com/solutions/api-management-gateway/"><span class="inner">API Management</span></a></li>
+</ul>
+</li>
+<li id="menu-item-3622" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3622"><a title="Resources" aria-label="Resources" href="https://www.nginx.com/resources/"><span class="inner">Resources</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-56440" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56440"><a title="Documentation" aria-label="Documentation" href="https://docs.nginx.com/"><span class="inner">Documentation</span></a></li>
+	<li id="menu-item-5758" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5758"><a title="Ebooks" aria-label="Ebooks" href="https://www.nginx.com/resources/library/"><span class="inner">Ebooks</span></a></li>
+	<li id="menu-item-4056" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4056"><a title="Webinars" aria-label="Webinars" href="https://www.nginx.com/resources/webinars/"><span class="inner">Webinars</span></a></li>
+	<li id="menu-item-59820" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-59820"><a title="Datasheets" aria-label="Datasheets" href="https://www.nginx.com/resources/datasheets/"><span class="inner">Datasheets</span></a></li>
+	<li id="menu-item-49023" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49023"><a title="Success Stories" aria-label="Success Stories" href="https://www.nginx.com/success-stories/"><span class="inner">Success Stories</span></a></li>
+	<li id="menu-item-4093" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4093"><a title="FAQ" aria-label="FAQ" href="https://www.nginx.com/resources/faq/"><span class="inner">FAQ</span></a></li>
+	<li id="menu-item-58885" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-58885"><a title="Learn" aria-label="Learn" href="https://www.nginx.com/learn/"><span class="inner">Learn</span></a></li>
+	<li id="menu-item-14377" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14377"><a title="Glossary" aria-label="Glossary" href="https://www.nginx.com/resources/glossary/"><span class="inner">Glossary</span></a></li>
+	<li id="menu-item-53223" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53223"><a title="Third Party Integrations" aria-label="Third Party Integrations" href="https://www.nginx.com/products/nginx/modules/"><span class="inner">Third Party Integrations</span></a></li>
+</ul>
+</li>
+<li id="menu-item-57714" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-57714"><a title="Support" aria-label="Support" href="https://www.nginx.com/support/"><span class="inner">Support</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-57715" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57715"><a title="NGINX Plus Support" aria-label="NGINX Plus Support" href="https://www.nginx.com/support/"><span class="inner">NGINX Plus Support</span></a></li>
+	<li id="menu-item-3626" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3626"><a title="Training" aria-label="Training" target="_blank" rel="noopener" href="https://university.nginx.com/"><span class="inner">Training</span></a></li>
+	<li id="menu-item-57717" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57717"><a title="Professional Services" aria-label="Professional Services" href="https://www.nginx.com/services/"><span class="inner">Professional Services</span></a></li>
+	<li id="menu-item-59514" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-59514"><a title="Customer Portal Login" aria-label="Customer Portal Login" href="https://my.f5.com"><span class="inner">Customer Portal Login</span></a></li>
+</ul>
+</li>
+<li id="menu-item-57721" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57721"><a title="Pricing" aria-label="Pricing" href="https://www.nginx.com/pricing/"><span class="inner">Pricing</span></a></li>
+<li id="menu-item-3571" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3571"><a title="Blog" aria-label="Blog" href="https://www.nginx.com/blog/"><span class="inner">Blog</span></a></li>
+</ul></div>
+        
+					<div class="search-form-wrapper">
+						<form method="get" class="search-form" action="https://www.nginx.com/">
+	<label for="search" class="screen-reader-text">Search</label>
+	<input type="search" name="s" class="search-field" placeholder="Search nginx.com" value="" maxlength="150" />
+	<input type="submit" class="search-button" value="Search">
+</form>
+					</div>
+
+			        </nav><!-- /#nx-site-navigation.nx-primary-menu-location -->
+			</div><!-- /.nx-primary-menu-location-wrapper -->
+
+			<div class="header-extras-wrapper" style="display: none;">
+				<div class="header-extras">
+					<div class="header-extra header-tel" itemprop="telephone"><a href="tel:+18009159122">1-800-915-9122</a></div>
+				</div>
+			</div>
+		</div><!-- /.nx-header-menus -->
+
+		<div class="mobile-menu-button-wrapper">
+			<a href="#" class="mobile-menu-button" aria-label="Menu Toggle Link" title="Mobile menu"><div class="icon icon-menu"></div></a>
+		</div>
+
+		<div class="mobile-search-button-wrapper">
+			<div class="search-form-wrapper">
+				<form method="get" class="search-form" action="https://www.nginx.com/">
+	<label for="search" class="screen-reader-text">Search</label>
+	<input type="search" name="s" class="search-field" placeholder="Search nginx.com" value="" maxlength="150" />
+	<input type="submit" class="search-button" value="Search">
+</form>
+			</div>
+		</div>
+
+	</div><!-- /.nx-site-header-inner -->
+</header><!-- /#masthead -->
+
+<!-- NGINX SITE HEADER END -->
+<!-- Header Section End -->
+
+<!-- Navigation Section Start -->
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../phpfastcgionwindows/" title="PHP-FastCGI on Windows"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="../server_blocks/" title="Server Block Examples"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../">NGINX</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" accesskey="U">Getting Started</a> &raquo;</li> 
+      </ul>
+    </div>
+<!-- Navigation Section End -->
+
+  <section id="wrapper">  
+
+    <section class="global-header-wrapper">
+      <div class="global-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="content">
+                <h1>PHP FastCGI Example</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wiki-body">
+      <div class="container">
+        <div class="row">
+          
+          <!-- Start main document block -->
+
+          <div class="col-md-9" id="page_content">
+            
+  <div class="section" id="php-fastcgi-example">
+<h1>PHP FastCGI Example<a class="headerlink" href="#php-fastcgi-example" title="Permalink to this headline">¶</a></h1>
+<p>This example is for newer PHP (&gt;= 5.3.3) using the included PHP FPM (FastCGI Process Manager).</p>
+<p>This guide assume PHP FPM already installed and configured either using tcp port (<code class="docutils literal notranslate"><span class="pre">127.0.0.1:9000</span></code>) or unix socket (<code class="docutils literal notranslate"><span class="pre">/var/run/php-fpm.sock</span></code>).</p>
+<p>There are many guide about configuring NGINX with PHP FPM,
+but many of them are incomplete (<em>don’t handle PATH_INFO correctly</em>)
+or contain security issues (<em>don’t check whether the script is indeed php file</em>).</p>
+<div class="section" id="fastcgi-params">
+<h2>FastCGI Params<a class="headerlink" href="#fastcgi-params" title="Permalink to this headline">¶</a></h2>
+<p>First thing, I recommend keeping all your typical FCGI settings in a single file and importing them.</p>
+<p>For example on debian and ubuntu by default there is <code class="docutils literal notranslate"><span class="pre">/etc/nginx/fastcgi_params</span></code> file that should look like this:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">fastcgi_param</span>   <span class="s">QUERY_STRING</span>            <span class="nv">$query_string</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">REQUEST_METHOD</span>          <span class="nv">$request_method</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">CONTENT_TYPE</span>            <span class="nv">$content_type</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">CONTENT_LENGTH</span>          <span class="nv">$content_length</span><span class="p">;</span>
+
+<span class="k">fastcgi_param</span>   <span class="s">SCRIPT_FILENAME</span>         <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SCRIPT_NAME</span>             <span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">PATH_INFO</span>               <span class="nv">$fastcgi_path_info</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">PATH_TRANSLATED</span>         <span class="nv">$document_root$fastcgi_path_info</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">REQUEST_URI</span>             <span class="nv">$request_uri</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">DOCUMENT_URI</span>            <span class="nv">$document_uri</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">DOCUMENT_ROOT</span>           <span class="nv">$document_root</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SERVER_PROTOCOL</span>         <span class="nv">$server_protocol</span><span class="p">;</span>
+
+<span class="k">fastcgi_param</span>   <span class="s">GATEWAY_INTERFACE</span>       <span class="s">CGI/1.1</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SERVER_SOFTWARE</span>         <span class="s">nginx/</span><span class="nv">$nginx_version</span><span class="p">;</span>
+
+<span class="k">fastcgi_param</span>   <span class="s">REMOTE_ADDR</span>             <span class="nv">$remote_addr</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">REMOTE_PORT</span>             <span class="nv">$remote_port</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SERVER_ADDR</span>             <span class="nv">$server_addr</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SERVER_PORT</span>             <span class="nv">$server_port</span><span class="p">;</span>
+<span class="k">fastcgi_param</span>   <span class="s">SERVER_NAME</span>             <span class="nv">$server_name</span><span class="p">;</span>
+
+<span class="k">fastcgi_param</span>   <span class="s">HTTPS</span>                   <span class="nv">$https</span><span class="p">;</span>
+
+<span class="c1"># PHP only, required if PHP was built with --enable-force-cgi-redirect</span>
+<span class="k">fastcgi_param</span>   <span class="s">REDIRECT_STATUS</span>         <span class="mi">200</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Please note if you’re using Ubuntu Precise (12.04), I change <code class="docutils literal notranslate"><span class="pre">SCRIPT_FILENAME</span></code> and add <code class="docutils literal notranslate"><span class="pre">PATH_INFO</span></code> params.</p>
+</div>
+<div class="section" id="connecting-nginx-to-php-fpm">
+<h2>Connecting NGINX to PHP FPM<a class="headerlink" href="#connecting-nginx-to-php-fpm" title="Permalink to this headline">¶</a></h2>
+<p>Now we must tell NGINX to proxy requests to PHP FPM via the FCGI protocol:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span> <span class="p">~</span> <span class="sr">[^/]\.php(/|$)</span> <span class="p">{</span>
+    <span class="kn">fastcgi_split_path_info</span> <span class="s">^(.+?\.php)(/.*)</span>$<span class="p">;</span>
+    <span class="kn">if</span> <span class="s">(!-f</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="s">)</span> <span class="p">{</span>
+        <span class="kn">return</span> <span class="mi">404</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Mitigate https://httpoxy.org/ vulnerabilities</span>
+    <span class="kn">fastcgi_param</span> <span class="s">HTTP_PROXY</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+
+    <span class="kn">fastcgi_pass</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
+    <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+
+    <span class="c1"># include the fastcgi_param setting</span>
+    <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+
+    <span class="c1"># SCRIPT_FILENAME parameter is used for PHP FPM determining</span>
+    <span class="c1">#  the script name. If it is not set in fastcgi_params file,</span>
+    <span class="c1"># i.e. /etc/nginx/fastcgi_params or in the parent contexts,</span>
+    <span class="c1"># please comment off following line:</span>
+    <span class="c1"># fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you’re using unix socket change <code class="docutils literal notranslate"><span class="pre">fastcgi_pass</span></code> to:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">fastcgi_pass</span> <span class="s">unix:/var/run/php-fpm.sock</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Restart NGINX.</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Create <code class="docutils literal notranslate"><span class="pre">test.php</span></code> on NGINX document root containing just:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="nb">var_export</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>In the browser try to request:
+# /test.php
+# /test.php/
+# /test.php/foo
+# /test.php/foo/bar.php
+# /test.php/foo/bar.php?v=1</p>
+<p>Pay attention to the value of REQUEST_URI, SCRIPT_FILENAME, SCRIPT_NAME,
+PATH_INFO and PHP_SELF.</p>
+<p>Here’s the correct output for <a class="reference external" href="http://lemp.test/test.php/foo/bar.php?v=1">http://lemp.test/test.php/foo/bar.php?v=1</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span> <span class="p">(</span>
+  <span class="s1">&#39;USER&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;www-data&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HOME&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/var/www&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;FCGI_ROLE&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;RESPONDER&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;QUERY_STRING&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;v=1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REQUEST_METHOD&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;CONTENT_TYPE&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;CONTENT_LENGTH&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SCRIPT_FILENAME&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/var/www/test.php&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SCRIPT_NAME&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/test.php&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;PATH_INFO&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/foo/bar.php&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REQUEST_URI&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/test.php/foo/bar.php?v=1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DOCUMENT_URI&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/test.php/foo/bar.php&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DOCUMENT_ROOT&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/var/www&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SERVER_PROTOCOL&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;HTTP/1.1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;GATEWAY_INTERFACE&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;CGI/1.1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SERVER_SOFTWARE&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;nginx/1.4.0&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REMOTE_ADDR&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;192.168.56.1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REMOTE_PORT&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;44644&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SERVER_ADDR&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;192.168.56.3&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SERVER_PORT&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;80&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SERVER_NAME&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTPS&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REDIRECT_STATUS&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;200&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_HOST&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;lemp.test&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_USER_AGENT&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:20.0) Gecko/20100101 Firefox/20.0&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_ACCEPT&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_ACCEPT_LANGUAGE&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;en-US,en;q=0.5&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_ACCEPT_ENCODING&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;HTTP_CONNECTION&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;keep-alive&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;PHP_SELF&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/test.php/foo/bar.php&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REQUEST_TIME&#39;</span> <span class="o">=&gt;</span> <span class="mi">1367829847</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">The location regex capable to handle <code class="docutils literal notranslate"><span class="pre">PATH_INFO</span></code> and properly check that the extension indeed .php (not .phps) whether there is PATH_INFO or not.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">fastcgi_split_path_info</span></code> regex capable to correctly handle request like <code class="docutils literal notranslate"><span class="pre">/test.php/foo/blah.php</span></code> or <code class="docutils literal notranslate"><span class="pre">/test.php/</span></code>.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">if</span></code> lets NGINX check whether the <code class="docutils literal notranslate"><span class="pre">*.php</span></code> does indeed exist to prevent NGINX to feeding PHP FPM non php script file (like uploaded image).</p>
+<p>Some guides recommend to use <code class="docutils literal notranslate"><span class="pre">try_files</span></code> instead of <code class="docutils literal notranslate"><span class="pre">if</span></code>, if you do that, beware of NGINX <a class="reference external" href="https://trac.nginx.org/nginx/ticket/321">bug #321</a>.
+I personally think <code class="docutils literal notranslate"><span class="pre">if</span></code> is more appropriate for this, even <a class="reference internal" href="../../depth/ifisevil/"><span class="doc">If is Evil… when used in location context</span></a> agree this is one of the 100% safe thing to use <code class="docutils literal notranslate"><span class="pre">if</span></code> with.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">SCRIPT_FILENAME</span></code> parameter is required as it is passed to PHP FPM to determine the script name.</p>
+<p>In the builds of NGINX for a lot of Linux distributions, this parameter has been added in the <code class="docutils literal notranslate"><span class="pre">fastcgi_params</span></code> file, i.e. <code class="docutils literal notranslate"><span class="pre">/etc/nginx/fastcgi_params</span></code> so the users could import all the CGI params via the <code class="docutils literal notranslate"><span class="pre">include</span></code> directive, i.e. <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">fastcgi_params</span></code> . But for some distributions, such as CentOS, this parameter does not exist in the <code class="docutils literal notranslate"><span class="pre">fastcgi_params</span></code> file.</p>
+<p>If this parameter is not set, PHP FPM responses 200 OK with empty content, and there is no error or warning.
+For more informaton about the CGI params, please refer to <a class="reference external" href="https://nginx.org/en/docs/beginners_guide.html#fastcgi">nginx beginners guide</a>, <a class="reference external" href="http://php.net/manual/en/reserved.variables.server.php">$_SERVER in PHP</a> and <a class="reference external" href="http://www.ietf.org/rfc/rfc3875">RFC3875</a>.</p>
+</li>
+<li><p class="first">If you see a blank page in browser, please check if <code class="docutils literal notranslate"><span class="pre">SCRIPT_FILENAME</span></code> parameter is set.</p>
+</li>
+<li><p class="first">This guide run fine on php.ini with <code class="docutils literal notranslate"><span class="pre">cgi.fix_pathinfo</span> <span class="pre">=</span> <span class="pre">1</span></code> (the default).</p>
+<p>Some guide insist to change it to <code class="docutils literal notranslate"><span class="pre">cgi.fix_pathinfo</span> <span class="pre">=</span> <span class="pre">0</span></code> but doing that make <code class="docutils literal notranslate"><span class="pre">PHP_SELF</span></code> variable broken (not equal to <code class="docutils literal notranslate"><span class="pre">DOCUMENT_URI</span></code>).</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+
+            
+
+          </div>
+          <!-- End main document block -->
+          
+          <!-- Start Sidebar block -->
+          <div class="col-md-3">
+                   <aside class="wiki-sidebar">
+    <!-- Search Box Start -->
+    <div class="sidebar-widget"><div class="search_box">
+	<form action="../../../../search/" method="get">
+		<div class="input-group">
+			
+			<input type="text" name="q" class="form-control" placeholder="Search Wiki">
+			<span class="input-group-btn">
+			  <input type="submit" class="btn" value="">
+			    <i class="fa fa-chevron-circle-right"></i>
+			  </input>
+			</span>
+			<input type="hidden" name="check_keywords" value="yes" />
+			<input type="hidden" name="area" value="default" />
+			
+		</div>
+	</form>
+</div>
+    </div>
+    <!-- Search Box End -->
+    <div class="sidebar-widget">
+    </div>
+      
+    <div class="sidebar-menu sidebar-widget"><h3><a href="../../../../">Wiki home</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dynamic_ssi/">Dynamic SSI Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../full/">Full Example Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fullexample2/">Another Full Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loadbalanceexample/">Simple Load Balancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reverseproxycachingexample/">Reverse Proxy with Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../SSL-Offloader/">SSL-Offloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logrotation/">Log Rotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../server_blocks/">Server Block Examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PHP FastCGI Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fastcgi-params">FastCGI Params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-nginx-to-php-fpm">Connecting NGINX to PHP FPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../phpfastcgionwindows/">PHP-FastCGI on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../simplepythonfcgi/">Dispatching TurboGears Python via FCGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../simplerubyfcgi/">Simple Ruby FCGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../djangofastcgi/">Django FastCGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fcgiwrap/">FCGI Wrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fastcgiexample/">FastCGI Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../javaservers/">Java servers like Jetty, GlassFish and Tomcat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mono/">Mono FCGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../x-accel/">X-Accel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../likeapache/">NGINX Solution for Apache ProxyPassReverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../likeapache-htaccess/">Like Apache: .htaccess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../separateerrorloggingpervirtualhost/">Separating Error Logs per Virtual Host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imapproxyexample/">IMAP Proxy Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imapauthenticatewithapacheperlscript/">Using a Perl Script as the IMAP Auth Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imapauthenticatewithapachephpscript/">Using a PHP Script on an Apache Server as the IMAP Auth Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nonrootwebpath/">Non-root Web Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../headers_management/">Managing request headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../headers_management/#a-flexibility-of-the-http-headers">A flexibility of the HTTP headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../headers_management/#get-a-header-value">Get a header value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../headers_management/#how-can-i-set-a-header">How can I set a header?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source_tricks/">PiotrSikora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coding_style/">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../initscripts/">NGINX Init Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardwarelberrors/">Hardware Loadbalancer Check Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xsendfile/">XSendfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../memcachepreload/">Memcache Preload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../embeddedperlminifyjs/">Embedded Perl Minify JS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../embeddedperlsitemapsproxy/">Embedded Perl Sitemaps Proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../forwarded/">Using the <code class="docutils literal notranslate"><span class="pre">Forwarded</span></code> header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/cms_made_simple/">CMS Made Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/codeigniter/">Codeigniter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/drupal/">Drupal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/dokuwiki/">Dokuwiki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/elgg/">Elgg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/expressionengine/">ExpressionEngine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/geth/">Geth (go-ethereum)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/iredmail/">iRedMail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/mailman/">Mailman</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/mediawiki/">MediaWiki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/moinmoin/">MoinMoin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/mybb/">MyBB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/omeka-s/">Omeka-s</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/omeka/">Omeka</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/oscommerce/">osCommerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/osticket/">osTicket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/phplist/">PHPList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/piwik/">Matomo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/pmwiki/">PmWiki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/pylons/">Pylons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/pyrocms/">PyroCMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/qwebirc/">Qwebric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/redmine/">Redmine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/silverstripe/">SilverStripe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/spip/">SPIP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/symfony/">Symfony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/symfony/#another-working-symfony">Another working symfony</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/wordpress/">WordPress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/xenforo/">XenForo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/yii/">Yii</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/zend/">Zend Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/zenphoto/">Zenphoto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/fcgizope/">Zope via FastCGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/b2evolution/">b2evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/uvdesk/">UVdesk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/shopware/">Shopware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/bagisto/">Bagisto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/krayin/">Krayin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../recipes/qloapps/">QloApps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../depth/ifisevil/">If is Evil… when used in location context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/gettingstarted/">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/install/">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/installoptions/">Installation and Compile-Time Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/commandline/">CommandLine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/config_pitfalls/">Pitfalls and Common Mistakes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/debugging/">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/optimizations/">Optimizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/solaris_10_u5/">Installing on Solaris 10u5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/solaris_10_u5/#testing-nginx">Testing NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/solaris_10_u5/#running-nginx-as-smf-service">Running NGINX as SMF service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/solaris_11/">Installing on Solaris 11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/solaris_11/#startup-script">Startup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/openbsd/">Installing and configuring NGINX / Mongrel on OpenBSD with Rails support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#installing-configuring-nginx">Installing &amp; Configuring NGINX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#full-stack-howtos">Full Stack HOWTOs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#pre-canned-configurations">Pre-canned Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#other-examples">Other Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#tools">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#advanced-topics">Advanced Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../#learning-resources">Learning Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../community/">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/">NGINX 3<sup>rd</sup> Party Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../extending/">Extending NGINX</a></li>
+</ul>
+<div class="search_box">
+	<form action="../../../../search/" method="get">
+		<div class="input-group">
+			
+			<input type="text" name="q" class="form-control" placeholder="Search Wiki">
+			<span class="input-group-btn">
+			  <input type="submit" class="btn" value="">
+			    <i class="fa fa-chevron-circle-right"></i>
+			  </input>
+			</span>
+			<input type="hidden" name="check_keywords" value="yes" />
+			<input type="hidden" name="area" value="default" />
+			
+		</div>
+	</form>
+</div>
+    </div>
+
+    <div class="sidebar-widget">
+      <a href="https://pages.nginx.com/express-opt-in.html" class="wiki-email-subscribe-btn-white" target="_blank">Stay in the Loop <span class="icon icon-arrow-submit"></span></a>
+    </div>
+
+
+    <div class="sidebar-menu sidebar-widget">
+      <h3>Edit this page</h3>
+       <ul>
+          <li><a href="https://github.com/nginxinc/nginx-wiki/blob/master/source/start/topics/examples/phpfcgi.rst"
+              rel="nofollow"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 960q-152-236-381-353 61 104 61 225 0 185-131.5 316.5t-316.5 131.5-316.5-131.5-131.5-316.5q0-121 61-225-229 117-381 353 133 205 333.5 326.5t434.5 121.5 434.5-121.5 333.5-326.5zm-720-384q0-20-14-34t-34-14q-125 0-214.5 89.5t-89.5 214.5q0 20 14 34t34 14 34-14 14-34q0-86 61-147t147-61q20 0 34-14t14-34zm848 384q0 34-20 69-140 230-376.5 368.5t-499.5 138.5-499.5-139-376.5-368q-20-35-20-69t20-69q140-229 376.5-368t499.5-139 499.5 139 376.5 368q20 35 20 69z"/></svg></span>&nbsp;Show on GitHub</a></li>
+          <li><a href="https://github.com/nginxinc/nginx-wiki/edit/master/source/start/topics/examples/phpfcgi.rst"
+              rel="nofollow"><span class="icon-holder"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M491 1536l91-91-235-235-91 91v107h128v128h107zm523-928q0-22-22-22-10 0-17 7l-542 542q-7 7-7 17 0 22 22 22 10 0 17-7l542-542q7-7 7-17zm-54-192l416 416-832 832h-416v-416zm683 96q0 53-37 90l-166 166-416-416 166-165q36-38 90-38 53 0 91 38l235 234q37 39 37 91z"/></svg></span>&nbsp;Edit on GitHub</a></li>
+        </ul>
+    </div>
+
+  </aside>
+              
+          </div>
+          <!-- Start Sidebar block -->
+
+        </div><!-- end class="row" -->
+      </div><!-- end class="container" -->
+    </section><!-- end class="wiki-body" -->
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../phpfastcgionwindows/" title="PHP-FastCGI on Windows"
+             >next</a></li>
+        <li class="right" >
+          <a href="../server_blocks/" title="Server Block Examples"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../">NGINX</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../../../" >Getting Started</a> &raquo;</li> 
+      </ul>
+    </div>
+
+  </section> <!-- End Wrapper -->
+
+  <!-- Footer Section Start -->
+  <footer id="colophon" class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-primary-nav">
+      <nav class="footer-menu-wrap">
+        <ul id="menu-footer-products" class="footer-menu"><li id="menu-item-57729" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-57729"><a title="Products" aria-label="Products" href="https://www.nginx.com/products/"><span class="inner">Products</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-53245" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53245"><a title="NGINX Plus" aria-label="NGINX Plus" href="https://www.nginx.com/products/nginx/"><span class="inner">NGINX Plus</span></a></li>
+	<li id="menu-item-53244" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53244"><a title="NGINX Controller" aria-label="NGINX Controller" href="https://www.nginx.com/products/nginx-controller/"><span class="inner">NGINX Controller</span></a></li>
+	<li id="menu-item-53243" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53243"><a title="NGINX App Protect" aria-label="NGINX App Protect" href="https://www.nginx.com/products/nginx-app-protect/"><span class="inner">NGINX App Protect</span></a></li>
+	<li id="menu-item-53242" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53242"><a title="NGINX Unit" aria-label="NGINX Unit" href="https://www.nginx.com/products/nginx-unit/"><span class="inner">NGINX Unit</span></a></li>
+	<li id="menu-item-53246" class="menu-item menu-item-type-post_type menu-item-object-nx_product_module menu-item-53246"><a title="NGINX Amplify" aria-label="NGINX Amplify" href="https://www.nginx.com/products/nginx-amplify/"><span class="inner">NGINX Amplify</span></a></li>
+	
+</ul>
+</li>
+<li id="menu-item-56460" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-56460"><a title="NGINX on Github" aria-label="NGINX on Github" href="https://github.com/nginxinc/"><span class="inner">NGINX on Github</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-56461" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56461"><a title="NGINX Open Source" aria-label="NGINX Open Source" href="https://github.com/nginx/nginx"><span class="inner">NGINX Open Source</span></a></li>
+	<li id="menu-item-56462" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56462"><a title="NGINX Unit" aria-label="NGINX Unit" href="https://github.com/nginx/unit"><span class="inner">NGINX Unit</span></a></li>
+	<li id="menu-item-56463" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56463"><a title="NGINX Amplify" aria-label="NGINX Amplify" href="https://github.com/nginxinc/nginx-amplify-agent"><span class="inner">NGINX Amplify</span></a></li>
+	<li id="menu-item-56464" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56464"><a title="NGINX Kubernetes Ingress Controller" aria-label="NGINX Kubernetes Ingress Controller" href="https://github.com/nginxinc/kubernetes-ingress"><span class="inner">NGINX Kubernetes Ingress Controller</span></a></li>
+	<li id="menu-item-56466" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56466"><a title="NGINX Microservices Reference Architecture" aria-label="NGINX Microservices Reference Architecture" href="https://github.com/nginxinc/mra-ingenious"><span class="inner">NGINX Microservices Reference Architecture</span></a></li>
+	<li id="menu-item-56467" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56467"><a title="NGINX Crossplane" aria-label="NGINX Crossplane" href="https://github.com/nginxinc/crossplane"><span class="inner">NGINX Crossplane</span></a></li>
+</ul>
+</li>
+</ul>      </nav><!-- /.footer-menu-location -->
+      <nav class="footer-menu-wrap">
+        <ul id="menu-footer-solutions" class="footer-menu"><li id="menu-item-4128" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4128"><a title="Solutions" aria-label="Solutions" href="https://www.nginx.com/solutions/"><span class="inner">Solutions</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-57726" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57726"><a title="ADC / Load Balancing" aria-label="ADC / Load Balancing" href="https://www.nginx.com/solutions/adc/"><span class="inner">ADC / Load Balancing</span></a></li>
+	<li id="menu-item-57727" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57727"><a title="Microservices" aria-label="Microservices" href="https://www.nginx.com/solutions/microservices/"><span class="inner">Microservices</span></a></li>
+	<li id="menu-item-57725" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57725"><a title="Cloud" aria-label="Cloud" href="https://www.nginx.com/solutions/cloud/"><span class="inner">Cloud</span></a></li>
+	<li id="menu-item-57724" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57724"><a title="Security" aria-label="Security" href="https://www.nginx.com/solutions/application-security/"><span class="inner">Security</span></a></li>
+	<li id="menu-item-57723" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57723"><a title="Web &amp; Mobile Performance" aria-label="Web &amp; Mobile Performance" href="https://www.nginx.com/solutions/web-mobile-acceleration/"><span class="inner">Web &#038; Mobile Performance</span></a></li>
+	<li id="menu-item-57722" class="menu-item menu-item-type-post_type menu-item-object-solution menu-item-57722"><a title="API Management" aria-label="API Management" href="https://www.nginx.com/solutions/api-management-gateway/"><span class="inner">API Management</span></a></li>
+</ul>
+</li>
+</ul>      </nav><!-- /.footer-menu-location -->
+    </div>
+    <div class="footer-secondary-nav">
+      <nav class="footer-menu-wrap">
+        <ul id="menu-footer-resources-and-support" class="footer-menu"><li id="menu-item-4151" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4151"><a title="Resources" aria-label="Resources" href="https://www.nginx.com/resources/"><span class="inner">Resources</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-56441" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56441"><a title="Documentation" aria-label="Documentation" href="https://docs.nginx.com/"><span class="inner">Documentation</span></a></li>
+	<li id="menu-item-24977" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24977"><a title="Ebooks" aria-label="Ebooks" href="https://www.nginx.com/resources/library/"><span class="inner">Ebooks</span></a></li>
+	<li id="menu-item-4154" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4154"><a title="Webinars" aria-label="Webinars" href="https://www.nginx.com/resources/webinars/"><span class="inner">Webinars</span></a></li>
+	<li id="menu-item-59819" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-59819"><a title="Datasheets" aria-label="Datasheets" href="https://www.nginx.com/resources/datasheets/"><span class="inner">Datasheets</span></a></li>
+	<li id="menu-item-50089" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50089"><a title="Success Stories" aria-label="Success Stories" href="https://www.nginx.com/success-stories/"><span class="inner">Success Stories</span></a></li>
+	<li id="menu-item-50088" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50088"><a title="Blog" aria-label="Blog" href="https://www.nginx.com/blog/"><span class="inner">Blog</span></a></li>
+	<li id="menu-item-4156" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4156"><a title="FAQ" aria-label="FAQ" href="https://www.nginx.com/resources/faq/"><span class="inner">FAQ</span></a></li>
+	<li id="menu-item-58884" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-58884"><a title="Learn" aria-label="Learn" href="https://www.nginx.com/learn/"><span class="inner">Learn</span></a></li>
+	<li id="menu-item-53253" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53253"><a title="Glossary" aria-label="Glossary" href="https://www.nginx.com/resources/glossary/glossary/"><span class="inner">Glossary</span></a></li>
+</ul>
+</li>
+<li id="menu-item-56468" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-56468"><a title="Support" aria-label="Support" href="https://www.nginx.com/support"><span class="inner">Support</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-56469" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56469"><a title="Professional Services" aria-label="Professional Services" href="https://www.nginx.com/services/"><span class="inner">Professional Services</span></a></li>
+	<li id="menu-item-56470" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56470"><a title="Training" aria-label="Training" rel="noopener" href="https://university.nginx.com/"><span class="inner">Training</span></a></li>
+	<li id="menu-item-59515" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-59515"><a title="Customer Portal Login" aria-label="Customer Portal Login" href="https://my.f5.com/"><span class="inner">Customer Portal Login</span></a></li>
+</ul>
+</li>
+</ul>      </nav><!-- /.footer-menu-location -->
+      <nav class="footer-menu-wrap">
+        <ul id="menu-footer-company-partners" class="footer-menu"><li id="menu-item-59762" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-59762"><a title="Partners" aria-label="Partners" href="https://www.nginx.com/partners/"><span class="inner">Partners</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-58492" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-58492"><a title="Amazon Web Services" aria-label="Amazon Web Services" href="https://www.nginx.com/partners/amazon-web-services/"><span class="inner">Amazon Web Services</span></a></li>
+	<li id="menu-item-58493" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-58493"><a title="Google Cloud Platform" aria-label="Google Cloud Platform" href="https://www.nginx.com/partners/google-cloud-platform/"><span class="inner">Google Cloud Platform</span></a></li>
+	<li id="menu-item-56386" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-56386"><a title="IBM" aria-label="IBM" href="https://www.nginx.com/partners/ibm/"><span class="inner">IBM</span></a></li>
+	<li id="menu-item-59243" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-59243"><a title="Microsoft Azure" aria-label="Microsoft Azure" href="https://www.nginx.com/partners/microsoft-azure/"><span class="inner">Microsoft Azure</span></a></li>
+	<li id="menu-item-53258" class="menu-item menu-item-type-post_type menu-item-object-nx_partner_module menu-item-53258"><a title="Red Hat" aria-label="Red Hat" href="https://www.nginx.com/partners/red-hat/"><span class="inner">Red Hat</span></a></li>
+	<li id="menu-item-59763" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-59763"><a title="Find a Partner" aria-label="Find a Partner" href="https://www.nginx.com/partners/find-a-partner/"><span class="inner">Find a Partner</span></a></li>
+	<li id="menu-item-49390" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-49390"><a title="Certified Module Program" aria-label="Certified Module Program" href="https://www.nginx.com/partners/certified-module-program/"><span class="inner">Certified Module Program</span></a></li>
+</ul>
+</li>
+<li id="menu-item-57778" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-57778"><a title="Company" aria-label="Company" href="https://www.nginx.com/company/"><span class="inner">Company</span><span class="icon icon-arrow-down"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-57779" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57779"><a title="About NGINX" aria-label="About NGINX" href="https://www.nginx.com/company/"><span class="inner">About NGINX</span></a></li>
+	<li id="menu-item-57882" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57882"><a title="Careers" aria-label="Careers" href="https://www.nginx.com/careers/"><span class="inner">Careers</span></a></li>
+	<li id="menu-item-63674" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-63674"><a title="Leadership" aria-label="Leadership" href="https://www.f5.com/company/leadership"><span class="inner">Leadership</span></a></li>
+	<li id="menu-item-59645" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-59645"><a title="Press" aria-label="Press" href="https://www.nginx.com/press/"><span class="inner">Press</span></a></li>
+	<li id="menu-item-53254" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53254"><a title="Events" aria-label="Events" href="https://www.nginx.com/events/"><span class="inner">Events</span></a></li>
+</ul>
+</li>
+</ul>      </nav><!-- /.footer-menu-location -->
+    </div>
+    <div class="footer-connect-nav">
+      <div class="footer-social">
+        <span class="footer-head">Connect With Us</span>
+        <ul>
+          <li><a href="https://www.facebook.com/nginxinc"
+                 title="facebook"
+                 aria-label="facebook"
+                 target="_blank"
+                 rel="noreferrer"
+                 class="icon-facebook">facebook</a></li>
+          <li><a href="https://twitter.com/nginx"
+                 title="twitter"
+                 aria-label="twitter"
+                 target="_blank"
+                 rel="noreferrer"
+                 class="icon-twitter">twitter</a></li>
+          <li><a href="https://www.linkedin.com/company/nginx" title="linkedin" aria-label="linkedin" target="_blank" rel="noreferrer" class="icon-linkedin">linkedin</a></li>
+          <li><a
+                href="https://www.youtube.com/user/NginxInc"
+                title="youtube"
+                aria-label="youtube"
+                target="_blank" rel="noreferrer"><img
+                                     src="https://www.nginx.com/wp-content/uploads/2019/01/yt-nginx@2x.png"
+                                     alt="NGINX Youtube Channel"/></a></li>
+          <li><a href="https://www.nginx.com/feed/"
+                 title="rss"
+                 aria-label="rss"
+                 target="_blank"
+                 class="icon-rss">rss</a></li>
+        </ul>
+      </div>
+      <div class="footer-email-signup">
+        <a href="https://interact.nginx.com/express-opt-in.html"
+           title="Stay in the Loop"
+           aria-label="Stay in the Loop"
+           rel="noopener"
+           class="nginx-button button-primary"
+           target="_blank">Stay in the Loop</a>
+      </div>
+    </div>
+
+    <div class="site-info">
+      <div class="site-info-wrap">
+        <div class="site-info-inner">
+         <p>Copyright © F5, Inc. All rights reserved. | <a href="/privacy-policy/">Privacy Policy</a></p>
+         <p class="cookie-link">&nbsp;|&nbsp;<a href="#" id="cookie-link">Cookie Choices</a></p>
+        </div>
+      </div>
+    </div><!-- /.site-info -->
+
+  </div><!-- /.site-footer-inner -->
+</footer><!-- /#colophon -->
+  <!-- Footer Section End -->
+ 
+   <!-- Js From old design --> 
+   <!-- /#page -->
+  <script type="text/javascript" src="../../../../_static/js/cookies/nginx-cookies.js?ver=20150911"></script>
+  <script type="text/javascript" src="../../../../_static/js/gdpr/nginx-gdpr2.js?ver=20150911"></script>
+  <script type="text/javascript" src="../../../../_static/nginx-theme.js?ver=20150911"></script>
+  <script type="text/javascript" src="../../../../_static/js/nginx-site-header.js?ver=20171024"></script>
+  <!-- End Piwik Code -->
+  <script type="text/javascript">
+  var shiftWindow = function() { window.scrollBy(0, -80) };
+  // Timeout to push the scrollBy to the bottom of the queue, otherwise it breaks in IE and Chrome
+  var testWindow = function() { if (!!window.location.hash) setTimeout(function(){ shiftWindow(); }, 1); };
+  window.addEventListener("load", testWindow);
+  window.addEventListener("hashchange", shiftWindow);
+  </script>
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WBXGM3"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WBXGM3');</script>
+  <!-- End Google Tag Manager -->
+
+
+  <!-- Js Files new for design -->
+  <!-- jQuery is automatically included in header -->
+  <script src="../../../../_static/js/bootstrap.min.js"></script>
+  <script src="../../../../_static/js/main.js"></script> 
+</body>
+</html>
